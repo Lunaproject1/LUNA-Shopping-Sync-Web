@@ -99,7 +99,7 @@ input:focus,select:focus{outline:2px solid color-mix(in srgb,var(--accent) 35%,t
  </div>
  <input id="importFile" type="file" accept="application/json" hidden>
 </section>
-<div class="footer">Compras v0.4 · Projeto Luna<br>Offline-first · sincronização Google Sheets quando ligada.</div>
+<div class="footer">Compras v0.5.1 · Projeto Luna<br>Offline-first · sincronização Google Sheets quando ligada.</div>
 </main>
 
 <script>
@@ -133,7 +133,8 @@ function normalize(s){return String(s||'').toLocaleLowerCase('pt-PT').normalize(
 function now(){return new Date().toISOString()}
 function normalizeLocalItem(x){
  return {id:String(x.id||makeId()),name:String(x.name||''),qty:String(x.qty||''),category:x.category||'Outros',
-  done:!!x.done,createdAt:x.createdAt||x.updatedAt||now(),updatedAt:x.updatedAt||x.createdAt||now(),deleted:!!x.deleted};
+  done:!!x.done,createdAt:x.createdAt||x.updatedAt||now(),updatedAt:x.updatedAt||x.createdAt||now(),deleted:!!x.deleted,
+  dirty:x.dirty===true};
 }
 function detectCategory(name){
  const n=normalize(name); if(!n)return 'Outros';
@@ -149,10 +150,10 @@ function addItem(name,qty='',category){
  name=String(name||'').trim();if(!name)return;
  const detected=detectCategory(name), finalCat=category||detected;
  if(category&&category!==detected){const learned=load(LEARN,{});learned[normalize(name)]=category;localStorage.setItem(LEARN,JSON.stringify(learned))}
- const t=now();items.push({id:makeId(),name,qty:String(qty||'').trim(),category:finalCat,done:false,createdAt:t,updatedAt:t,deleted:false});save();autoSync()
+ const t=now();items.push({id:makeId(),name,qty:String(qty||'').trim(),category:finalCat,done:false,createdAt:t,updatedAt:t,deleted:false,dirty:true});save();autoSync()
 }
-function completeItem(id,done=true){let x=items.find(i=>i.id===id);if(x){x.done=done;x.updatedAt=now();save();autoSync()}}
-function removeItem(id){let x=items.find(i=>i.id===id);if(x){x.deleted=true;x.updatedAt=now();save();autoSync()}}
+function completeItem(id,done=true){let x=items.find(i=>i.id===id);if(x){x.done=done;x.updatedAt=now();x.dirty=true;save();autoSync()}}
+function removeItem(id){let x=items.find(i=>i.id===id);if(x){x.deleted=true;x.updatedAt=now();x.dirty=true;save();autoSync()}}
 function updateItem(id){
  let x=items.find(i=>i.id===id);if(!x||x.deleted)return;
  let n=prompt('Item:',x.name);if(n===null||!n.trim())return;
@@ -160,19 +161,19 @@ function updateItem(id){
  x.name=n.trim();x.qty=q.trim();
  if(confirm('Atualizar automaticamente a categoria deste item?'))x.category=detectCategory(x.name);
  else{const c=prompt('Categoria:',x.category||'Outros');if(c&&categoryInfo[c]){x.category=c;const learned=load(LEARN,{});learned[normalize(x.name)]=c;localStorage.setItem(LEARN,JSON.stringify(learned))}}
- x.updatedAt=now();save();autoSync()
+ x.updatedAt=now();x.dirty=true;save();autoSync()
 }
 function getList(){return JSON.parse(JSON.stringify(items.filter(i=>!i.deleted)))}
 function getPendingItems(){return getList().filter(i=>!i.done)}
 function getItemsByCategory(category){return getList().filter(i=>i.category===category)}
 function clearCompleted(){
  const done=items.filter(i=>i.done&&!i.deleted);if(!done.length)return;
- if(confirm('Remover todos os itens já comprados?')){const t=now();done.forEach(i=>{i.deleted=true;i.updatedAt=t});save();autoSync()}
+ if(confirm('Remover todos os itens já comprados?')){const t=now();done.forEach(i=>{i.deleted=true;i.updatedAt=t;i.dirty=true});save();autoSync()}
 }
 function closeShoppingTrip(){
  const visible=getList();if(!visible.length)return alert('A lista está vazia.');
  let h=load(HIST,[]);h.push({closedAt:now(),items:visible});localStorage.setItem(HIST,JSON.stringify(h));
- const t=now();items.filter(i=>!i.deleted).forEach(i=>{i.deleted=true;i.updatedAt=t});save();autoSync();alert('Compra arquivada. Nova lista pronta.')
+ const t=now();items.filter(i=>!i.deleted).forEach(i=>{i.deleted=true;i.updatedAt=t;i.dirty=true});save();autoSync();alert('Compra arquivada. Nova lista pronta.')
 }
 function updateHint(){
  const value=$('name').value,cat=detectCategory(value);
@@ -214,7 +215,9 @@ function initGoogle(){
 function connectGoogle(){
  if(!navigator.onLine){setSyncStatus('Sem Internet · a lista continua local');return}
  if(!tokenClient&&!initGoogle()){setSyncStatus('Google ainda a carregar · tenta novamente');return}
- tokenClient.requestAccessToken({prompt:''})
+ // Mostrar sempre o seletor para permitir escolher a conta correta,
+ // mesmo quando existe outra sessão Google ativa no navegador.
+ tokenClient.requestAccessToken({prompt:'select_account'})
 }
 async function api(url,options={}){
  const r=await fetch(url,{...options,headers:{Authorization:`Bearer ${accessToken}`,...(options.headers||{})}});
@@ -226,7 +229,7 @@ function remoteToItem(row){
  const [id,name,qty,category,state,updatedBy,updatedAt,deleted]=row;
  const t=updatedAt||'1970-01-01T00:00:00.000Z';
  return {id:String(id||makeId()),name:String(name||''),qty:String(qty||''),category:category||detectCategory(name),
-  done:String(state||'pending').toLowerCase()==='completed',createdAt:t,updatedAt:t,deleted:String(deleted||'').toLowerCase()==='true'};
+  done:String(state||'pending').toLowerCase()==='completed',createdAt:t,updatedAt:t,deleted:String(deleted||'').toLowerCase()==='true',dirty:false};
 }
 function itemToRow(i){return [i.id,i.name,i.qty||'',i.category||'Outros',i.done?'completed':'pending','LUNA Shopping App',i.updatedAt||now(),i.deleted?'true':'false']}
 function mergeLocalRemote(remote){
@@ -236,7 +239,11 @@ function mergeLocalRemote(remote){
   const r=map.get(l.id);
   if(!r){map.set(l.id,l);continue}
   const lt=Date.parse(l.updatedAt||0)||0,rt=Date.parse(r.updatedAt||0)||0;
-  if(lt>=rt)map.set(l.id,l);
+  // A folha é a fonte principal. A cópia local só pode vencer quando contém
+  // uma alteração real ainda não sincronizada e é estritamente mais recente.
+  // Em caso de empate, a versão remota vence para impedir que dados locais
+  // antigos substituam alterações feitas diretamente no Google Sheets.
+  if(l.dirty&&lt>rt)map.set(l.id,l);
  }
  items=[...map.values()].map(normalizeLocalItem);localStorage.setItem(KEY,JSON.stringify(items))
 }
@@ -256,6 +263,7 @@ async function syncNow(){
    const writeUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:H'+(values.length+1))}?valueInputOption=RAW`;
    await api(writeUrl,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values})})
   }
+  items.forEach(i=>i.dirty=false);
   save();setSyncStatus('Sincronizado · '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}))
  }catch(e){
   if(e.message==='AUTH_EXPIRED')setSyncStatus('Sessão Google expirou · liga novamente');
@@ -269,9 +277,9 @@ $('add').onclick=()=>{const name=$('name').value,auto=detectCategory(name);addIt
 $('name').onkeydown=e=>{if(e.key==='Enter')$('add').click()};
 document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;render()});
 $('clearDone').onclick=clearCompleted;$('closeTrip').onclick=closeShoppingTrip;
-$('exportBtn').onclick=()=>{let data={version:'0.4',exportedAt:now(),items,history:load(HIST,[]),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v04.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
+$('exportBtn').onclick=()=>{let data={version:'0.5.1',exportedAt:now(),items,history:load(HIST,[]),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v051.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
 $('importBtn').onclick=()=>$('importFile').click();
-$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.items))throw 0;if(!confirm('Substituir a lista atual pelo backup?'))return;items=d.items.map(normalizeLocalItem);localStorage.setItem(HIST,JSON.stringify(Array.isArray(d.history)?d.history:[]));if(d.learnedCategories&&typeof d.learnedCategories==='object')localStorage.setItem(LEARN,JSON.stringify(d.learnedCategories));save();autoSync()}catch{alert('Backup inválido.')}e.target.value=''};
+$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.items))throw 0;if(!confirm('Substituir a lista atual pelo backup?'))return;const t=now();items=d.items.map(normalizeLocalItem).map(i=>({...i,updatedAt:t,dirty:true}));localStorage.setItem(HIST,JSON.stringify(Array.isArray(d.history)?d.history:[]));if(d.learnedCategories&&typeof d.learnedCategories==='object')localStorage.setItem(LEARN,JSON.stringify(d.learnedCategories));save();autoSync()}catch{alert('Backup inválido.')}e.target.value=''};
 $('googleConnect').onclick=connectGoogle;$('syncNow').onclick=syncNow;
 addEventListener('online',()=>{net();if(accessToken)syncNow()});addEventListener('offline',net);
 net();render();updateHint();
@@ -279,6 +287,6 @@ let tries=0;const gisWait=setInterval(()=>{if(initGoogle()||++tries>20)clearInte
 
 if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 
-window.LunaShopping={version:'0.4',getList,getPendingItems,getItemsByCategory,detectCategory,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
+window.LunaShopping={version:'0.5.1',getList,getPendingItems,getItemsByCategory,detectCategory,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
 </script>
 </body></html>
