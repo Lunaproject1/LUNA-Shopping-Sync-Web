@@ -1,278 +1,284 @@
-<!DOCTYPE html>
-<html lang="pt">
+<!doctype html>
+<html lang="pt-PT">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>LUNA Shopping Sync</title>
-
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<title>Luna — Compras v0.4</title>
+<style>
+:root{
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --bg:#f3f5f9;--card:#fff;--card2:#f8fafc;--text:#111827;--muted:#667085;
+  --line:#e5e7eb;--accent:#6d5dfc;--accent2:#8b5cf6;--success:#16a34a;
+  --danger:#dc2626;--shadow:0 12px 32px rgba(17,24,39,.08);
+}
+@media(prefers-color-scheme:dark){
+ :root{--bg:#0d1017;--card:#161a23;--card2:#1c2230;--text:#f8fafc;--muted:#9aa4b2;--line:#2b3240;--accent:#8b7cff;--accent2:#a78bfa;--shadow:0 12px 32px rgba(0,0,0,.24)}
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);min-height:100vh}
+body:before{content:"";position:fixed;inset:0 0 auto;height:260px;background:linear-gradient(135deg,#111827,#312e81 55%,#6d5dfc);z-index:-1}
+main{max-width:760px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 14px 90px}
+.hero{color:white;padding:8px 4px 18px}.heroRow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}.moon{width:44px;height:44px;border-radius:15px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:24px;backdrop-filter:blur(10px)}
+h1{font-size:30px;line-height:1;margin:0}.subtitle{opacity:.75;font-size:13px;margin-top:6px}.net{font-size:12px;padding:7px 10px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.09);white-space:nowrap}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.summaryBox{padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.1);backdrop-filter:blur(10px)}.summaryNum{font-size:22px;font-weight:800}.summaryLabel{font-size:11px;opacity:.72;text-transform:uppercase;letter-spacing:.08em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:15px;margin-top:13px;box-shadow:var(--shadow)}
+.addTitle{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px}
+.addRow{display:grid;grid-template-columns:minmax(0,1fr) minmax(72px,92px);gap:9px;min-width:0}.secondRow{display:grid;grid-template-columns:minmax(0,1fr) minmax(118px,140px);gap:9px;margin-top:9px;min-width:0}
+input,select,button{min-width:0;max-width:100%;font:inherit;color:var(--text);border:1px solid var(--line);border-radius:14px;background:var(--card2);padding:12px}
+input:focus,select:focus{outline:2px solid color-mix(in srgb,var(--accent) 35%,transparent);border-color:var(--accent)}
+.primary{border:0;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-weight:800;box-shadow:0 7px 18px rgba(109,93,252,.22)}
+.autoHint{display:flex;align-items:center;gap:7px;min-height:27px;margin-top:8px;font-size:12px;color:var(--muted)}
+.autoHint strong{color:var(--accent)}.spark{font-size:15px}
+.controls{display:flex;gap:7px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}.controls::-webkit-scrollbar{display:none}.chip{white-space:nowrap;padding:8px 11px;border-radius:999px;font-size:12px;background:var(--card2)}.chip.active{background:var(--text);color:var(--card);border-color:var(--text)}
+.listHead{display:flex;justify-content:space-between;align-items:center;margin:20px 3px 8px}.listHead h2{font-size:18px;margin:0}.small{font-size:12px;color:var(--muted)}
+.section{overflow:hidden;padding:0}.sectionTitle{display:flex;align-items:center;gap:9px;padding:13px 15px;background:var(--card2);border-bottom:1px solid var(--line);font-weight:800;font-size:13px}.sectionIcon{font-size:19px}.sectionCount{margin-left:auto;color:var(--muted);font-size:11px;font-weight:600}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:13px 14px;border-bottom:1px solid var(--line);transition:.18s}.item:last-child{border-bottom:0}.item:active{background:var(--card2)}
+.check{appearance:none;width:26px;height:26px;border-radius:9px;padding:0;border:2px solid #cbd5e1;background:transparent;display:grid;place-content:center}.check:checked{background:var(--success);border-color:var(--success)}.check:checked:after{content:"✓";color:white;font-size:17px;font-weight:900}
+.name{font-weight:750;font-size:15px}.meta{font-size:12px;color:var(--muted);margin-top:3px}.done{opacity:.55}.done .name{text-decoration:line-through}.actions{display:flex;gap:2px}.iconBtn{border:0;background:transparent;padding:8px;color:var(--muted);font-size:18px}
+.empty{text-align:center;padding:42px 16px;color:var(--muted)}.emptyIcon{font-size:38px;margin-bottom:8px}.empty strong{display:block;color:var(--text);font-size:16px;margin-bottom:4px}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.toolBtn{font-size:12px;padding:10px;background:var(--card)}.danger{color:var(--danger)}
+.syncRow{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.syncBtn{font-size:12px;padding:9px 11px;background:rgba(255,255,255,.10);color:white;border-color:rgba(255,255,255,.25)}
+.syncBtn.primarySync{background:white;color:#312e81;border-color:white;font-weight:800}
+.syncStatus{font-size:11px;opacity:.78;flex:1;min-width:160px}
+.footer{text-align:center;color:var(--muted);font-size:11px;margin-top:22px;line-height:1.5}
+@media(max-width:430px){main{padding-left:10px;padding-right:10px}.card{padding:13px}.addRow{grid-template-columns:minmax(0,1fr) 76px}.secondRow{grid-template-columns:minmax(0,1fr) 120px}.heroRow{align-items:flex-start}.net{font-size:10px}.tools{grid-template-columns:1fr 1fr}}
+</style>
 </head>
-
-<body>
-
-  <h1>LUNA Shopping Sync</h1>
-
-  <p id="status">Pronto para testar a ligação.</p>
-
-  <button onclick="connectGoogle()">Ligar ao Google</button>
-  <button onclick="readShopping()">Ler Google Sheet</button>
-
-  <hr>
-
-  <h2>Adicionar produto</h2>
-
-  <input
-    id="product"
-    type="text"
-    placeholder="Produto"
-  >
-
-  <input
-    id="quantity"
-    type="number"
-    value="1"
-    min="1"
-  >
-
-  <input
-    id="category"
-    type="text"
-    placeholder="Categoria"
-  >
-
-  <button onclick="addProduct()">Adicionar à lista</button>
-
-  <pre id="output"></pre>
-
-
-  <script>
-
-    const CLIENT_ID =
-      '447933051526-jdcl86ljqb6ehsiupr3aomjhia0fbqr2.apps.googleusercontent.com';
-
-    const SPREADSHEET_ID =
-      '1XqsIs_fp_nAOHNP7H5FVWO6usFInSCFXnCDSt6ov9eA';
-
-    const RANGE = 'Sheet1!A:F';
-
-    let accessToken = null;
-
-
-    // =========================
-    // LIGAR AO GOOGLE
-    // =========================
-
-    function connectGoogle() {
-
-      const tokenClient =
-        google.accounts.oauth2.initTokenClient({
-
-          client_id: CLIENT_ID,
-
-          scope:
-            'https://www.googleapis.com/auth/spreadsheets',
-
-          callback: (response) => {
-
-            if (response.error) {
-
-              document.getElementById('status').textContent =
-                'Erro de autorização: ' + response.error;
-
-              return;
-            }
-
-            accessToken = response.access_token;
-
-            document.getElementById('status').textContent =
-              'Google ligado com sucesso.';
-          }
-
-        });
-
-      tokenClient.requestAccessToken();
-    }
-
-
-    // =========================
-    // LER LISTA
-    // =========================
-
-    async function readShopping() {
-
-      if (!accessToken) {
-
-        document.getElementById('status').textContent =
-          'Primeiro carrega em "Ligar ao Google".';
-
-        return;
-      }
-
-      document.getElementById('status').textContent =
-        'A ler a Google Sheet...';
-
-      try {
-
-        const response = await fetch(
-
-          `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(RANGE)}`,
-
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            }
-          }
-        );
-
-
-        const data = await response.json();
-
-
-        if (!response.ok) {
-          throw new Error(JSON.stringify(data));
-        }
-
-
-        document.getElementById('status').textContent =
-          'Google Sheet lida com sucesso.';
-
-
-        document.getElementById('output').textContent =
-          JSON.stringify(data.values || [], null, 2);
-
-
-      } catch (error) {
-
-        document.getElementById('status').textContent =
-          'Erro ao ler a Google Sheet.';
-
-        document.getElementById('output').textContent =
-          error.message;
-      }
-    }
-
-
-    // =========================
-    // ADICIONAR PRODUTO
-    // =========================
-
-    async function addProduct() {
-
-      if (!accessToken) {
-
-        document.getElementById('status').textContent =
-          'Primeiro carrega em "Ligar ao Google".';
-
-        return;
-      }
-
-
-      const product =
-        document.getElementById('product').value.trim();
-
-      const quantity =
-        document.getElementById('quantity').value || '1';
-
-      const category =
-        document.getElementById('category').value.trim() || 'Outros';
-
-
-      if (!product) {
-
-        document.getElementById('status').textContent =
-          'Escreve primeiro o nome do produto.';
-
-        return;
-      }
-
-
-      document.getElementById('status').textContent =
-        'A adicionar ' + product + '...';
-
-
-      try {
-
-        const id =
-          'item-' + Date.now();
-
-
-        const url =
-          `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(RANGE)}:append?valueInputOption=USER_ENTERED`;
-
-
-        const response = await fetch(url, {
-
-          method: 'POST',
-
-          headers: {
-
-            Authorization:
-              `Bearer ${accessToken}`,
-
-            'Content-Type':
-              'application/json'
-          },
-
-          body: JSON.stringify({
-
-            values: [
-              [
-                id,
-                product,
-                quantity,
-                category,
-                'pending',
-                'LUNA Shopping Web'
-              ]
-            ]
-
-          })
-
-        });
-
-
-        const data =
-          await response.json();
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            JSON.stringify(data)
-          );
-        }
-
-
-        document.getElementById('status').textContent =
-          product + ' adicionado com sucesso.';
-
-
-        // Limpar formulário
-
-        document.getElementById('product').value = '';
-
-        document.getElementById('quantity').value = '1';
-
-        document.getElementById('category').value = '';
-
-
-        // Atualizar automaticamente a lista
-
-        await readShopping();
-
-
-      } catch (error) {
-
-        document.getElementById('status').textContent =
-          'Erro ao adicionar produto.';
-
-        document.getElementById('output').textContent =
-          error.message;
-      }
-    }
-
-  </script>
-
-</body>
-</html>
+<body><main>
+<section class="hero">
+ <div class="heroRow">
+  <div class="brand"><div class="moon">☾</div><div><h1>Compras</h1><div class="subtitle">Luna · a tua lista, mesmo sem Internet</div></div></div>
+  <div class="net" id="net">● Dados locais</div>
+ </div>
+ <div class="syncRow">
+   <button class="syncBtn primarySync" id="googleConnect">Ligar Google</button>
+   <button class="syncBtn" id="syncNow">Sincronizar</button>
+   <span class="syncStatus" id="syncStatus">Local pronto · Google não ligado</span>
+ </div>
+ <div class="summary">
+  <div class="summaryBox"><div class="summaryNum" id="pendingBig">0</div><div class="summaryLabel">Por comprar</div></div>
+  <div class="summaryBox"><div class="summaryNum" id="doneBig">0</div><div class="summaryLabel">No carrinho</div></div>
+ </div>
+</section>
+
+<section class="card">
+ <div class="addTitle">Adicionar à lista</div>
+ <div class="addRow"><input id="name" placeholder="Ex.: leite, bananas, água…" autocomplete="off"><input id="qty" placeholder="Qtd."></div>
+ <div class="autoHint" id="autoHint"><span class="spark">✨</span><span>Escreve um produto e eu escolho a secção.</span></div>
+ <div class="secondRow">
+  <select id="cat">
+   <option>Outros</option><option>Lacticínios</option><option>Bebidas</option><option>Carne / Charcutaria</option>
+   <option>Fruta e Legumes</option><option>Padaria</option><option>Mercearia</option><option>Congelados</option>
+   <option>Higiene</option><option>Casa</option><option>Animais</option>
+  </select>
+  <button class="primary" id="add">+ Adicionar</button>
+ </div>
+</section>
+
+<div class="listHead"><h2>A tua lista</h2><span class="small" id="totalLabel">0 itens</span></div>
+<div class="controls" id="filters">
+ <button class="chip active" data-filter="all">Tudo</button>
+ <button class="chip" data-filter="pending">Por comprar</button>
+ <button class="chip" data-filter="done">Comprados</button>
+</div>
+
+<div id="list"></div>
+
+<section class="card">
+ <div class="addTitle">Gestão</div>
+ <div class="tools">
+  <button class="toolBtn" id="clearDone">Limpar comprados</button>
+  <button class="toolBtn" id="closeTrip">Fechar compra</button>
+  <button class="toolBtn" id="exportBtn">Exportar backup</button>
+  <button class="toolBtn" id="importBtn">Importar backup</button>
+ </div>
+ <input id="importFile" type="file" accept="application/json" hidden>
+</section>
+<div class="footer">Compras v0.4 · Projeto Luna<br>Offline-first · sincronização Google Sheets quando ligada.</div>
+</main>
+
+<script>
+const KEY='luna.shopping.v01', HIST='luna.shopping.history.v01', LEARN='luna.shopping.learned.v01';
+const CLIENT_ID='447933051526-jdcl86ljqb6ehsiupr3aomjhia0fbqr2.apps.googleusercontent.com';
+const SPREADSHEET_ID='1XqsIs_fp_nAOHNP7H5FVWO6usFInSCFXnCDSt6ov9eA';
+const SHEET='Sheet1';
+const SHEET_RANGE='Sheet1!A:H';
+let items=load(KEY,[]).map(normalizeLocalItem), currentFilter='all', accessToken=null, tokenClient=null, syncing=false;
+const $=id=>document.getElementById(id);
+const categoryInfo={
+ 'Lacticínios':['🥛','Lacticínios'],'Bebidas':['💧','Bebidas'],'Carne / Charcutaria':['🥩','Carne / Charcutaria'],
+ 'Fruta e Legumes':['🍌','Fruta e Legumes'],'Padaria':['🥖','Padaria'],'Mercearia':['🛒','Mercearia'],
+ 'Congelados':['❄️','Congelados'],'Higiene':['🧴','Higiene'],'Casa':['🏠','Casa'],'Animais':['🐾','Animais'],'Outros':['📦','Outros']
+};
+const categoryRules=[
+ ['Lacticínios',['leite','queijo','queijos','queiroz','philadelphia','iogurte','iogurtes','manteiga','natas','creme de leite','kefir','skyr','quark','ricotta','ricota','leite condensado','leite evaporado','bebida lactea','bebida láctea','requeijao','requeijão','mozzarella','mozarela','parmesao','parmesão','cheddar','feta','mascarpone']],
+ ['Bebidas',['agua','água','aguas','águas','sumo','sumos','refrigerante','refrigerantes','coca cola','coca-cola','pepsi','sprite','fanta','tonica','tónica','cha gelado','chá gelado','ice tea','iced tea','energetico','energético','red bull','monster','agua com gas','água com gás','agua sem gas','água sem gás','agua tonica','água tónica','kombucha']],
+ ['Fruta e Legumes',['banana','bananas','maca','maçã','macas','maçãs','pera','peras','laranja','laranjas','limao','limão','limoes','limões','morango','morangos','uva','uvas','kiwi','manga','abacate','tomate','tomates','alface','cebola','cebolas','alho','batata','batatas','cenoura','cenouras','pepino','pepinos','pimento','pimentos','brocolos','brócolos','cogumelos','melancia','melao','melão','pessego','pêssego','ananás','ananas','abacaxi','mirtilos','framboesas','espinafres','couve','courgette','beringela']],
+ ['Carne / Charcutaria',['salsicha','salsichas','fiambre','presunto','bacon','chourico','chouriço','salame','frango','peru','carne','bife','bifes','porco','vaca','hamburguer','hambúrguer','hamburgueres','hambúrgueres','linguica','linguiça','mortadela','peito de frango','carne picada','carne moida','carne moída','costeletas']],
+ ['Padaria',['pao','pão','paes','pães','baguete','baguetes','croissant','croissants','bolo','bolos','tosta','tostas','tortilha','tortilhas','wrap','wraps','broa']],
+ ['Mercearia',['arroz','massa','massas','esparguete','farinha','acucar','açúcar','sal','azeite','oleo','óleo','vinagre','cafe','café','cha','chá','cereais','aveia','feijao','feijão','grao','grão','atum','sardinha','sardinhas','milho','ervilhas','lentilhas','bolachas','biscoitos','chocolate','mel','compota','molho','ketchup','maionese','mostarda','ovos','ovo']],
+ ['Congelados',['congelado','congelados','pizza congelada','gelado','gelados','batatas congeladas']],
+ ['Higiene',['pasta de dentes','dentifrico','dentífrico','champô','shampoo','gel de banho','desodorizante','desodorante','sabonete','papel higienico','papel higiénico','escova de dentes','creme corpo','creme de corpo']],
+ ['Casa',['detergente','lixivia','lixívia','amaciante','esponja','esponjas','sacos lixo','sacos do lixo','papel cozinha','papel de cozinha','guardanapos','limpa vidros','lava loica','lava loiça']],
+ ['Animais',['comida tugi','comida para o tugi','ração','racao','comida de cao','comida de cão','comida para cao','comida para cão','comida de gato','comida para gato','biscoitos cao','biscoitos cão','snacks cao','snacks cão','areia gato']]
+];
+
+function load(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}}
+function normalize(s){return String(s||'').toLocaleLowerCase('pt-PT').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()}
+function now(){return new Date().toISOString()}
+function normalizeLocalItem(x){
+ return {id:String(x.id||makeId()),name:String(x.name||''),qty:String(x.qty||''),category:x.category||'Outros',
+  done:!!x.done,createdAt:x.createdAt||x.updatedAt||now(),updatedAt:x.updatedAt||x.createdAt||now(),deleted:!!x.deleted};
+}
+function detectCategory(name){
+ const n=normalize(name); if(!n)return 'Outros';
+ const learned=load(LEARN,{}); if(learned[n])return learned[n];
+ let best=null,bestLen=0;
+ for(const [cat,words] of categoryRules)for(const word of words){const w=normalize(word);if((n===w||n.includes(w))&&w.length>bestLen){best=cat;bestLen=w.length}}
+ return best||'Outros';
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(items));render()}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function makeId(){return crypto.randomUUID?crypto.randomUUID():'item-'+Date.now()+'-'+Math.random().toString(16).slice(2)}
+function addItem(name,qty='',category){
+ name=String(name||'').trim();if(!name)return;
+ const detected=detectCategory(name), finalCat=category||detected;
+ if(category&&category!==detected){const learned=load(LEARN,{});learned[normalize(name)]=category;localStorage.setItem(LEARN,JSON.stringify(learned))}
+ const t=now();items.push({id:makeId(),name,qty:String(qty||'').trim(),category:finalCat,done:false,createdAt:t,updatedAt:t,deleted:false});save();autoSync()
+}
+function completeItem(id,done=true){let x=items.find(i=>i.id===id);if(x){x.done=done;x.updatedAt=now();save();autoSync()}}
+function removeItem(id){let x=items.find(i=>i.id===id);if(x){x.deleted=true;x.updatedAt=now();save();autoSync()}}
+function updateItem(id){
+ let x=items.find(i=>i.id===id);if(!x||x.deleted)return;
+ let n=prompt('Item:',x.name);if(n===null||!n.trim())return;
+ let q=prompt('Quantidade (opcional):',x.qty||'');if(q===null)return;
+ x.name=n.trim();x.qty=q.trim();
+ if(confirm('Atualizar automaticamente a categoria deste item?'))x.category=detectCategory(x.name);
+ else{const c=prompt('Categoria:',x.category||'Outros');if(c&&categoryInfo[c]){x.category=c;const learned=load(LEARN,{});learned[normalize(x.name)]=c;localStorage.setItem(LEARN,JSON.stringify(learned))}}
+ x.updatedAt=now();save();autoSync()
+}
+function getList(){return JSON.parse(JSON.stringify(items.filter(i=>!i.deleted)))}
+function getPendingItems(){return getList().filter(i=>!i.done)}
+function getItemsByCategory(category){return getList().filter(i=>i.category===category)}
+function clearCompleted(){
+ const done=items.filter(i=>i.done&&!i.deleted);if(!done.length)return;
+ if(confirm('Remover todos os itens já comprados?')){const t=now();done.forEach(i=>{i.deleted=true;i.updatedAt=t});save();autoSync()}
+}
+function closeShoppingTrip(){
+ const visible=getList();if(!visible.length)return alert('A lista está vazia.');
+ let h=load(HIST,[]);h.push({closedAt:now(),items:visible});localStorage.setItem(HIST,JSON.stringify(h));
+ const t=now();items.filter(i=>!i.deleted).forEach(i=>{i.deleted=true;i.updatedAt=t});save();autoSync();alert('Compra arquivada. Nova lista pronta.')
+}
+function updateHint(){
+ const value=$('name').value,cat=detectCategory(value);
+ if(!value.trim()){$('autoHint').innerHTML='<span class="spark">✨</span><span>Escreve um produto e eu escolho a secção.</span>';return}
+ const info=categoryInfo[cat]||categoryInfo.Outros;$('cat').value=cat;
+ $('autoHint').innerHTML=`<span class="spark">${info[0]}</span><span>Categoria automática: <strong>${esc(info[1])}</strong></span>`;
+}
+function render(){
+ const visible=items.filter(i=>!i.deleted);
+ const shown=visible.filter(i=>currentFilter==='all'||(currentFilter==='pending'&&!i.done)||(currentFilter==='done'&&i.done));
+ const pending=visible.filter(i=>!i.done).length,done=visible.filter(i=>i.done).length;
+ $('pendingBig').textContent=pending;$('doneBig').textContent=done;$('totalLabel').textContent=`${visible.length} ${visible.length===1?'item':'itens'}`;
+ const root=$('list');root.innerHTML='';
+ if(!shown.length){root.innerHTML='<div class="card empty"><div class="emptyIcon">🛒</div><strong>A lista está limpa</strong><span>Adiciona o primeiro produto acima.</span></div>';return}
+ const preferred=['Fruta e Legumes','Padaria','Lacticínios','Carne / Charcutaria','Mercearia','Bebidas','Congelados','Higiene','Casa','Animais','Outros'];
+ const cats=[...new Set(shown.map(i=>i.category||'Outros'))].sort((a,b)=>{let ai=preferred.indexOf(a),bi=preferred.indexOf(b);if(ai<0)ai=999;if(bi<0)bi=999;return ai-bi});
+ for(const c of cats){
+  const rows=shown.filter(x=>(x.category||'Outros')===c),info=categoryInfo[c]||categoryInfo.Outros;
+  let sec=document.createElement('section');sec.className='card section';sec.innerHTML=`<div class="sectionTitle"><span class="sectionIcon">${info[0]}</span><span>${esc(c)}</span><span class="sectionCount">${rows.length}</span></div>`;
+  for(const i of rows){
+   let d=document.createElement('div');d.className='item'+(i.done?' done':'');
+   d.innerHTML=`<input class="check" type="checkbox" ${i.done?'checked':''} aria-label="Marcar comprado"><div><div class="name">${esc(i.name)}</div>${i.qty?`<div class="meta">Quantidade: ${esc(i.qty)}</div>`:''}</div><div class="actions"><button class="iconBtn" title="Editar">✎</button><button class="iconBtn" title="Remover">×</button></div>`;
+   d.querySelector('.check').onchange=e=>completeItem(i.id,e.target.checked);const bs=d.querySelectorAll('button');bs[0].onclick=()=>updateItem(i.id);bs[1].onclick=()=>removeItem(i.id);sec.appendChild(d)
+  }root.appendChild(sec)
+ }
+}
+function setSyncStatus(msg){$('syncStatus').textContent=msg}
+function net(){
+ const online=navigator.onLine;$('net').textContent=online?'● Online · local':'● Offline · local';
+ if(!online)setSyncStatus('Offline · alterações guardadas localmente')
+}
+function initGoogle(){
+ if(!window.google?.accounts?.oauth2)return false;
+ tokenClient=google.accounts.oauth2.initTokenClient({
+  client_id:CLIENT_ID,scope:'https://www.googleapis.com/auth/spreadsheets',
+  callback:r=>{if(r.error){setSyncStatus('Google: autorização falhou');return}accessToken=r.access_token;setSyncStatus('Google ligado · a sincronizar…');syncNow()}
+ });return true
+}
+function connectGoogle(){
+ if(!navigator.onLine){setSyncStatus('Sem Internet · a lista continua local');return}
+ if(!tokenClient&&!initGoogle()){setSyncStatus('Google ainda a carregar · tenta novamente');return}
+ tokenClient.requestAccessToken({prompt:''})
+}
+async function api(url,options={}){
+ const r=await fetch(url,{...options,headers:{Authorization:`Bearer ${accessToken}`,...(options.headers||{})}});
+ if(r.status===401){accessToken=null;throw new Error('AUTH_EXPIRED')}
+ if(!r.ok){let t=await r.text();throw new Error(t||('HTTP '+r.status))}
+ if(r.status===204)return null;return r.json()
+}
+function remoteToItem(row){
+ const [id,name,qty,category,state,updatedBy,updatedAt,deleted]=row;
+ const t=updatedAt||'1970-01-01T00:00:00.000Z';
+ return {id:String(id||makeId()),name:String(name||''),qty:String(qty||''),category:category||detectCategory(name),
+  done:String(state||'pending').toLowerCase()==='completed',createdAt:t,updatedAt:t,deleted:String(deleted||'').toLowerCase()==='true'};
+}
+function itemToRow(i){return [i.id,i.name,i.qty||'',i.category||'Outros',i.done?'completed':'pending','LUNA Shopping App',i.updatedAt||now(),i.deleted?'true':'false']}
+function mergeLocalRemote(remote){
+ const map=new Map();
+ for(const r of remote){if(r.id)map.set(r.id,r)}
+ for(const l of items){
+  const r=map.get(l.id);
+  if(!r){map.set(l.id,l);continue}
+  const lt=Date.parse(l.updatedAt||0)||0,rt=Date.parse(r.updatedAt||0)||0;
+  if(lt>=rt)map.set(l.id,l);
+ }
+ items=[...map.values()].map(normalizeLocalItem);localStorage.setItem(KEY,JSON.stringify(items))
+}
+async function syncNow(){
+ if(syncing)return;if(!navigator.onLine){setSyncStatus('Offline · alterações guardadas localmente');return}
+ if(!accessToken){setSyncStatus('Google não ligado · carrega em “Ligar Google”');return}
+ syncing=true;$('syncNow').disabled=true;setSyncStatus('A sincronizar…');
+ try{
+  const readUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET_RANGE)}`;
+  const data=await api(readUrl);
+  const rows=(data.values||[]).slice(1).filter(r=>r[0]).map(remoteToItem);
+  mergeLocalRemote(rows);
+  const clearUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:H1000')}:clear`;
+  await api(clearUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+  const values=items.map(itemToRow);
+  if(values.length){
+   const writeUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:H'+(values.length+1))}?valueInputOption=RAW`;
+   await api(writeUrl,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values})})
+  }
+  save();setSyncStatus('Sincronizado · '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}))
+ }catch(e){
+  if(e.message==='AUTH_EXPIRED')setSyncStatus('Sessão Google expirou · liga novamente');
+  else setSyncStatus('Falha de sincronização · dados locais preservados')
+ }finally{syncing=false;$('syncNow').disabled=false}
+}
+function autoSync(){if(navigator.onLine&&accessToken)setTimeout(syncNow,150)}
+
+$('name').addEventListener('input',updateHint);
+$('add').onclick=()=>{const name=$('name').value,auto=detectCategory(name);addItem(name,$('qty').value,$('cat').value||auto);$('name').value='';$('qty').value='';$('cat').value='Outros';updateHint();$('name').focus()};
+$('name').onkeydown=e=>{if(e.key==='Enter')$('add').click()};
+document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;render()});
+$('clearDone').onclick=clearCompleted;$('closeTrip').onclick=closeShoppingTrip;
+$('exportBtn').onclick=()=>{let data={version:'0.4',exportedAt:now(),items,history:load(HIST,[]),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v04.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.items))throw 0;if(!confirm('Substituir a lista atual pelo backup?'))return;items=d.items.map(normalizeLocalItem);localStorage.setItem(HIST,JSON.stringify(Array.isArray(d.history)?d.history:[]));if(d.learnedCategories&&typeof d.learnedCategories==='object')localStorage.setItem(LEARN,JSON.stringify(d.learnedCategories));save();autoSync()}catch{alert('Backup inválido.')}e.target.value=''};
+$('googleConnect').onclick=connectGoogle;$('syncNow').onclick=syncNow;
+addEventListener('online',()=>{net();if(accessToken)syncNow()});addEventListener('offline',net);
+net();render();updateHint();
+let tries=0;const gisWait=setInterval(()=>{if(initGoogle()||++tries>20)clearInterval(gisWait)},250);
+
+if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+
+window.LunaShopping={version:'0.4',getList,getPendingItems,getItemsByCategory,detectCategory,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
+</script>
+</body></html>
