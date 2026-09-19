@@ -15,7 +15,8 @@
 
   <button onclick="connectGoogle()">Ligar ao Google</button>
   <button onclick="readShopping()">Ler Google Sheet</button>
-
+  <button onclick="addTestProduct()">Adicionar produto de teste</button>
+  
   <pre id="output"></pre>
 
   <script>
@@ -87,6 +88,60 @@
           error.message;
       }
     }
+    async function addTestProduct() {
+  if (!accessToken) {
+    document.getElementById('status').textContent =
+      'Primeiro carrega em "Ligar ao Google".';
+    return;
+  }
+
+  document.getElementById('status').textContent =
+    'A adicionar produto de teste...';
+
+  try {
+    const url =
+      `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(RANGE)}:append?valueInputOption=USER_ENTERED`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        values: [
+          [
+            'test-002',
+            'Bananas',
+            '1',
+            'Fruta e Legumes',
+            'pending',
+            'LUNA Sync Test'
+          ]
+        ]
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(JSON.stringify(data));
+    }
+
+    document.getElementById('status').textContent =
+      'Produto adicionado com sucesso à Google Sheet.';
+
+    document.getElementById('output').textContent =
+      JSON.stringify(data, null, 2);
+
+  } catch (error) {
+    document.getElementById('status').textContent =
+      'Erro ao adicionar produto.';
+
+    document.getElementById('output').textContent =
+      error.message;
+  }
+}
   </script>
 </body>
 </html>
