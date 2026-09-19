@@ -7,7 +7,7 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<title>Luna — Compras v0.4</title>
+<title>Luna — Compras v0.5.2</title>
 <style>
 :root{
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -99,7 +99,7 @@ input:focus,select:focus{outline:2px solid color-mix(in srgb,var(--accent) 35%,t
  </div>
  <input id="importFile" type="file" accept="application/json" hidden>
 </section>
-<div class="footer">Compras v0.5.1 · Projeto Luna<br>Offline-first · sincronização Google Sheets quando ligada.</div>
+<div class="footer">Compras v0.5.2 · Projeto Luna<br>Offline-first · sincronização Google Sheets quando ligada.</div>
 </main>
 
 <script>
@@ -277,7 +277,7 @@ $('add').onclick=()=>{const name=$('name').value,auto=detectCategory(name);addIt
 $('name').onkeydown=e=>{if(e.key==='Enter')$('add').click()};
 document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;render()});
 $('clearDone').onclick=clearCompleted;$('closeTrip').onclick=closeShoppingTrip;
-$('exportBtn').onclick=()=>{let data={version:'0.5.1',exportedAt:now(),items,history:load(HIST,[]),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v051.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
+$('exportBtn').onclick=()=>{let data={version:'0.5.2',exportedAt:now(),items,history:load(HIST,[]),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v052.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
 $('importBtn').onclick=()=>$('importFile').click();
 $('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.items))throw 0;if(!confirm('Substituir a lista atual pelo backup?'))return;const t=now();items=d.items.map(normalizeLocalItem).map(i=>({...i,updatedAt:t,dirty:true}));localStorage.setItem(HIST,JSON.stringify(Array.isArray(d.history)?d.history:[]));if(d.learnedCategories&&typeof d.learnedCategories==='object')localStorage.setItem(LEARN,JSON.stringify(d.learnedCategories));save();autoSync()}catch{alert('Backup inválido.')}e.target.value=''};
 $('googleConnect').onclick=connectGoogle;$('syncNow').onclick=syncNow;
@@ -287,6 +287,6 @@ let tries=0;const gisWait=setInterval(()=>{if(initGoogle()||++tries>20)clearInte
 
 if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 
-window.LunaShopping={version:'0.5.1',getList,getPendingItems,getItemsByCategory,detectCategory,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
+window.LunaShopping={version:'0.5.2',getList,getPendingItems,getItemsByCategory,detectCategory,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
 </script>
 </body></html>
