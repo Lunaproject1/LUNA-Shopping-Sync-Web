@@ -15,7 +15,15 @@
 
   <button onclick="connectGoogle()">Ligar ao Google</button>
   <button onclick="readShopping()">Ler Google Sheet</button>
-  <button onclick="addTestProduct()">Adicionar produto de teste</button>
+  <hr>
+
+<h2>Adicionar produto</h2>
+
+<input id="product" type="text" placeholder="Produto">
+<input id="quantity" type="number" value="1" min="1">
+<input id="category" type="text" placeholder="Categoria">
+
+<button onclick="addProduct()">Adicionar à lista</button>
   
   <pre id="output"></pre>
 
@@ -88,7 +96,75 @@
           error.message;
       }
     }
-    async function addTestProduct() {
+    async function addProduct() {
+  if (!accessToken) {
+    document.getElementById('status').textContent =
+      'Primeiro carrega em "Ligar ao Google".';
+    return;
+  }
+
+  const product = document.getElementById('product').value.trim();
+  const quantity = document.getElementById('quantity').value || '1';
+  const category = document.getElementById('category').value.trim() || 'Outros';
+
+  if (!product) {
+    document.getElementById('status').textContent =
+      'Escreve primeiro o nome do produto.';
+    return;
+  }
+
+  document.getElementById('status').textContent =
+    'A adicionar ' + product + '...';
+
+  try {
+    const id = 'item-' + Date.now();
+
+    const url =
+      `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(RANGE)}:append?valueInputOption=USER_ENTERED`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        values: [
+          [
+            id,
+            product,
+            quantity,
+            category,
+            'pending',
+            'LUNA Shopping Web'
+          ]
+        ]
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(JSON.stringify(data));
+    }
+
+    document.getElementById('status').textContent =
+      product + ' adicionado com sucesso.';
+
+    document.getElementById('product').value = '';
+    document.getElementById('quantity').value = '1';
+    document.getElementById('category').value = '';
+
+    await readShopping();
+
+  } catch (error) {
+    document.getElementById('status').textContent =
+      'Erro ao adicionar produto.';
+
+    document.getElementById('output').textContent =
+      error.message;
+  }
+}
   if (!accessToken) {
     document.getElementById('status').textContent =
       'Primeiro carrega em "Ligar ao Google".';
