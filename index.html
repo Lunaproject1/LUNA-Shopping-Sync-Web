@@ -1,1 +1,92 @@
-<h1>LUNA OK</h1>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUNA Shopping Sync Test</title>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+  <h1>LUNA Shopping Sync</h1>
+
+  <p id="status">Pronto para testar a ligação.</p>
+
+  <button onclick="connectGoogle()">Ligar ao Google</button>
+  <button onclick="readShopping()">Ler Google Sheet</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    const CLIENT_ID = '447933051526-jdcl86ljqb6ehsiupr3aomjhia0fbqr2.apps.googleusercontent.com';
+
+    const SPREADSHEET_ID = '1XqsIs_fp_nAOHNP7H5FVWO6usFInSCFXnCDSt6ov9eA';
+    const RANGE = 'Sheet1!A:F';
+
+    let accessToken = null;
+
+    function connectGoogle() {
+      const tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: 'https://www.googleapis.com/auth/spreadsheets',
+        callback: (response) => {
+          if (response.error) {
+            document.getElementById('status').textContent =
+              'Erro de autorização: ' + response.error;
+            return;
+          }
+
+          accessToken = response.access_token;
+
+          document.getElementById('status').textContent =
+            'Google ligado com sucesso.';
+        }
+      });
+
+      tokenClient.requestAccessToken();
+    }
+
+    async function readShopping() {
+      if (!accessToken) {
+        document.getElementById('status').textContent =
+          'Primeiro carrega em "Ligar ao Google".';
+        return;
+      }
+
+      document.getElementById('status').textContent =
+        'A ler a Google Sheet...';
+
+      try {
+        const response = await fetch(
+          `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(RANGE)}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(JSON.stringify(data));
+        }
+
+        document.getElementById('status').textContent =
+          'Google Sheet lida com sucesso.';
+
+        document.getElementById('output').textContent =
+          JSON.stringify(data.values || [], null, 2);
+
+      } catch (error) {
+        document.getElementById('status').textContent =
+          'Erro ao ler a Google Sheet.';
+
+        document.getElementById('output').textContent =
+          error.message;
+      }
+    }
+  </script>
+</body>
+</html>
