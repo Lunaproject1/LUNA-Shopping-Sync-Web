@@ -1,0 +1,9 @@
+{
+  "name": "LUNA Finance",
+  "short_name": "Finance",
+  "start_url": "./finance-v01-test.html",
+  "display": "standalone",
+  "background_color": "#f5f6f8",
+  "theme_color": "#111827",
+  "lang": "pt-PT"
+}
