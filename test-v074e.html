@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<title>Luna — Compras v0.7.4e TEST</title>
+<style>
+:root{
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --bg:#f3f5f9;--card:#fff;--card2:#f8fafc;--text:#111827;--muted:#667085;
+  --line:#e5e7eb;--accent:#6d5dfc;--accent2:#8b5cf6;--success:#16a34a;
+  --danger:#dc2626;--shadow:0 12px 32px rgba(17,24,39,.08);
+}
+@media(prefers-color-scheme:dark){
+ :root{--bg:#0d1017;--card:#161a23;--card2:#1c2230;--text:#f8fafc;--muted:#9aa4b2;--line:#2b3240;--accent:#8b7cff;--accent2:#a78bfa;--shadow:0 12px 32px rgba(0,0,0,.24)}
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);min-height:100vh}
+body:before{content:"";position:fixed;inset:0 0 auto;height:260px;background:linear-gradient(135deg,#111827,#312e81 55%,#6d5dfc);z-index:-1}
+main{max-width:760px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 14px 90px}
+.hero{color:white;padding:8px 4px 18px}.heroRow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}.moon{width:44px;height:44px;border-radius:15px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:24px;backdrop-filter:blur(10px)}
+h1{font-size:30px;line-height:1;margin:0}.subtitle{opacity:.75;font-size:13px;margin-top:6px}.net{font-size:12px;padding:7px 10px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.09);white-space:nowrap}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.summaryBox{padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.1);backdrop-filter:blur(10px)}.summaryNum{font-size:22px;font-weight:800}.summaryLabel{font-size:11px;opacity:.72;text-transform:uppercase;letter-spacing:.08em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:15px;margin-top:13px;box-shadow:var(--shadow)}
+.addTitle{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px}
+.addRow{display:grid;grid-template-columns:minmax(0,1fr) minmax(72px,92px);gap:9px;min-width:0}.secondRow{display:grid;grid-template-columns:minmax(0,1fr) minmax(118px,140px);gap:9px;margin-top:9px;min-width:0}
+input,select,button{min-width:0;max-width:100%;font:inherit;color:var(--text);border:1px solid var(--line);border-radius:14px;background:var(--card2);padding:12px}
+input:focus,select:focus{outline:2px solid color-mix(in srgb,var(--accent) 35%,transparent);border-color:var(--accent)}
+.primary{border:0;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-weight:800;box-shadow:0 7px 18px rgba(109,93,252,.22)}
+.autoHint{display:flex;align-items:center;gap:7px;min-height:27px;margin-top:8px;font-size:12px;color:var(--muted)}
+.autoHint strong{color:var(--accent)}.spark{font-size:15px}
+.areaControls{display:flex;gap:7px;overflow-x:auto;padding:2px 0 7px;scrollbar-width:none}.areaControls::-webkit-scrollbar{display:none}.areaChip{white-space:nowrap;padding:9px 12px;border-radius:999px;font-size:12px;background:var(--card2)}.areaChip.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border-color:transparent;font-weight:800}
+.controls{display:flex;gap:7px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}.controls::-webkit-scrollbar{display:none}.chip{white-space:nowrap;padding:8px 11px;border-radius:999px;font-size:12px;background:var(--card2)}.chip.active{background:var(--text);color:var(--card);border-color:var(--text)}
+.listHead{display:flex;justify-content:space-between;align-items:center;margin:20px 3px 8px}.listHead h2{font-size:18px;margin:0}.small{font-size:12px;color:var(--muted)}
+.section{overflow:hidden;padding:0}.sectionTitle{display:flex;align-items:center;gap:9px;padding:13px 15px;background:var(--card2);border-bottom:1px solid var(--line);font-weight:800;font-size:13px}.sectionIcon{font-size:19px}.sectionCount{margin-left:auto;color:var(--muted);font-size:11px;font-weight:600}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:13px 14px;border-bottom:1px solid var(--line);transition:.18s}.item:last-child{border-bottom:0}.item:active{background:var(--card2)}
+.check{appearance:none;width:26px;height:26px;border-radius:9px;padding:0;border:2px solid #cbd5e1;background:transparent;display:grid;place-content:center}.check:checked{background:var(--success);border-color:var(--success)}.check:checked:after{content:"✓";color:white;font-size:17px;font-weight:900}
+.name{font-weight:750;font-size:15px}.meta{font-size:12px;color:var(--muted);margin-top:3px}.done{opacity:.55}.done .name{text-decoration:line-through}.actions{display:flex;gap:2px}
+.historyEntry{display:grid;grid-template-columns:32px minmax(0,1fr);gap:11px;align-items:center;padding:13px 14px;border-bottom:1px solid var(--line)}
+.historyEntry:last-child{border-bottom:0}
+.historyBody{min-width:0}
+.historyTop{display:flex;align-items:center;gap:10px;min-width:0}
+.historyTop .name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.historyPrice{margin-left:auto;flex:0 0 auto;border:0;background:transparent;padding:4px 0;color:var(--muted);font-size:12px;white-space:nowrap}
+.historyMeta{font-size:12px;color:var(--muted);margin-top:3px;white-space:nowrap}.iconBtn{border:0;background:transparent;padding:8px;color:var(--muted);font-size:18px}
+.empty{text-align:center;padding:42px 16px;color:var(--muted)}.emptyIcon{font-size:38px;margin-bottom:8px}.empty strong{display:block;color:var(--text);font-size:16px;margin-bottom:4px}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.toolBtn{font-size:12px;padding:10px;background:var(--card)}.danger{color:var(--danger)}
+.syncRow{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.syncBtn{font-size:12px;padding:9px 11px;background:rgba(255,255,255,.10);color:white;border-color:rgba(255,255,255,.25)}
+.syncBtn.primarySync{background:white;color:#312e81;border-color:white;font-weight:800}
+.syncStatus{font-size:11px;opacity:.78;flex:1;min-width:160px}
+.footer{text-align:center;color:var(--muted);font-size:11px;margin-top:22px;line-height:1.5}
+@media(max-width:430px){main{padding-left:10px;padding-right:10px}.card{padding:13px}.addRow{grid-template-columns:minmax(0,1fr) 76px}.secondRow{grid-template-columns:minmax(0,1fr) 120px}.heroRow{align-items:flex-start}.net{font-size:10px}.tools{grid-template-columns:1fr 1fr}}
+
+.editOverlay{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:14px}.editOverlay.open{display:flex}.editCard{width:min(560px,100%);max-height:90vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 24px 70px rgba(0,0,0,.35)}.editHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.editHead h3{margin:0;font-size:18px}.editClose{border:0;background:transparent;font-size:24px;padding:4px 8px}.editGrid{display:grid;grid-template-columns:1fr 110px;gap:9px}.editGrid2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}.editLabel{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:10px 2px 5px}.editActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.editCancel{background:var(--card2)}
+@media(max-width:430px){.editOverlay{padding:8px}.editCard{border-radius:22px}.editGrid,.editGrid2{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body><main>
+<section class="hero">
+ <div class="heroRow">
+  <div class="brand"><div class="moon">☾</div><div><h1>Compras</h1><div class="subtitle">Luna · a tua lista, mesmo sem Internet</div></div></div>
+  <div class="net" id="net">● Dados locais</div>
+ </div>
+ <div class="syncRow">
+   <button class="syncBtn primarySync" id="googleConnect">Ligar Google</button>
+   <button class="syncBtn" id="syncNow">Sincronizar</button>
+   <span class="syncStatus" id="syncStatus">Local pronto · Google não ligado</span>
+ </div>
+ <div class="summary">
+  <div class="summaryBox"><div class="summaryNum" id="pendingBig">0</div><div class="summaryLabel">Por comprar</div></div>
+  <div class="summaryBox"><div class="summaryNum" id="doneBig">0</div><div class="summaryLabel">No carrinho</div></div>
+ </div>
+</section>
+
+<section class="card">
+ <div class="addTitle">Adicionar à lista</div>
+ <div class="addRow"><input id="name" placeholder="Ex.: leite, bananas, água…" autocomplete="off"><input id="qty" placeholder="Qtd."></div>
+ <div class="autoHint" id="autoHint"><span class="spark">✨</span><span>Escreve um produto e eu escolho a secção.</span></div>
+ <div class="secondRow">
+  <select id="cat">
+   <option>Outros</option><option>Lacticínios</option><option>Bebidas</option><option>Carne / Charcutaria</option>
+   <option>Fruta e Legumes</option><option>Padaria</option><option>Mercearia</option><option>Congelados</option>
+   <option>Higiene</option><option>Casa</option><option>Animais</option>
+  </select>
+  <button class="primary" id="add">+ Adicionar</button>
+ </div>
+ <div class="secondRow" style="margin-top:9px">
+  <select id="area" aria-label="Área">
+   <option>Dia a dia</option><option>Casa</option><option>Carro</option><option>Equipamento</option><option>Treino &amp; Suplementação</option><option>Outros</option>
+  </select>
+  <select id="priority" aria-label="Prioridade">
+   <option>Normal</option><option>Alta</option><option>Baixa</option>
+  </select>
+ </div>
+</section>
+
+<div class="listHead"><h2>A tua lista</h2><span class="small" id="totalLabel">0 itens</span></div>
+<div class="areaControls" id="areaFilters">
+ <button class="areaChip active" data-area="Dia a dia">🛒 Dia a dia</button>
+ <button class="areaChip" data-area="Casa">🏠 Casa</button>
+ <button class="areaChip" data-area="Carro">🚗 Carro</button>
+ <button class="areaChip" data-area="Equipamento">🎒 Equipamento</button>
+ <button class="areaChip" data-area="Treino & Suplementação">🏋️ Treino</button>
+ <button class="areaChip" data-area="Outros">📌 Outros</button>
+ <button class="areaChip" data-area="all">Tudo</button>
+</div>
+<div class="controls" id="filters">
+ <button class="chip active" data-filter="all">Tudo</button>
+ <button class="chip" data-filter="pending">Por comprar</button>
+ <button class="chip" data-filter="done">Comprados</button>
+</div>
+
+<div id="list"></div>
+
+<section class="card" id="historyCard">
+ <div class="listHead" style="margin-top:0"><h2>Histórico</h2><span class="small" id="historyCount">0 compras</span></div>
+ <div class="small" style="margin-bottom:10px">Registo automático. Preço e loja são opcionais.</div>
+ <div id="historyList"></div>
+</section>
+
+<section class="card">
+ <div class="addTitle">Gestão</div>
+ <div class="tools">
+  <button class="toolBtn" id="clearDone">Limpar comprados</button>
+  <button class="toolBtn" id="closeTrip">Fechar compra</button>
+  <button class="toolBtn" id="exportBtn">Exportar backup</button>
+  <button class="toolBtn" id="importBtn">Importar backup</button>
+ </div>
+ <input id="importFile" type="file" accept="application/json" hidden>
+</section>
+<div class="editOverlay" id="editOverlay" aria-hidden="true">
+ <div class="editCard" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+  <div class="editHead"><h3 id="editTitle">Editar item</h3><button class="editClose" id="editClose" aria-label="Fechar">×</button></div>
+  <div class="editLabel">Produto e quantidade</div>
+  <div class="editGrid"><input id="editName" placeholder="Produto"><input id="editQty" placeholder="Qtd."></div>
+  <div class="editLabel">Organização</div>
+  <div class="editGrid2">
+   <select id="editCat"><option>Outros</option><option>Lacticínios</option><option>Bebidas</option><option>Carne / Charcutaria</option><option>Fruta e Legumes</option><option>Padaria</option><option>Mercearia</option><option>Congelados</option><option>Higiene</option><option>Casa</option><option>Animais</option></select>
+   <select id="editArea"><option>Dia a dia</option><option>Casa</option><option>Carro</option><option>Equipamento</option><option>Treino &amp; Suplementação</option><option>Outros</option></select>
+  </div>
+  <div class="editLabel">Prioridade e estado</div>
+  <div class="editGrid2">
+   <select id="editPriority"><option>Normal</option><option>Alta</option><option>Baixa</option></select>
+   <select id="editState"><option value="pending">Por comprar</option><option value="completed">Comprado</option></select>
+  </div>
+  <div class="editActions"><button class="editCancel" id="editCancel">Cancelar</button><button class="primary" id="editSave">Guardar alterações</button></div>
+ </div>
+</div>
+<div class="footer">Compras v0.7.4e TEST · Projeto Luna<br>Offline-first · sincronização Google Sheets quando ligada.</div>
+</main>
+
+<script>
+const KEY='luna.shopping.v01', HIST='luna.shopping.history.v01', PURCHASE_HIST='luna.shopping.purchasehistory.v02', LEARN='luna.shopping.learned.v01';
+const CLIENT_ID='447933051526-jdcl86ljqb6ehsiupr3aomjhia0fbqr2.apps.googleusercontent.com';
+const SPREADSHEET_ID='1XqsIs_fp_nAOHNP7H5FVWO6usFInSCFXnCDSt6ov9eA';
+const SHEET='Sheet1';
+const SHEET_RANGE='Sheet1!A:J';
+const HISTORY_SHEET='Shopping_History';
+const HISTORY_RANGE='Shopping_History!A:N';
+let items=[], currentFilter='all', currentArea='Dia a dia', accessToken=null, tokenClient=null, syncing=false, editingId=null;
+const FX_KEY='luna.shopping.fx.uaheur.v01';
+const $=id=>document.getElementById(id);
+const areaInfo={
+ 'Dia a dia':['🛒','Dia a dia'],'Casa':['🏠','Casa'],'Carro':['🚗','Carro'],'Equipamento':['🎒','Equipamento'],
+ 'Treino & Suplementação':['🏋️','Treino & Suplementação'],'Outros':['📌','Outros']
+};
+const priorityInfo={Alta:'🔴',Normal:'🟡',Baixa:'🟢'};
+const areaRules=[
+ ['Treino & Suplementação',['animal pak','whey','proteina','proteína','creatina','bcaa','pre treino','pré treino','multivitaminico','multivitamínico','suplemento','suplementos','shaker','barra proteica']],
+ ['Carro',['carro','viatura','oleo motor','óleo motor','liquido limpa vidros','líquido limpa vidros','anticongelante','tapetes carro','escovas limpa para brisas','escovas limpa pára-brisas','filtro oleo','filtro óleo','filtro ar','adblue']],
+ ['Casa',['berbequim','martelo','chave inglesa','chave fendas','ferramenta','ferramentas','movel','móvel','estante','candeeiro','extensao','extensão','parafusos']],
+ ['Equipamento',['mochila','lanterna','powerbank','power bank','cabo usb','carregador','bateria externa','equipamento']],
+];
+function detectArea(name,category=''){const n=normalize(name);for(const [area,words] of areaRules)for(const w0 of words){const w=normalize(w0);if(n===w||n.includes(w))return area}return 'Dia a dia'}
+
+const categoryInfo={
+ 'Lacticínios':['🥛','Lacticínios'],'Bebidas':['💧','Bebidas'],'Carne / Charcutaria':['🥩','Carne / Charcutaria'],
+ 'Fruta e Legumes':['🍌','Fruta e Legumes'],'Padaria':['🥖','Padaria'],'Mercearia':['🛒','Mercearia'],
+ 'Congelados':['❄️','Congelados'],'Higiene':['🧴','Higiene'],'Casa':['🏠','Casa'],'Animais':['🐾','Animais'],'Outros':['📦','Outros']
+};
+const categoryRules=[
+ ['Lacticínios',['leite','queijo','queijos','queiroz','philadelphia','iogurte','iogurtes','manteiga','natas','creme de leite','kefir','skyr','quark','ricotta','ricota','leite condensado','leite evaporado','bebida lactea','bebida láctea','requeijao','requeijão','mozzarella','mozarela','parmesao','parmesão','cheddar','feta','mascarpone']],
+ ['Bebidas',['agua','água','aguas','águas','sumo','sumos','refrigerante','refrigerantes','coca cola','coca-cola','pepsi','sprite','fanta','tonica','tónica','cha gelado','chá gelado','ice tea','iced tea','energetico','energético','red bull','monster','agua com gas','água com gás','agua sem gas','água sem gás','agua tonica','água tónica','kombucha']],
+ ['Fruta e Legumes',['banana','bananas','maca','maçã','macas','maçãs','pera','peras','laranja','laranjas','limao','limão','limoes','limões','morango','morangos','uva','uvas','kiwi','manga','abacate','tomate','tomates','alface','cebola','cebolas','alho','batata','batatas','cenoura','cenouras','pepino','pepinos','pimento','pimentos','brocolos','brócolos','cogumelos','melancia','melao','melão','pessego','pêssego','ananás','ananas','abacaxi','mirtilos','framboesas','espinafres','couve','courgette','beringela']],
+ ['Carne / Charcutaria',['salsicha','salsichas','fiambre','presunto','bacon','chourico','chouriço','salame','frango','peru','carne','bife','bifes','porco','vaca','hamburguer','hambúrguer','hamburgueres','hambúrgueres','linguica','linguiça','mortadela','peito de frango','carne picada','carne moida','carne moída','costeletas']],
+ ['Padaria',['pao','pão','paes','pães','baguete','baguetes','croissant','croissants','bolo','bolos','tosta','tostas','tortilha','tortilhas','wrap','wraps','broa']],
+ ['Mercearia',['arroz','massa','massas','esparguete','farinha','acucar','açúcar','sal','azeite','oleo','óleo','vinagre','cafe','café','cha','chá','cereais','aveia','feijao','feijão','grao','grão','atum','sardinha','sardinhas','milho','ervilhas','lentilhas','bolachas','biscoitos','chocolate','mel','compota','molho','ketchup','maionese','mostarda','ovos','ovo']],
+ ['Congelados',['congelado','congelados','pizza congelada','gelado','gelados','batatas congeladas']],
+ ['Higiene',['pasta de dentes','dentifrico','dentífrico','champô','shampoo','gel de banho','desodorizante','desodorante','sabonete','papel higienico','papel higiénico','escova de dentes','creme corpo','creme de corpo']],
+ ['Casa',['detergente','lixivia','lixívia','amaciante','esponja','esponjas','sacos lixo','sacos do lixo','papel cozinha','papel de cozinha','guardanapos','limpa vidros','lava loica','lava loiça']],
+ ['Animais',['comida tugi','comida para o tugi','ração','racao','comida de cao','comida de cão','comida para cao','comida para cão','comida de gato','comida para gato','biscoitos cao','biscoitos cão','snacks cao','snacks cão','areia gato']]
+];
+
+function load(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}}
+function normalize(s){return String(s||'').toLocaleLowerCase('pt-PT').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()}
+function now(){return new Date().toISOString()}
+function normalizeLocalItem(x){
+ return {id:String(x.id||makeId()),name:String(x.name||''),qty:String(x.qty||''),category:x.category||'Outros',
+  area:(x.area&&areaInfo[x.area])?x.area:detectArea(x.name,x.category),priority:(x.priority&&priorityInfo[x.priority])?x.priority:'Normal',
+  done:!!x.done,createdAt:x.createdAt||x.updatedAt||now(),updatedAt:x.updatedAt||x.createdAt||now(),deleted:!!x.deleted,
+  dirty:x.dirty===true};
+}
+function detectCategory(name){
+ const n=normalize(name); if(!n)return 'Outros';
+ const learned=load(LEARN,{}); if(learned[n])return learned[n];
+ let best=null,bestLen=0;
+ for(const [cat,words] of categoryRules)for(const word of words){const w=normalize(word);if((n===w||n.includes(w))&&w.length>bestLen){best=cat;bestLen=w.length}}
+ return best||'Outros';
+}
+items=load(KEY,[]).map(normalizeLocalItem);
+function save(){localStorage.setItem(KEY,JSON.stringify(items));render()}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function makeId(){return crypto.randomUUID?crypto.randomUUID():'item-'+Date.now()+'-'+Math.random().toString(16).slice(2)}
+function addItem(name,qty='',category,area,priority='Normal'){
+ name=String(name||'').trim();if(!name)return;
+ const detected=detectCategory(name), finalCat=category||detected, finalArea=area||detectArea(name,finalCat);
+ if(category&&category!==detected){const learned=load(LEARN,{});learned[normalize(name)]=category;localStorage.setItem(LEARN,JSON.stringify(learned))}
+ const t=now();items.push({id:makeId(),name,qty:String(qty||'').trim(),category:finalCat,area:finalArea,priority:priority||'Normal',done:false,createdAt:t,updatedAt:t,deleted:false,dirty:true});save();autoSync()
+}
+function getHistory(){return load(PURCHASE_HIST,[])}
+function saveHistory(h){localStorage.setItem(PURCHASE_HIST,JSON.stringify(h));renderHistory()}
+function migratePurchaseHistory(){
+ const current=load(PURCHASE_HIST,[]);if(current.length)return;
+ const legacy=load(HIST,[]).filter(e=>e&&e.historyId);
+ if(legacy.length)localStorage.setItem(PURCHASE_HIST,JSON.stringify(legacy.map(normalizeHistoryEntry)));
+}
+function normalizeHistoryEntry(e){
+ const purchasedAt=e.purchasedAt||now();
+ return {historyId:String(e.historyId||historyId()),itemId:String(e.itemId||''),transactionId:String(e.transactionId||''),name:String(e.name||''),qty:String(e.qty||''),category:e.category||'Outros',area:(e.area&&areaInfo[e.area])?e.area:'Dia a dia',priority:(e.priority&&priorityInfo[e.priority])?e.priority:'Normal',purchasedAt,price:String(e.price||''),currency:e.currency||'UAH',eurPrice:String(e.eurPrice||''),fxRate:String(e.fxRate||''),store:String(e.store||''),origin:e.origin||'LUNA Shopping App',updatedAt:e.updatedAt||purchasedAt,dirty:e.dirty===true};
+}
+function historyId(){return crypto.randomUUID?crypto.randomUUID():'hist-'+Date.now()+'-'+Math.random().toString(16).slice(2)}
+function recordPurchase(x,origin='LUNA Shopping App'){
+ const h=getHistory(); if(h.some(e=>e.itemId===x.id))return;
+ const t=now();h.push({historyId:historyId(),itemId:x.id,transactionId:'',name:x.name,qty:x.qty||'',category:x.category||'Outros',area:x.area||'Dia a dia',priority:x.priority||'Normal',purchasedAt:t,price:'',currency:'UAH',eurPrice:'',fxRate:'',store:'',origin,updatedAt:t,dirty:true});
+ saveHistory(h)
+}
+function completeItem(id,done=true){let x=items.find(i=>i.id===id);if(x){const was=x.done;x.done=done;x.updatedAt=now();x.dirty=true;if(done&&!was)recordPurchase(x);save();autoSync()}}
+function removeItem(id){let x=items.find(i=>i.id===id);if(x){x.deleted=true;x.updatedAt=now();x.dirty=true;save();autoSync()}}
+function updateItem(id){
+ let x=items.find(i=>i.id===id);if(!x||x.deleted)return;
+ editingId=id;
+ $('editName').value=x.name||'';$('editQty').value=x.qty||'';$('editCat').value=x.category||'Outros';
+ $('editArea').value=x.area||detectArea(x.name,x.category);$('editPriority').value=x.priority||'Normal';$('editState').value=x.done?'completed':'pending';
+ $('editOverlay').classList.add('open');$('editOverlay').setAttribute('aria-hidden','false');setTimeout(()=>$('editName').focus(),0);
+}
+function closeEditor(){$('editOverlay').classList.remove('open');$('editOverlay').setAttribute('aria-hidden','true');editingId=null}
+function saveEditor(){
+ let x=items.find(i=>i.id===editingId);if(!x||x.deleted)return closeEditor();
+ const n=$('editName').value.trim();if(!n){alert('O produto precisa de um nome.');return}
+ const wasDone=x.done;x.name=n;x.qty=$('editQty').value.trim();x.category=$('editCat').value;x.area=$('editArea').value;x.priority=$('editPriority').value;
+ const learned=load(LEARN,{});learned[normalize(x.name)]=x.category;localStorage.setItem(LEARN,JSON.stringify(learned));
+ x.done=$('editState').value==='completed';x.updatedAt=now();x.dirty=true;if(x.done&&!wasDone)recordPurchase(x);closeEditor();save();autoSync();
+}
+
+function getList(){return JSON.parse(JSON.stringify(items.filter(i=>!i.deleted)))}
+function getPendingItems(){return getList().filter(i=>!i.done)}
+function getItemsByCategory(category){return getList().filter(i=>i.category===category)}
+function getItemsByArea(area){return getList().filter(i=>i.area===area)}
+function clearCompleted(){
+ const done=items.filter(i=>i.done&&!i.deleted&&(currentArea==='all'||i.area===currentArea));if(!done.length)return;
+ if(confirm('Remover todos os itens já comprados?')){const t=now();done.forEach(i=>{i.deleted=true;i.updatedAt=t;i.dirty=true});save();autoSync()}
+}
+function closeShoppingTrip(){
+ const visible=getList().filter(i=>currentArea==='all'||i.area===currentArea);if(!visible.length)return alert('A lista está vazia.');
+ let h=load(HIST,[]);h.push({closedAt:now(),items:visible});localStorage.setItem(HIST,JSON.stringify(h));
+ const t=now();items.filter(i=>!i.deleted&&(currentArea==='all'||i.area===currentArea)).forEach(i=>{i.deleted=true;i.updatedAt=t;i.dirty=true});save();autoSync();alert(currentArea==='all'?'Compras arquivadas. Listas prontas.':currentArea+' arquivada. Lista pronta.')
+}
+function updateHint(){
+ const value=$('name').value,cat=detectCategory(value);
+ if(!value.trim()){$('autoHint').innerHTML='<span class="spark">✨</span><span>Escreve um produto e eu escolho a secção.</span>';return}
+ const info=categoryInfo[cat]||categoryInfo.Outros,area=detectArea(value,cat);$('cat').value=cat;$('area').value=area;
+ $('autoHint').innerHTML=`<span class="spark">${info[0]}</span><span>Área: <strong>${esc(area)}</strong> · Categoria: <strong>${esc(info[1])}</strong></span>`;
+}
+function render(){
+ const visible=items.filter(i=>!i.deleted);
+ const areaVisible=visible.filter(i=>currentArea==='all'||i.area===currentArea);
+ const shown=areaVisible.filter(i=>currentFilter==='all'||(currentFilter==='pending'&&!i.done)||(currentFilter==='done'&&i.done));
+ const pending=visible.filter(i=>!i.done).length,done=visible.filter(i=>i.done).length;
+ $('pendingBig').textContent=pending;$('doneBig').textContent=done;$('totalLabel').textContent=`${visible.length} ${visible.length===1?'item':'itens'}`;
+ const root=$('list');root.innerHTML='';
+ if(!shown.length){root.innerHTML='<div class="card empty"><div class="emptyIcon">🛒</div><strong>A lista está limpa</strong><span>Adiciona o primeiro produto acima.</span></div>';return}
+ const preferred=['Fruta e Legumes','Padaria','Lacticínios','Carne / Charcutaria','Mercearia','Bebidas','Congelados','Higiene','Casa','Animais','Outros'];
+ const cats=[...new Set(shown.map(i=>i.category||'Outros'))].sort((a,b)=>{let ai=preferred.indexOf(a),bi=preferred.indexOf(b);if(ai<0)ai=999;if(bi<0)bi=999;return ai-bi});
+ for(const c of cats){
+  const rows=shown.filter(x=>(x.category||'Outros')===c),info=categoryInfo[c]||categoryInfo.Outros;
+  let sec=document.createElement('section');sec.className='card section';sec.innerHTML=`<div class="sectionTitle"><span class="sectionIcon">${info[0]}</span><span>${esc(c)}</span><span class="sectionCount">${rows.length}</span></div>`;
+  for(const i of rows){
+   let d=document.createElement('div');d.className='item'+(i.done?' done':'');
+   d.innerHTML=`<input class="check" type="checkbox" ${i.done?'checked':''} aria-label="Marcar comprado"><div><div class="name">${esc(i.name)}</div><div class="meta">${i.qty?'Quantidade: '+esc(i.qty)+' · ':''}${priorityInfo[i.priority]||'🟡'} ${esc(i.priority||'Normal')}${currentArea==='all'?' · '+esc(i.area||'Dia a dia'):''}</div></div><div class="actions"><button class="iconBtn" title="Editar">✎</button><button class="iconBtn" title="Remover">×</button></div>`;
+   d.querySelector('.check').onchange=e=>completeItem(i.id,e.target.checked);const bs=d.querySelectorAll('button');bs[0].onclick=()=>updateItem(i.id);bs[1].onclick=()=>removeItem(i.id);sec.appendChild(d)
+  }root.appendChild(sec)
+ }
+}
+function loadFx(){try{return JSON.parse(localStorage.getItem(FX_KEY))||null}catch{return null}}
+function saveFx(x){localStorage.setItem(FX_KEY,JSON.stringify(x))}
+async function getFx(){let cached=loadFx();if(navigator.onLine){try{const r=await fetch('https://api.frankfurter.dev/v2/rate/EUR/UAH');if(r.ok){const d=await r.json();if(Number(d.rate)>0){cached={uahPerEur:Number(d.rate),date:d.date||new Date().toISOString().slice(0,10),updatedAt:now()};saveFx(cached)}}}catch(e){}}return cached}
+function numVal(v){const n=Number(String(v||'').trim().replace(',','.'));return Number.isFinite(n)&&n>=0?n:null}
+function fxLabel(fx){return fx&&fx.uahPerEur?'1 € = '+Number(fx.uahPerEur).toLocaleString('pt-PT',{maximumFractionDigits:4})+' ₴'+(fx.date?' · '+fx.date:''):'Taxa indisponível'}
+function fmtMoney(v,c){if(v===''||v==null)return '';const n=Number(String(v).replace(',','.'));if(!Number.isFinite(n))return String(v)+' '+c;try{return new Intl.NumberFormat('pt-PT',{style:'currency',currency:c,maximumFractionDigits:2}).format(n)}catch{return String(v)+' '+c}}
+function renderHistory(){
+ const h=getHistory().slice().sort((a,b)=>String(b.purchasedAt).localeCompare(String(a.purchasedAt)));
+ $('historyCount').textContent=`${h.length} ${h.length===1?'compra':'compras'}`;
+ const root=$('historyList');root.innerHTML='';
+ if(!h.length){root.innerHTML='<div class="small">Ainda não existem compras registadas.</div>';return}
+ for(const e of h.slice(0,20)){
+  const d=document.createElement('div');d.className='historyEntry';
+  const dt=e.purchasedAt?new Date(e.purchasedAt).toLocaleString('pt-PT',{dateStyle:'short',timeStyle:'short'}):'';
+  d.innerHTML=`<div style="width:24px;font-size:20px">✓</div><div class="historyBody"><div class="historyTop"><div class="name">${esc(e.name)}</div><button class="historyPrice" title="Preço e loja">${e.price?'🇺🇦 '+esc(fmtMoney(e.price,'UAH')):'🇺🇦 ₴'} | ${e.eurPrice?'🇪🇺 '+esc(fmtMoney(e.eurPrice,'EUR')):'🇪🇺 €'}</button></div><div class="historyMeta">${esc(dt)}${e.qty?' · Qtd. '+esc(e.qty):''}${e.store?' · '+esc(e.store):''}</div></div>`;
+  d.querySelector('button').onclick=async()=>{const fx=await getFx();if(!fx||!fx.uahPerEur){alert('Não foi possível obter a taxa de câmbio. Liga à Internet e tenta novamente.');return}const uahInput=prompt('🇺🇦 Preço em UAH / ₴:\n\nEscreve o preço em hryvnia.\nSe preferires introduzir em euros, deixa vazio e carrega OK.',e.price||'');if(uahInput===null)return;let uah,eur;if(String(uahInput).trim()!==''){const n=numVal(uahInput);if(n===null){alert('Preço inválido.');return}uah=n;eur=uah/fx.uahPerEur}else{const eurInput=prompt('🇪🇺 Preço em EUR / €:',e.eurPrice||'');if(eurInput===null)return;const n=numVal(eurInput);if(n===null){alert('Preço inválido.');return}eur=n;uah=eur*fx.uahPerEur}const store=prompt('Loja (opcional):',e.store||'');if(store===null)return;e.price=uah.toFixed(2);e.currency='UAH';e.eurPrice=eur.toFixed(2);e.fxRate=String(fx.uahPerEur);e.store=String(store).trim();e.updatedAt=now();e.dirty=true;saveHistory(getHistory().map(x=>x.historyId===e.historyId?e:x));autoSync()}
+  root.appendChild(d)
+ }
+}
+function setSyncStatus(msg){$('syncStatus').textContent=msg}
+function net(){
+ const online=navigator.onLine;$('net').textContent=online?'● Online · local':'● Offline · local';
+ if(!online)setSyncStatus('Offline · alterações guardadas localmente')
+}
+function initGoogle(){
+ if(!window.google?.accounts?.oauth2)return false;
+ tokenClient=google.accounts.oauth2.initTokenClient({
+  client_id:CLIENT_ID,scope:'https://www.googleapis.com/auth/spreadsheets',
+  callback:r=>{if(r.error){setSyncStatus('Google: autorização falhou');return}accessToken=r.access_token;setSyncStatus('Google ligado · a sincronizar…');syncNow()}
+ });return true
+}
+function connectGoogle(){
+ if(!navigator.onLine){setSyncStatus('Sem Internet · a lista continua local');return}
+ if(!tokenClient&&!initGoogle()){setSyncStatus('Google ainda a carregar · tenta novamente');return}
+ // Mostrar sempre o seletor para permitir escolher a conta correta,
+ // mesmo quando existe outra sessão Google ativa no navegador.
+ tokenClient.requestAccessToken({prompt:'select_account'})
+}
+async function api(url,options={}){
+ const r=await fetch(url,{...options,headers:{Authorization:`Bearer ${accessToken}`,...(options.headers||{})}});
+ if(r.status===401){accessToken=null;throw new Error('AUTH_EXPIRED')}
+ if(!r.ok){let t=await r.text();throw new Error(t||('HTTP '+r.status))}
+ if(r.status===204)return null;return r.json()
+}
+function remoteToItem(row){
+ const [id,name,qty,category,state,updatedBy,updatedAt,deleted,area,priority]=row;
+ const t=updatedAt||'1970-01-01T00:00:00.000Z';
+ return {id:String(id||makeId()),name:String(name||''),qty:String(qty||''),category:category||detectCategory(name),
+  area:(area&&areaInfo[area])?area:detectArea(name,category),priority:(priority&&priorityInfo[priority])?priority:'Normal',
+  done:String(state||'pending').toLowerCase()==='completed',createdAt:t,updatedAt:t,deleted:String(deleted||'').toLowerCase()==='true',dirty:false};
+}
+function itemToRow(i){return [i.id,i.name,i.qty||'',i.category||'Outros',i.done?'completed':'pending','LUNA Shopping App',i.updatedAt||now(),i.deleted?'true':'false',i.area||'Dia a dia',i.priority||'Normal']}
+
+function remoteToHistory(row){
+ const [historyId0,itemId,transactionId,name,qty,category,area,priority,purchasedAt,price,currency,store,origin,updatedAt]=row;
+ return normalizeHistoryEntry({historyId:historyId0,itemId,transactionId,name,qty,category,area,priority,purchasedAt,price,currency,store,origin,updatedAt:updatedAt||purchasedAt,dirty:false});
+}
+function historyToRow(e){return [e.historyId,e.itemId||'',e.transactionId||'',e.name||'',e.qty||'',e.category||'Outros',e.area||'Dia a dia',e.priority||'Normal',e.purchasedAt||'',e.price||'',e.currency||'UAH',e.store||'',e.origin||'LUNA Shopping App',e.updatedAt||e.purchasedAt||now()]}
+function mergeHistoryRemote(remote){
+ const local=getHistory().map(normalizeHistoryEntry),map=new Map();
+ for(const r of remote){if(r.historyId)map.set(r.historyId,r)}
+ for(const l of local){
+  const r=map.get(l.historyId);if(!r){map.set(l.historyId,l);continue}
+  const lt=Date.parse(l.updatedAt||0)||0,rt=Date.parse(r.updatedAt||0)||0;
+  if(l.dirty&&lt>rt)map.set(l.historyId,l);
+ }
+ const merged=[...map.values()].map(normalizeHistoryEntry);localStorage.setItem(PURCHASE_HIST,JSON.stringify(merged));return merged;
+}
+async function syncHistory(){
+ const readUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(HISTORY_RANGE)}`;
+ const data=await api(readUrl);
+ const remote=(data.values||[]).slice(1).filter(r=>r[0]).map(remoteToHistory);
+ const merged=mergeHistoryRemote(remote);
+ const clearUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(HISTORY_SHEET+'!A2:N1000')}:clear`;
+ await api(clearUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+ const values=merged.map(historyToRow);
+ if(values.length){
+  const writeUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(HISTORY_SHEET+'!A2:N'+(values.length+1))}?valueInputOption=RAW`;
+  await api(writeUrl,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values})});
+ }
+ merged.forEach(e=>e.dirty=false);localStorage.setItem(PURCHASE_HIST,JSON.stringify(merged));renderHistory();
+}
+
+function mergeLocalRemote(remote){
+ const map=new Map();
+ for(const r of remote){if(r.id)map.set(r.id,r)}
+ for(const l of items){
+  const r=map.get(l.id);
+  if(!r){map.set(l.id,l);continue}
+  const lt=Date.parse(l.updatedAt||0)||0,rt=Date.parse(r.updatedAt||0)||0;
+  // A folha é a fonte principal. A cópia local só pode vencer quando contém
+  // uma alteração real ainda não sincronizada e é estritamente mais recente.
+  // Em caso de empate, a versão remota vence para impedir que dados locais
+  // antigos substituam alterações feitas diretamente no Google Sheets.
+  if(l.dirty&&lt>rt)map.set(l.id,l);
+ }
+ items=[...map.values()].map(normalizeLocalItem);localStorage.setItem(KEY,JSON.stringify(items))
+}
+async function syncNow(){
+ if(syncing)return;if(!navigator.onLine){setSyncStatus('Offline · alterações guardadas localmente');return}
+ if(!accessToken){setSyncStatus('Google não ligado · carrega em “Ligar Google”');return}
+ syncing=true;$('syncNow').disabled=true;setSyncStatus('A sincronizar…');
+ try{
+  const readUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET_RANGE)}`;
+  const data=await api(readUrl);
+  const rows=(data.values||[]).slice(1).filter(r=>r[0]).map(remoteToItem);
+  mergeLocalRemote(rows);
+  const clearUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:J1000')}:clear`;
+  await api(clearUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+  const values=items.map(itemToRow);
+  if(values.length){
+   const writeUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:J'+(values.length+1))}?valueInputOption=RAW`;
+   await api(writeUrl,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values})})
+  }
+  items.forEach(i=>i.dirty=false);
+  save();
+  await syncHistory();
+  const hc=getHistory().length; setSyncStatus('Sincronizado · histórico local: '+hc+' · '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}))
+ }catch(e){
+  if(e.message==='AUTH_EXPIRED')setSyncStatus('Sessão Google expirou · liga novamente');
+  else setSyncStatus('Falha de sincronização · dados locais preservados')
+ }finally{syncing=false;$('syncNow').disabled=false}
+}
+function autoSync(){if(navigator.onLine&&accessToken)setTimeout(syncNow,150)}
+
+$('name').addEventListener('input',updateHint);
+$('add').onclick=()=>{const name=$('name').value,auto=detectCategory(name);addItem(name,$('qty').value,$('cat').value||auto,$('area').value,$('priority').value);$('name').value='';$('qty').value='';$('cat').value='Outros';$('area').value='Dia a dia';$('priority').value='Normal';updateHint();$('name').focus()};
+$('name').onkeydown=e=>{if(e.key==='Enter')$('add').click()};
+document.querySelectorAll('.areaChip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.areaChip').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentArea=b.dataset.area;render()});
+document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;render()});
+$('clearDone').onclick=clearCompleted;$('closeTrip').onclick=closeShoppingTrip;
+$('exportBtn').onclick=()=>{let data={version:'0.7.4e-test',exportedAt:now(),items,history:getHistory(),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v074e_test.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.items))throw 0;if(!confirm('Substituir a lista atual pelo backup?'))return;const t=now();items=d.items.map(normalizeLocalItem).map(i=>({...i,updatedAt:t,dirty:true}));localStorage.setItem(PURCHASE_HIST,JSON.stringify(Array.isArray(d.history)?d.history.map(normalizeHistoryEntry):[]));if(d.learnedCategories&&typeof d.learnedCategories==='object')localStorage.setItem(LEARN,JSON.stringify(d.learnedCategories));save();autoSync()}catch{alert('Backup inválido.')}e.target.value=''};
+$('editClose').onclick=closeEditor;$('editCancel').onclick=closeEditor;$('editSave').onclick=saveEditor;$('editOverlay').onclick=e=>{if(e.target===$('editOverlay'))closeEditor()};addEventListener('keydown',e=>{if(e.key==='Escape'&&$('editOverlay').classList.contains('open'))closeEditor()});
+$('googleConnect').onclick=connectGoogle;$('syncNow').onclick=syncNow;
+addEventListener('online',()=>{net();if(accessToken)syncNow()});addEventListener('offline',net);
+migratePurchaseHistory();net();render();renderHistory();updateHint();
+let tries=0;const gisWait=setInterval(()=>{if(initGoogle()||++tries>20)clearInterval(gisWait)},250);
+
+// TEST v0.7.2: sem registo de Service Worker para evitar cache da SAFE durante este teste.
+
+window.LunaShopping={version:'0.7.4e-test',getList,getPendingItems,getItemsByCategory,getItemsByArea,detectCategory,detectArea,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
+</script>
+</body></html>
