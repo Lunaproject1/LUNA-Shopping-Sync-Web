@@ -1,4 +1,4 @@
-<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111827"><link rel="manifest" href="./notes-v01.webmanifest"><link rel="icon" href="./notes-icon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="./notes-icon.svg?v=4"><title>LUNA Notes v0.1.3j</title><script src="https://accounts.google.com/gsi/client" async defer></script>
+<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111827"><link rel="manifest" href="./notes-v01.webmanifest"><link rel="icon" href="./notes-icon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="./notes-icon.svg?v=4"><title>LUNA Notes v0.1.3k</title><script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f5f6f8;color:#18202a}header{background:#111827;color:#fff;padding:17px 16px;position:sticky;top:0;z-index:5}.top,main{max-width:850px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center}.brand{font-size:20px;font-weight:800}.small{font-size:12px;color:#667085}.top .small{color:#cbd5e1}.card,.toolbar,.view,.edit{background:#fff;border:1px solid #e1e5ea;border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px #00000008}main{padding:14px}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:120px}button,input,textarea{font:inherit;border:1px solid #d0d5dd;border-radius:10px;padding:10px;background:#fff}button{font-weight:650;cursor:pointer}.primary{background:#111827;color:#fff;border-color:#111827}.danger{color:#b42318}.hidden{display:none!important}input.title{width:100%;font-size:20px;font-weight:750;border:0;padding:5px 0;outline:none}textarea{width:100%;min-height:230px;border:0;padding:10px 0;resize:vertical;outline:none;line-height:1.5}.card h3,.view h2{margin:0 0 8px}.body{white-space:pre-wrap;line-height:1.5}.meta{font-size:11px;color:#98a2b3;margin-top:10px}.fold{border-top:1px solid #eaecf0;margin-top:14px;padding-top:10px}.foldBtn{border:0;padding:4px 0;background:none;width:100%;text-align:left}.check{display:flex;gap:8px;align-items:center;padding:7px 0}.check input{flex:0}.history{margin-top:7px}.event{border-left:2px solid #d0d5dd;padding:4px 0 4px 10px;margin:8px 0;font-size:13px}.empty{text-align:center;color:#667085;padding:35px}.footer{text-align:center;color:#98a2b3;font-size:11px;padding:18px}.brandWrap{display:flex;align-items:center;gap:10px}.brandText{display:flex;flex-direction:column;align-items:flex-start}.notesHello,.notesVersion{display:block;width:100%}.brandOfficial{width:52px;height:52px;flex:0 0 52px;overflow:hidden}.brandOfficial img{display:block;width:100%;height:100%;object-fit:cover;border-radius:13px}
 body{background:linear-gradient(180deg,#f3f0f4 0,#faf9fa 260px);min-height:100vh}
 header{background:
@@ -32,7 +32,7 @@ button,input,textarea{font-size:13px}
 .notesToolbarMeta{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px}
 #notesClock{white-space:nowrap;font-variant-numeric:tabular-nums}
 
-/* LUNA Visual Language — Notes v0.1.3j */
+/* LUNA Visual Language — Notes v0.1.3k */
 :root{
  --n-bg:#e7e3dc;--n-surface:#f4f1eb;--n-card:#faf8f4;--n-text:#17202b;--n-muted:#66707b;
  --n-line:#d5d0c8;--n-accent:#d5aa68;--n-accent2:#b98445;--n-deep:#1e2832;
@@ -73,7 +73,7 @@ body[data-theme="light"] .toolbar,body[data-theme="light"] .card,body[data-theme
 body[data-theme="light"] #new.primary{background:linear-gradient(145deg,#27323b,#17202a);border-color:#17202a}
 @media(max-width:600px){header.notesHero{min-height:108px;padding:12px 12px 15px}header.notesHero:before{right:-28px;width:175px;height:175px}header.notesHero:after{right:16%;width:62px;height:80px;font-size:34px}.brandOfficial{width:50px!important;height:50px!important;flex-basis:50px!important}}
 
-/* LUNA Notes v0.1.3j — compact approved composition */
+/* LUNA Notes v0.1.3k — compact approved composition */
 header.notesHero{min-height:88px!important;padding:11px 14px 12px!important}
 header.notesHero:before{width:145px!important;height:145px!important;right:15%!important;top:-43px!important;border-width:16px!important}
 header.notesHero:after{width:54px!important;height:68px!important;right:25%!important;top:10px!important;font-size:31px!important}
@@ -90,14 +90,25 @@ main{padding-top:10px!important}
 .notesControls .notesToolbarMeta{grid-column:1/-1;margin-top:0!important}
 @media(max-width:700px){.notesControls{grid-template-columns:1fr 1fr}.notesControls .themeSwitch{grid-column:1/-1;justify-content:flex-end}.notesControls .notesToolbarMeta{grid-column:1/-1}}
 @media(max-width:600px){header.notesHero{min-height:82px!important}header.notesHero:before{right:-18px!important;width:125px!important;height:125px!important}header.notesHero:after{right:14%!important;width:48px!important;height:60px!important;font-size:28px!important}}
+
+/* v0.1.3k — approved composition: theme controls inside hero */
+.heroRight{display:flex;flex-direction:column;align-items:flex-end;gap:6px;position:relative;z-index:4}
+.heroRight .themeSwitch{margin:0!important;display:flex!important;justify-content:flex-end!important;gap:5px!important}
+.heroRight .themeSwitch button{height:27px!important;padding:4px 9px!important;font-size:10px!important;border-radius:999px!important}
+.notesControls{display:block!important;margin-bottom:8px}
+.notesControls .toolbar{display:block!important;margin:0!important}
+.notesControls .toolbar .row{display:flex!important}
+.notesControls .notesToolbarMeta{display:flex!important;margin-top:8px!important}
+@media(max-width:700px){.heroRight{gap:4px}.heroRight .themeSwitch button{padding:4px 7px!important;font-size:9px!important}}
+@media(max-width:520px){.heroRight .themeSwitch{gap:3px!important}.heroRight .themeSwitch button{padding:3px 5px!important;font-size:8px!important}.heroRight #net{font-size:8px!important}}
 </style></head><body>
-<header class="notesHero"><div class="top"><div class="brandWrap"><div class="brandOfficial"><img src="./notes-icon.svg?v=4" alt="LUNA Notes"></div><div class="brandText"><div class="brand">LUNA Notes</div><div class="small notesHello">Olá, Tuga</div><div class="small notesVersion">v0.1.3j</div></div></div><div id="net" class="small">● Local</div></div></header><main>
-<div class="notesControls"><div class="toolbar"><div class="row"><button id="new" class="primary">＋ Nova nota</button><button id="googleSync" type="button" onclick="googleSyncAction()"><span id="googleDot" class="googleDot"></span><span id="googleSyncLabel">Ligar Google</span></button></div><div class="notesToolbarMeta"><div id="status" class="small">Dados guardados localmente.</div><div id="notesClock" class="small"></div></div></div><div class="themeSwitch" aria-label="Modo visual"><button type="button" data-theme-btn="light">☀ Light</button><button type="button" data-theme-btn="dark">☾ Dark</button><button type="button" data-theme-btn="outdoor">◐ Outdoor</button></div></div>
+<header class="notesHero"><div class="top"><div class="brandWrap"><div class="brandOfficial"><img src="./notes-icon.svg?v=4" alt="LUNA Notes"></div><div class="brandText"><div class="brand">LUNA Notes</div><div class="small notesHello">Olá, Tuga</div><div class="small notesVersion">v0.1.3k</div></div></div><div class="heroRight"><div class="themeSwitch" aria-label="Modo visual"><button type="button" data-theme-btn="light">☀ Light</button><button type="button" data-theme-btn="dark">☾ Dark</button><button type="button" data-theme-btn="outdoor">◐ Outdoor</button></div><div id="net" class="small">● Local</div></div></div></header><main>
+<div class="notesControls"><div class="toolbar"><div class="row"><button id="new" class="primary">＋ Nova nota</button><button id="googleSync" type="button" onclick="googleSyncAction()"><span id="googleDot" class="googleDot"></span><span id="googleSyncLabel">Ligar Google</span></button></div><div class="notesToolbarMeta"><div id="status" class="small">Dados guardados localmente.</div><div id="notesClock" class="small"></div></div></div></div>
 <div id="edit" class="edit hidden"><input id="title" class="title" placeholder="Título"><textarea id="content" placeholder="Escreve a tua nota…"></textarea><div class="row"><button id="save" class="primary">Guardar</button><button id="cancel">Cancelar</button></div></div>
 <div id="view" class="view hidden"><h2 id="vtitle"></h2><div id="vbody" class="body"></div><div id="vmeta" class="meta"></div><div class="row" style="margin-top:14px"><button id="editBtn" class="primary">Editar</button><button id="close">Fechar</button><button id="del" class="danger">Eliminar</button></div>
 <div class="fold"><button id="checkFold" class="foldBtn">▸ Checklist</button><div id="checkArea" class="hidden"><div id="checks"></div><div class="row"><input id="newCheck" placeholder="Adicionar item"><button id="addCheck">Adicionar</button></div></div></div>
 <div class="fold"><button id="histFold" class="foldBtn">▸ Histórico <span id="histCount"></span></button><div id="history" class="history hidden"></div></div></div>
-<div id="list"></div><div id="empty" class="empty">Ainda não existem notas.</div><div class="footer">LUNA Notes v0.1.3j · Projeto Luna · © @TugaPT</div></main>
+<div id="list"></div><div id="empty" class="empty">Ainda não existem notas.</div><div class="footer">LUNA Notes v0.1.3k · Projeto Luna · © @TugaPT</div></main>
 <script>
 const THEME_KEY='luna.visual.theme.v01';
 function setLunaTheme(mode){
