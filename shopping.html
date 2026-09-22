@@ -72,10 +72,37 @@ main{max-width:850px;margin:auto;padding:14px 14px 90px}
 .summaryLabel{color:var(--muted);opacity:1}
 .card{border-radius:16px;box-shadow:0 2px 8px #00000008}
 .footer{text-align:center;color:#98a2b3;font-size:11px;padding:18px}
+
+/* LUNA Shopping visual alignment — Phase 1: Finance family */
+:root{
+ --bg:#f5f6f8;--card:#fff;--card2:#f8fafc;--text:#18202a;--muted:#667085;
+ --line:#e1e5ea;--accent:#111827;--accent2:#344054;--success:#067647;
+ --danger:#b42318;--shadow:0 2px 8px #00000008;
+}
+@media(prefers-color-scheme:dark){
+ :root{--bg:#f5f6f8;--card:#fff;--card2:#f8fafc;--text:#18202a;--muted:#667085;--line:#e1e5ea;--accent:#111827;--accent2:#344054;--shadow:0 2px 8px #00000008}
+}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:linear-gradient(180deg,#eef2f7 0,#f7f8fa 260px);color:#18202a}
+.lunaHeader{background:linear-gradient(135deg,#0b1220,#172033 62%,#26334d);padding:20px 16px 24px;box-shadow:0 8px 24px #10182822}
+.lunaHeader .moon{background:transparent;overflow:hidden;border-radius:13px}
+.lunaHeader .moon img{display:block;width:100%;height:100%;object-fit:cover;border-radius:13px}
+.lunaHeader .net{color:#cbd5e1}
+.syncRow{background:#fff;border:1px solid #e1e5ea;border-radius:16px;box-shadow:0 2px 8px #00000008}
+.syncBtn{background:#fff;color:#18202a;border:1px solid #d0d5dd;border-radius:10px}
+.syncBtn.primarySync{background:linear-gradient(135deg,#111827,#344054);color:#fff;border-color:#111827}
+.syncStatus{color:#667085;opacity:1}
+.summaryBox{background:#fff;border:1px solid #e1e5ea;color:#18202a;box-shadow:0 4px 16px #0000000a}
+.summaryBox:first-child{border-left:4px solid #344054}.summaryBox:last-child{border-left:4px solid #98a2b3}
+.card{background:#fff;border:1px solid #e1e5ea;box-shadow:0 2px 8px #00000008}
+input,select,button{border-color:#d0d5dd;background:#fff;color:#18202a;border-radius:10px}
+.primary{background:linear-gradient(135deg,#111827,#344054);color:#fff;box-shadow:none}
+.areaChip.active{background:#111827;color:#fff;border-color:#111827}
+.chip.active{background:#111827;color:#fff;border-color:#111827}
+.autoHint strong{color:#344054}
 </style>
 </head>
 <body>
-<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon">☾</div><div><h1>LUNA Shopping</h1><div class="subtitle">v0.7.5c</div></div></div><div class="net" id="net">● Dados locais</div></div></header>
+<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon"><img src="./shopping-icon.svg?v=1" alt="LUNA Shopping"></div><div><h1>LUNA Shopping</h1><div class="subtitle">v0.7.5c</div></div></div><div class="net" id="net">● Dados locais</div></div></header>
 <main>
 <section class="hero">
  <div class="syncRow">
