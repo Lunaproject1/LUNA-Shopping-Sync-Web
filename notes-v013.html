@@ -1,4 +1,4 @@
-<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111827"><link rel="manifest" href="./notes-v01.webmanifest"><link rel="icon" href="./notes-icon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="./notes-icon.svg?v=4"><title>LUNA Notes v0.1.3h</title><script src="https://accounts.google.com/gsi/client" async defer></script>
+<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111827"><link rel="manifest" href="./notes-v01.webmanifest"><link rel="icon" href="./notes-icon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="./notes-icon.svg?v=4"><title>LUNA Notes v0.1.3i</title><script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f5f6f8;color:#18202a}header{background:#111827;color:#fff;padding:17px 16px;position:sticky;top:0;z-index:5}.top,main{max-width:850px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center}.brand{font-size:20px;font-weight:800}.small{font-size:12px;color:#667085}.top .small{color:#cbd5e1}.card,.toolbar,.view,.edit{background:#fff;border:1px solid #e1e5ea;border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px #00000008}main{padding:14px}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:120px}button,input,textarea{font:inherit;border:1px solid #d0d5dd;border-radius:10px;padding:10px;background:#fff}button{font-weight:650;cursor:pointer}.primary{background:#111827;color:#fff;border-color:#111827}.danger{color:#b42318}.hidden{display:none!important}input.title{width:100%;font-size:20px;font-weight:750;border:0;padding:5px 0;outline:none}textarea{width:100%;min-height:230px;border:0;padding:10px 0;resize:vertical;outline:none;line-height:1.5}.card h3,.view h2{margin:0 0 8px}.body{white-space:pre-wrap;line-height:1.5}.meta{font-size:11px;color:#98a2b3;margin-top:10px}.fold{border-top:1px solid #eaecf0;margin-top:14px;padding-top:10px}.foldBtn{border:0;padding:4px 0;background:none;width:100%;text-align:left}.check{display:flex;gap:8px;align-items:center;padding:7px 0}.check input{flex:0}.history{margin-top:7px}.event{border-left:2px solid #d0d5dd;padding:4px 0 4px 10px;margin:8px 0;font-size:13px}.empty{text-align:center;color:#667085;padding:35px}.footer{text-align:center;color:#98a2b3;font-size:11px;padding:18px}.brandWrap{display:flex;align-items:center;gap:10px}.brandText{display:flex;flex-direction:column;align-items:flex-start}.notesHello,.notesVersion{display:block;width:100%}.brandOfficial{width:52px;height:52px;flex:0 0 52px;overflow:hidden}.brandOfficial img{display:block;width:100%;height:100%;object-fit:cover;border-radius:13px}
 body{background:linear-gradient(180deg,#f3f0f4 0,#faf9fa 260px);min-height:100vh}
 header{background:
@@ -31,15 +31,64 @@ button,input,textarea{font-size:13px}
 .footer{font-size:10px}
 .notesToolbarMeta{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px}
 #notesClock{white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* LUNA Visual Language — Notes v0.1.3i */
+:root{
+ --n-bg:#e7e3dc;--n-surface:#f4f1eb;--n-card:#faf8f4;--n-text:#17202b;--n-muted:#66707b;
+ --n-line:#d5d0c8;--n-accent:#d5aa68;--n-accent2:#b98445;--n-deep:#1e2832;
+}
+body[data-theme="light"]{background:linear-gradient(180deg,#ded9d1 0,#ebe7e1 220px,#e5e1da 100%);color:var(--n-text)}
+body[data-theme="dark"]{--n-bg:#101820;--n-surface:#17222c;--n-card:#1b2732;--n-text:#f3f0e9;--n-muted:#aab4bd;--n-line:#34414c;background:linear-gradient(180deg,#0d151d,#15212b 260px,#101820);color:var(--n-text)}
+body[data-theme="outdoor"]{--n-bg:#fff;--n-surface:#fff;--n-card:#fff;--n-text:#000;--n-muted:#303030;--n-line:#000;--n-accent:#9b5c00;background:#fff;color:#000}
+
+header.notesHero{position:sticky;top:0;min-height:122px;padding:16px 18px 18px;background:
+ linear-gradient(90deg,#e4ddd3 0%,#eee8df 42%,#d8c8b5 72%,#cbb397 100%);
+ color:#17202b;box-shadow:0 8px 26px #1b253020,inset 0 1px #fff9;overflow:hidden}
+header.notesHero:before{content:'';position:absolute;right:9%;top:-55px;width:210px;height:210px;border-radius:50%;border:22px solid #d5aa68;border-right-color:transparent;transform:rotate(-22deg);opacity:.82;filter:drop-shadow(0 12px 12px #46341e35)}
+header.notesHero:after{content:'✎';position:absolute;right:21%;top:14px;width:76px;height:96px;border-radius:9px;background:linear-gradient(145deg,#26313a,#111920);color:#d9b374;font-size:43px;display:flex;align-items:center;justify-content:center;box-shadow:12px 14px 18px #26313a38,inset 1px 1px #ffffff2b;transform:rotate(7deg);text-shadow:0 2px 3px #0008}
+header.notesHero .top{position:relative;z-index:2;align-items:flex-start}
+header.notesHero .brandOfficial{width:58px;height:58px;flex-basis:58px;filter:drop-shadow(0 7px 8px #27313a2d)}
+header.notesHero .brand{font-size:19px;color:#17202b}
+header.notesHero .notesHello{color:#28313a;font-size:11px}
+header.notesHero .notesVersion{color:#73777a;font-size:9px!important}
+header.notesHero #net{color:#28313a;background:#f8f5efb8;border:1px solid #ffffff8f;padding:5px 8px;border-radius:999px;backdrop-filter:blur(8px)}
+.themeSwitch{display:flex;gap:5px;justify-content:flex-end;margin:8px 0 0}
+.themeSwitch button{flex:0 0 auto!important;min-width:auto!important;height:28px!important;padding:4px 8px!important;font-size:10px!important;border-radius:9px!important;background:var(--n-surface);color:var(--n-text);border:1px solid var(--n-line)}
+.themeSwitch button.active{background:var(--n-deep);color:#fff;border-color:var(--n-deep)}
+body[data-theme="dark"] header.notesHero{background:linear-gradient(100deg,#18232c,#25313a 52%,#5d4d3b);color:#f7f2e9}
+body[data-theme="dark"] header.notesHero .brand,body[data-theme="dark"] header.notesHero .notesHello,body[data-theme="dark"] header.notesHero #net{color:#f7f2e9}
+body[data-theme="dark"] header.notesHero .notesVersion{color:#c9c0b3}
+body[data-theme="dark"] header.notesHero #net{background:#17222cbf;border-color:#ffffff20}
+body[data-theme="outdoor"] header.notesHero{background:linear-gradient(90deg,#fff,#eee0c9);border-bottom:3px solid #000;box-shadow:none}
+body[data-theme="outdoor"] header.notesHero:before{opacity:1;border-color:#9b5c00;border-right-color:transparent;filter:none}
+body[data-theme="outdoor"] header.notesHero:after{background:#000;color:#fff;box-shadow:none}
+body[data-theme="outdoor"] header.notesHero #net{background:#fff;border:2px solid #000;color:#000}
+body[data-theme="dark"] .card,body[data-theme="dark"] .toolbar,body[data-theme="dark"] .view,body[data-theme="dark"] .edit,
+body[data-theme="outdoor"] .card,body[data-theme="outdoor"] .toolbar,body[data-theme="outdoor"] .view,body[data-theme="outdoor"] .edit{background:var(--n-card);color:var(--n-text);border-color:var(--n-line)}
+body[data-theme="dark"] button,body[data-theme="dark"] input,body[data-theme="dark"] textarea{background:var(--n-surface);color:var(--n-text);border-color:var(--n-line)}
+body[data-theme="outdoor"] button,body[data-theme="outdoor"] input,body[data-theme="outdoor"] textarea{background:#fff;color:#000;border:2px solid #000}
+body[data-theme="dark"] .small,body[data-theme="dark"] .meta{color:var(--n-muted)}
+body[data-theme="outdoor"] .small,body[data-theme="outdoor"] .meta{color:#222}
+body[data-theme="light"] .toolbar,body[data-theme="light"] .card,body[data-theme="light"] .view,body[data-theme="light"] .edit{background:#f8f6f2e8;border-color:#d7d1c8;box-shadow:0 8px 24px #29323a12,0 1px 2px #fff inset}
+body[data-theme="light"] #new.primary{background:linear-gradient(145deg,#27323b,#17202a);border-color:#17202a}
+@media(max-width:600px){header.notesHero{min-height:108px;padding:12px 12px 15px}header.notesHero:before{right:-28px;width:175px;height:175px}header.notesHero:after{right:16%;width:62px;height:80px;font-size:34px}.brandOfficial{width:50px!important;height:50px!important;flex-basis:50px!important}}
 </style></head><body>
-<header><div class="top"><div class="brandWrap"><div class="brandOfficial"><img src="./notes-icon.svg?v=4" alt="LUNA Notes"></div><div class="brandText"><div class="brand">LUNA Notes</div><div class="small notesHello">Olá, Tuga</div><div class="small notesVersion">v0.1.3h</div></div></div><div id="net" class="small">● Local</div></div></header><main>
+<header class="notesHero"><div class="top"><div class="brandWrap"><div class="brandOfficial"><img src="./notes-icon.svg?v=4" alt="LUNA Notes"></div><div class="brandText"><div class="brand">LUNA Notes</div><div class="small notesHello">Olá, Tuga</div><div class="small notesVersion">v0.1.3i</div></div></div><div id="net" class="small">● Local</div></div></header><main><div class="themeSwitch" aria-label="Modo visual"><button type="button" data-theme-btn="light">☀ Light</button><button type="button" data-theme-btn="dark">☾ Dark</button><button type="button" data-theme-btn="outdoor">◐ Outdoor</button></div>
 <div class="toolbar"><div class="row"><button id="new" class="primary">＋ Nova nota</button><button id="googleSync" type="button" onclick="googleSyncAction()"><span id="googleDot" class="googleDot"></span><span id="googleSyncLabel">Ligar Google</span></button></div><div class="notesToolbarMeta"><div id="status" class="small">Dados guardados localmente.</div><div id="notesClock" class="small"></div></div></div>
 <div id="edit" class="edit hidden"><input id="title" class="title" placeholder="Título"><textarea id="content" placeholder="Escreve a tua nota…"></textarea><div class="row"><button id="save" class="primary">Guardar</button><button id="cancel">Cancelar</button></div></div>
 <div id="view" class="view hidden"><h2 id="vtitle"></h2><div id="vbody" class="body"></div><div id="vmeta" class="meta"></div><div class="row" style="margin-top:14px"><button id="editBtn" class="primary">Editar</button><button id="close">Fechar</button><button id="del" class="danger">Eliminar</button></div>
 <div class="fold"><button id="checkFold" class="foldBtn">▸ Checklist</button><div id="checkArea" class="hidden"><div id="checks"></div><div class="row"><input id="newCheck" placeholder="Adicionar item"><button id="addCheck">Adicionar</button></div></div></div>
 <div class="fold"><button id="histFold" class="foldBtn">▸ Histórico <span id="histCount"></span></button><div id="history" class="history hidden"></div></div></div>
-<div id="list"></div><div id="empty" class="empty">Ainda não existem notas.</div><div class="footer">LUNA Notes v0.1.3h · Projeto Luna · © @TugaPT</div></main>
+<div id="list"></div><div id="empty" class="empty">Ainda não existem notas.</div><div class="footer">LUNA Notes v0.1.3i · Projeto Luna · © @TugaPT</div></main>
 <script>
+const THEME_KEY='luna.visual.theme.v01';
+function setLunaTheme(mode){
+ const allowed=['light','dark','outdoor']; if(!allowed.includes(mode))mode='light';
+ document.body.dataset.theme=mode; localStorage.setItem(THEME_KEY,mode);
+ document.querySelectorAll('[data-theme-btn]').forEach(b=>b.classList.toggle('active',b.dataset.themeBtn===mode));
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-theme-btn]');if(b)setLunaTheme(b.dataset.themeBtn)});
+setLunaTheme(localStorage.getItem(THEME_KEY)||'light');
 const CLIENT_ID='447933051526-jdcl86ljqb6ehsiupr3aomjhia0fbqr2.apps.googleusercontent.com',SID='1XqsIs_fp_nAOHNP7H5FVWO6usFInSCFXnCDSt6ov9eA',K='luna.notes.v01',KC='luna.notes.checks.v01',KH='luna.notes.history.v01';
 let notes=L(K),checks=L(KC),events=L(KH),current=null,editing=null,token=null,tc=null,syncing=false;const $=x=>document.getElementById(x),now=()=>new Date().toISOString(),uid=()=>crypto.randomUUID?crypto.randomUUID():'id-'+Date.now()+'-'+Math.random().toString(16).slice(2);
 function L(k){try{return JSON.parse(localStorage.getItem(k))||[]}catch{return[]}}function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function persist(){localStorage.setItem(K,JSON.stringify(notes));localStorage.setItem(KC,JSON.stringify(checks));localStorage.setItem(KH,JSON.stringify(events));render()}
