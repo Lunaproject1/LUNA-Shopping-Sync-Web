@@ -447,7 +447,8 @@ addEventListener('online',()=>{net();if(accessToken)syncNow()});addEventListener
 migratePurchaseHistory();net();render();renderHistory();updateHint();
 let tries=0;const gisWait=setInterval(()=>{if(initGoogle()||++tries>20)clearInterval(gisWait)},250);
 
-// v0.7.5c validada: registo de Service Worker mantido desativado nesta versão para evitar cache cruzada.
+// PWA auto-update: verifica sempre o service worker sem reutilizar uma cópia HTTP antiga.
+if('serviceWorker'in navigator){addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(r=>{r.update().catch(()=>{});setInterval(()=>r.update().catch(()=>{}),60000)}).catch(()=>{}));}
 
 window.LunaShopping={version:'0.7.5c',getList,getPendingItems,getItemsByCategory,getItemsByArea,detectCategory,detectArea,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
 </script>
