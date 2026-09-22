@@ -1,19 +1,15 @@
 {
-  "name": "Luna — Compras",
-  "short_name": "Compras",
-  "description": "Lista de compras offline-first do Projeto Luna",
-  "start_url": "./",
+  "name": "LUNA Shopping",
+  "short_name": "Shopping",
+  "description": "Lista de compras do Projeto Luna",
+  "id": "./shopping.html",
+  "start_url": "./shopping.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#111827",
+  "background_color": "#f5f6f8",
   "theme_color": "#111827",
   "lang": "pt-PT",
   "icons": [
-    {
-      "src": "./icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
+    {"src":"./shopping-icon.svg?v=3","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
   ]
 }
