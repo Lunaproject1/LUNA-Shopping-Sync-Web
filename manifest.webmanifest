@@ -10,6 +10,6 @@
   "theme_color": "#111827",
   "lang": "pt-PT",
   "icons": [
-    {"src":"./shopping-icon.svg?v=2","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+    {"src":"./shopping-icon.svg?v=3","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
   ]
 }
