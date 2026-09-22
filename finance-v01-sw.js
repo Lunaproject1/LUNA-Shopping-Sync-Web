@@ -1,8 +1,15 @@
-const C='luna-finance-auto-v1';
+const BUILD='2026-09-22-auto2';
+const C='luna-finance-auto-v2';
 const APP='./finance-v0298.html';
 const A=[APP,'./finance-v01.webmanifest'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(A)).then(()=>self.skipWaiting())));
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('luna-finance-')&&x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
+self.addEventListener('activate',e=>e.waitUntil((async()=>{
+ const keys=await caches.keys();
+ await Promise.all(keys.filter(x=>x.startsWith('luna-finance-')&&x!==C).map(x=>caches.delete(x)));
+ await self.clients.claim();
+ const clients=await self.clients.matchAll({type:'window',includeUncontrolled:true});
+ for(const client of clients){try{await client.navigate(client.url)}catch(_){}}
+})()));
 self.addEventListener('fetch',e=>{
  if(e.request.method!=='GET')return;
  const u=new URL(e.request.url);
