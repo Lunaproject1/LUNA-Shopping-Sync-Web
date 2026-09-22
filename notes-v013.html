@@ -7,9 +7,18 @@ header{background:linear-gradient(135deg,#0b1220,#172033 62%,#26334d);padding:20
 #new.primary{background:linear-gradient(135deg,#111827,#344054)}
 .googleDot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:1px;background:#d92d20;box-shadow:0 0 0 2px #fee4e2}
 .googleDot.on{background:#12b76a;box-shadow:0 0 0 2px #d1fadf}
+/* Notes visual scale aligned to the approved Finance baseline */
+header{padding:11px 14px 14px}
+.brand{font-size:17px;font-weight:800;letter-spacing:.2px}
+.top .small{font-size:10px}
+.toolbar{margin-top:-6px}
+button,input,textarea{font-size:13px}
 #list .card h3{font-size:14px;font-weight:750}
-#list .card .body{font-size:14px}
-.view h2{font-size:20px}
+#list .card .body{font-size:13px;line-height:1.45}
+#list .card .meta{font-size:10px}
+.view h2{font-size:17px}
+.view .body{font-size:13px;line-height:1.45}
+.footer{font-size:10px}
 </style></head><body>
 <header><div class="top"><div class="brandWrap"><div class="brandOfficial"><img src="./notes-icon.svg?v=4" alt="LUNA Notes"></div><div><div class="brand">LUNA Notes</div><div class="small">v0.1.3</div></div></div><div id="net" class="small">● Local</div></div></header><main>
 <div class="toolbar"><div class="row"><button id="new" class="primary">＋ Nova nota</button><button id="googleSync" type="button" onclick="googleSyncAction()"><span id="googleDot" class="googleDot"></span><span id="googleSyncLabel">Ligar Google</span></button></div><div id="status" class="small" style="margin-top:8px">Dados guardados localmente.</div></div>
