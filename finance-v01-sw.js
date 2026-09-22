@@ -1,5 +1,5 @@
-const BUILD='2026-09-22-auto5-googlefix';
-const C='luna-finance-auto-v5';
+const BUILD='2026-09-22-auto6-google-direct';
+const C='luna-finance-auto-v6';
 const APP='./finance-v0298.html';
 const A=[APP,'./finance-v01.webmanifest'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(A)).then(()=>self.skipWaiting())));
