@@ -8,7 +8,7 @@
 <link rel="icon" href="./shopping-icon.svg?v=3" type="image/svg+xml">
 <link rel="shortcut icon" href="./shopping-icon.svg?v=3" type="image/svg+xml">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<title>LUNA Shopping v0.7.5c</title>
+<title>LUNA Shopping v0.7.5d</title>
 <style>
 :root{
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -100,10 +100,21 @@ input,select,button{border-color:#d0d5dd;background:#fff;color:#18202a;border-ra
 .areaChip.active{background:#111827;color:#fff;border-color:#111827}
 .chip.active{background:#111827;color:#fff;border-color:#111827}
 .autoHint strong{color:#344054}
+
+/* LUNA Shopping visual language — v0.7.5d */
+:root{--shop-bg:#0b1418;--shop-surface:#101d22;--shop-card:#132329;--shop-text:#eef2ef;--shop-muted:#9aaba6;--shop-line:#294047;--shop-green:#238a43;--shop-green2:#45b95f;--shop-gold:#d4af55}
+body{background:linear-gradient(180deg,#081115 0,#0d181d 250px,#0a1317 100%);color:var(--shop-text)}
+.lunaHeader{position:sticky;top:0;background:linear-gradient(110deg,#071114,#102025 58%,#162b27);padding:10px 14px 12px;box-shadow:0 10px 28px #0008,inset 0 1px #ffffff0d;overflow:hidden}
+.lunaHeader:before{content:'';position:absolute;right:12%;top:-42px;width:150px;height:150px;border-radius:50%;border:16px solid #d4af55;border-right-color:transparent;transform:rotate(-24deg);opacity:.86;filter:drop-shadow(0 10px 10px #0007)}
+.lunaHeader:after{content:'🛒';position:absolute;right:22%;top:13px;width:58px;height:58px;display:grid;place-items:center;font-size:34px;transform:rotate(-5deg);filter:drop-shadow(0 8px 8px #0008)}
+.lunaHeader .lunaTop{position:relative;z-index:2}.lunaHeader .moon{width:50px;height:50px;flex-basis:50px;filter:drop-shadow(0 6px 7px #0008)}.lunaHeader h1{font-size:17px;color:#fff}.lunaHeader .subtitle{font-size:9px;color:#c9d4d0}.lunaHeader .net{color:#c9d4d0;background:#0a171bbd;border:1px solid #ffffff20;padding:5px 8px;border-radius:999px}
+main{padding-top:10px}.hero{margin-top:0}.syncRow,.summaryBox,.card{background:linear-gradient(180deg,#132329,#0f1d22);border-color:#294047;color:#eef2ef;box-shadow:0 8px 24px #00000030,inset 0 1px #ffffff08}
+.syncBtn,input,select,button{background:#101d22;color:#eef2ef;border-color:#35505a}.syncBtn.primarySync,.primary,.areaChip.active{background:linear-gradient(135deg,#176f36,#2ba34e);color:#fff;border-color:#2ba34e}.syncStatus,.summaryLabel,.small,.meta,.autoHint{color:#9aaba6}.summaryBox:first-child{border-left:4px solid #45b95f}.summaryBox:last-child{border-left:4px solid #d4af55}.summaryNum{color:#fff}.addTitle,.listHead h2{color:#eef2ef}.autoHint strong{color:#d4af55}.areaChip,.chip,.toolBtn{background:#101d22;color:#d8e2df;border-color:#294047}.chip.active{background:#d4af55;color:#111;border-color:#d4af55}.sectionTitle{background:#0d1a1f;border-color:#294047;color:#eef2ef}.item{border-color:#233940}.item:active{background:#17282e}.name{color:#f4f7f5}.check{border-color:#668078}.footer{color:#738783}.editCard{background:#101d22;border-color:#35505a;color:#eef2ef}
+@media(max-width:600px){.lunaHeader:before{right:-20px;width:125px;height:125px}.lunaHeader:after{right:13%;width:48px;height:48px;font-size:29px}}
 </style>
 </head>
 <body>
-<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon"><img src="./shopping-icon.svg?v=1" alt="LUNA Shopping"></div><div><h1>LUNA Shopping</h1><div class="subtitle">v0.7.5c</div></div></div><div class="net" id="net">● Dados locais</div></div></header>
+<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon"><img src="./shopping-icon.svg?v=1" alt="LUNA Shopping"></div><div><h1>LUNA Shopping</h1><div class="subtitle">v0.7.5d</div></div></div><div class="net" id="net">● Dados locais</div></div></header>
 <main>
 <section class="hero">
  <div class="syncRow">
@@ -191,7 +202,7 @@ input,select,button{border-color:#d0d5dd;background:#fff;color:#18202a;border-ra
   <div class="editActions"><button class="editCancel" id="editCancel">Cancelar</button><button class="primary" id="editSave">Guardar alterações</button></div>
  </div>
 </div>
-<div class="footer">LUNA Shopping v0.7.5c · Projeto Luna · © @TugaPT</div>
+<div class="footer">LUNA Shopping v0.7.5d · Projeto Luna · © @TugaPT</div>
 </main>
 
 <script>
@@ -480,7 +491,7 @@ $('name').onkeydown=e=>{if(e.key==='Enter')$('add').click()};
 document.querySelectorAll('.areaChip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.areaChip').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentArea=b.dataset.area;render()});
 document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;render()});
 $('clearDone').onclick=clearCompleted;$('closeTrip').onclick=closeShoppingTrip;
-$('exportBtn').onclick=()=>{let data={version:'0.7.5c',exportedAt:now(),items,history:getHistory(),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v075c.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
+$('exportBtn').onclick=()=>{let data={version:'0.7.5c',exportedAt:now(),items,history:getHistory(),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v075d.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
 $('importBtn').onclick=()=>$('importFile').click();
 $('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.items))throw 0;if(!confirm('Substituir a lista atual pelo backup?'))return;const t=now();items=d.items.map(normalizeLocalItem).map(i=>({...i,updatedAt:t,dirty:true}));localStorage.setItem(PURCHASE_HIST,JSON.stringify(Array.isArray(d.history)?d.history.map(normalizeHistoryEntry):[]));if(d.learnedCategories&&typeof d.learnedCategories==='object')localStorage.setItem(LEARN,JSON.stringify(d.learnedCategories));save();autoSync()}catch{alert('Backup inválido.')}e.target.value=''};
 $('editClose').onclick=closeEditor;$('editCancel').onclick=closeEditor;$('editSave').onclick=saveEditor;$('editOverlay').onclick=e=>{if(e.target===$('editOverlay'))closeEditor()};addEventListener('keydown',e=>{if(e.key==='Escape'&&$('editOverlay').classList.contains('open'))closeEditor()});
