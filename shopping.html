@@ -8,7 +8,7 @@
 <link rel="icon" href="./shopping-icon.svg?v=3" type="image/svg+xml">
 <link rel="shortcut icon" href="./shopping-icon.svg?v=3" type="image/svg+xml">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<title>LUNA Shopping v0.7.5d</title>
+<title>LUNA Shopping v0.7.5e</title>
 <style>
 :root{
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -101,7 +101,7 @@ input,select,button{border-color:#d0d5dd;background:#fff;color:#18202a;border-ra
 .chip.active{background:#111827;color:#fff;border-color:#111827}
 .autoHint strong{color:#344054}
 
-/* LUNA Shopping visual language — v0.7.5d */
+/* LUNA Shopping visual language — v0.7.5e */
 :root{--shop-bg:#0b1418;--shop-surface:#101d22;--shop-card:#132329;--shop-text:#eef2ef;--shop-muted:#9aaba6;--shop-line:#294047;--shop-green:#238a43;--shop-green2:#45b95f;--shop-gold:#d4af55}
 body{background:linear-gradient(180deg,#081115 0,#0d181d 250px,#0a1317 100%);color:var(--shop-text)}
 .lunaHeader{position:sticky;top:0;background:linear-gradient(110deg,#071114,#102025 58%,#162b27);padding:10px 14px 12px;box-shadow:0 10px 28px #0008,inset 0 1px #ffffff0d;overflow:hidden}
@@ -111,15 +111,22 @@ body{background:linear-gradient(180deg,#081115 0,#0d181d 250px,#0a1317 100%);col
 main{padding-top:10px}.hero{margin-top:0}.syncRow,.summaryBox,.card{background:linear-gradient(180deg,#132329,#0f1d22);border-color:#294047;color:#eef2ef;box-shadow:0 8px 24px #00000030,inset 0 1px #ffffff08}
 .syncBtn,input,select,button{background:#101d22;color:#eef2ef;border-color:#35505a}.syncBtn.primarySync,.primary,.areaChip.active{background:linear-gradient(135deg,#176f36,#2ba34e);color:#fff;border-color:#2ba34e}.syncStatus,.summaryLabel,.small,.meta,.autoHint{color:#9aaba6}.summaryBox:first-child{border-left:4px solid #45b95f}.summaryBox:last-child{border-left:4px solid #d4af55}.summaryNum{color:#fff}.addTitle,.listHead h2{color:#eef2ef}.autoHint strong{color:#d4af55}.areaChip,.chip,.toolBtn{background:#101d22;color:#d8e2df;border-color:#294047}.chip.active{background:#d4af55;color:#111;border-color:#d4af55}.sectionTitle{background:#0d1a1f;border-color:#294047;color:#eef2ef}.item{border-color:#233940}.item:active{background:#17282e}.name{color:#f4f7f5}.check{border-color:#668078}.footer{color:#738783}.editCard{background:#101d22;border-color:#35505a;color:#eef2ef}
 @media(max-width:600px){.lunaHeader:before{right:-20px;width:125px;height:125px}.lunaHeader:after{right:13%;width:48px;height:48px;font-size:29px}}
+
+/* Shopping v0.7.5e — unified Google + readable filter rail */
+.googleUnified{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:210px}
+.googleDot{width:9px;height:9px;border-radius:50%;background:#e5484d;box-shadow:0 0 0 3px #e5484d22;flex:0 0 9px}.googleDot.on{background:#32c766;box-shadow:0 0 0 3px #32c76622}
+.areaControls{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;overflow:visible!important;padding:3px 0 8px}
+.areaChip{display:flex;align-items:center;justify-content:center;gap:5px;white-space:normal!important;min-height:42px;padding:7px 8px!important;text-align:center;line-height:1.1}
+.controls{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;overflow:visible!important}.chip{white-space:normal!important}
+@media(max-width:430px){.areaControls{grid-template-columns:repeat(2,minmax(0,1fr))}.googleUnified{width:100%;min-width:0}.syncRow{display:block}.syncStatus{display:block;margin-top:10px}}
 </style>
 </head>
 <body>
-<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon"><img src="./shopping-icon.svg?v=1" alt="LUNA Shopping"></div><div><h1>LUNA Shopping</h1><div class="subtitle">v0.7.5d</div></div></div><div class="net" id="net">● Dados locais</div></div></header>
+<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon"><img src="./shopping-icon.svg?v=1" alt="LUNA Shopping"></div><div><h1>LUNA Shopping</h1><div class="subtitle">v0.7.5e</div></div></div><div class="net" id="net">● Dados locais</div></div></header>
 <main>
 <section class="hero">
  <div class="syncRow">
-   <button class="syncBtn primarySync" id="googleConnect">Ligar Google</button>
-   <button class="syncBtn" id="syncNow">Sincronizar</button>
+   <button class="syncBtn primarySync googleUnified" id="googleConnect"><span class="googleDot" id="googleDot"></span><span id="googleLabel">Google não ligado</span></button>
    <span class="syncStatus" id="syncStatus">Local pronto · Google não ligado</span>
  </div>
  <div class="summary">
@@ -202,7 +209,7 @@ main{padding-top:10px}.hero{margin-top:0}.syncRow,.summaryBox,.card{background:l
   <div class="editActions"><button class="editCancel" id="editCancel">Cancelar</button><button class="primary" id="editSave">Guardar alterações</button></div>
  </div>
 </div>
-<div class="footer">LUNA Shopping v0.7.5d · Projeto Luna · © @TugaPT</div>
+<div class="footer">LUNA Shopping v0.7.5e · Projeto Luna · © @TugaPT</div>
 </main>
 
 <script>
@@ -376,7 +383,7 @@ function initGoogle(){
  if(!window.google?.accounts?.oauth2)return false;
  tokenClient=google.accounts.oauth2.initTokenClient({
   client_id:CLIENT_ID,scope:'https://www.googleapis.com/auth/spreadsheets',
-  callback:r=>{if(r.error){setSyncStatus('Google: autorização falhou');return}accessToken=r.access_token;setSyncStatus('Google ligado · a sincronizar…');syncNow()}
+  callback:r=>{if(r.error){setSyncStatus('Google: autorização falhou');updateGoogleButton();return}accessToken=r.access_token;updateGoogleButton();setSyncStatus('Google ligado · a sincronizar…');syncNow()}
  });return true
 }
 function connectGoogle(){
@@ -386,6 +393,7 @@ function connectGoogle(){
  // mesmo quando existe outra sessão Google ativa no navegador.
  tokenClient.requestAccessToken({prompt:'select_account'})
 }
+function updateGoogleButton(){const dot=$('googleDot'),label=$('googleLabel');if(!dot||!label)return;const on=!!accessToken;dot.classList.toggle('on',on);label.textContent=on?'Google ligado · Sincronizar':'Google não ligado · Ligar'}
 async function api(url,options={}){
  const r=await fetch(url,{...options,headers:{Authorization:`Bearer ${accessToken}`,...(options.headers||{})}});
  if(r.status===401){accessToken=null;throw new Error('AUTH_EXPIRED')}
@@ -491,13 +499,13 @@ $('name').onkeydown=e=>{if(e.key==='Enter')$('add').click()};
 document.querySelectorAll('.areaChip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.areaChip').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentArea=b.dataset.area;render()});
 document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;render()});
 $('clearDone').onclick=clearCompleted;$('closeTrip').onclick=closeShoppingTrip;
-$('exportBtn').onclick=()=>{let data={version:'0.7.5c',exportedAt:now(),items,history:getHistory(),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v075d.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
+$('exportBtn').onclick=()=>{let data={version:'0.7.5c',exportedAt:now(),items,history:getHistory(),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v075e.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
 $('importBtn').onclick=()=>$('importFile').click();
 $('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.items))throw 0;if(!confirm('Substituir a lista atual pelo backup?'))return;const t=now();items=d.items.map(normalizeLocalItem).map(i=>({...i,updatedAt:t,dirty:true}));localStorage.setItem(PURCHASE_HIST,JSON.stringify(Array.isArray(d.history)?d.history.map(normalizeHistoryEntry):[]));if(d.learnedCategories&&typeof d.learnedCategories==='object')localStorage.setItem(LEARN,JSON.stringify(d.learnedCategories));save();autoSync()}catch{alert('Backup inválido.')}e.target.value=''};
 $('editClose').onclick=closeEditor;$('editCancel').onclick=closeEditor;$('editSave').onclick=saveEditor;$('editOverlay').onclick=e=>{if(e.target===$('editOverlay'))closeEditor()};addEventListener('keydown',e=>{if(e.key==='Escape'&&$('editOverlay').classList.contains('open'))closeEditor()});
-$('googleConnect').onclick=connectGoogle;$('syncNow').onclick=syncNow;
+$('googleConnect').onclick=()=>accessToken?syncNow():connectGoogle();
 addEventListener('online',()=>{net();if(accessToken)syncNow()});addEventListener('offline',net);
-migratePurchaseHistory();net();render();renderHistory();updateHint();
+migratePurchaseHistory();net();render();renderHistory();updateHint();updateGoogleButton();
 let tries=0;const gisWait=setInterval(()=>{if(initGoogle()||++tries>20)clearInterval(gisWait)},250);
 
 
