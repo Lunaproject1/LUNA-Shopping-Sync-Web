@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 260">
+<defs>
+ <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#091322"/><stop offset=".55" stop-color="#15253b"/><stop offset="1" stop-color="#263b57"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#e9bf72" stop-opacity=".5"/><stop offset="1" stop-color="#e9bf72" stop-opacity="0"/></radialGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0bd"/><stop offset=".45" stop-color="#d8a84f"/><stop offset="1" stop-color="#8b5e1f"/></linearGradient>
+ <linearGradient id="card" x1="0" x2="1"><stop stop-color="#1d2c42"/><stop offset="1" stop-color="#0a111d"/></linearGradient>
+ <filter id="shadow"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-opacity=".35"/></filter>
+</defs>
+<rect width="1600" height="260" fill="url(#bg)"/>
+<circle cx="1080" cy="110" r="260" fill="url(#glow)"/>
+<g opacity=".12" stroke="#fff"><path d="M0 210 C300 165 480 230 720 165 S1120 100 1600 145" fill="none"/><path d="M0 230 C320 190 520 245 760 185 S1160 125 1600 165" fill="none"/></g>
+<g transform="translate(880 34) rotate(-6 260 95)" filter="url(#shadow)">
+ <rect x="0" y="18" width="390" height="178" rx="25" fill="url(#card)" stroke="#ffffff26"/>
+ <circle cx="52" cy="65" r="24" fill="url(#gold)"/><circle cx="77" cy="65" r="24" fill="#d8a84f" opacity=".65"/>
+ <rect x="38" y="125" width="190" height="11" rx="5" fill="#ffffff35"/><rect x="38" y="148" width="128" height="8" rx="4" fill="#ffffff20"/>
+ <path d="M285 145h58v12h-58zM285 121h84v12h-84zM285 97h42v12h-42z" fill="url(#gold)" opacity=".9"/>
+</g>
+<g transform="translate(1260 32)" filter="url(#shadow)">
+ <circle cx="90" cy="92" r="74" fill="url(#gold)" stroke="#ffe9ad" stroke-width="4"/>
+ <circle cx="90" cy="92" r="56" fill="none" stroke="#8b5e1f" stroke-width="3" opacity=".55"/>
+ <path d="M111 50a47 47 0 1 0 0 84A57 57 0 1 1 111 50z" fill="#15253b"/>
+</g>
+<g opacity=".7" fill="none" stroke="url(#gold)" stroke-width="4"><path d="M700 182l72-45 65 18 82-82 72 27"/></g>
+</svg>
