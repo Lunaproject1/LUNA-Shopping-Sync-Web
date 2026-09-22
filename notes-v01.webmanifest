@@ -1,6 +1,6 @@
 {
   "name": "LUNA Notes",
-  "short_name": "Notes",
+  "short_name": "LUNA Notes",
   "description": "Notas offline-first do Projeto Luna",
   "id": "./notes-v013.html",
   "start_url": "./notes-v013.html",
@@ -11,10 +11,10 @@
   "lang": "pt-PT",
   "icons": [
     {
-      "src": "./notes-icon-approved.webp?v=1",
+      "src": "./notes-icon-approved.webp?v=2",
       "sizes": "256x256",
       "type": "image/webp",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
