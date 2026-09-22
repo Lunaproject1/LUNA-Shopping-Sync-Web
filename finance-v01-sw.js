@@ -1,5 +1,5 @@
-const BUILD='2026-09-22-auto2';
-const C='luna-finance-auto-v2';
+const BUILD='2026-09-22-auto3-features';
+const C='luna-finance-auto-v3';
 const APP='./finance-v0298.html';
 const A=[APP,'./finance-v01.webmanifest'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(A)).then(()=>self.skipWaiting())));
