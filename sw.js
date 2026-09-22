@@ -1,6 +1,6 @@
-const CACHE='luna-suite-v2';
-const APPS=['./v075c.html','./notes-v013.html','./finance-v0298.html'];
-const CORE=['./index.html',...APPS,'./manifest.webmanifest','./notes-v01.webmanifest','./finance-v01.webmanifest','./icon.svg','./notes-icon.svg'];
+const CACHE='luna-suite-v3';
+const APPS=['./shopping.html','./notes-v013.html','./finance-v0298.html'];
+const CORE=['./index.html','./luna-core.js',...APPS,'./manifest.webmanifest','./notes-v01.webmanifest','./finance-v01.webmanifest','./icon.svg','./notes-icon.svg'];
 
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting()));
