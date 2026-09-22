@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320">
+<defs>
+ <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#102b25"/><stop offset=".48" stop-color="#234d38"/><stop offset="1" stop-color="#8a6632"/></linearGradient>
+ <linearGradient id="bag" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d6ad65"/><stop offset="1" stop-color="#9d7138"/></linearGradient>
+ <filter id="sh"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-opacity=".35"/></filter>
+ <filter id="blur"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<rect width="1200" height="320" fill="url(#bg)"/>
+<circle cx="950" cy="70" r="120" fill="#e4b85d" opacity=".22" filter="url(#blur)"/>
+<circle cx="760" cy="250" r="130" fill="#8db46d" opacity=".16" filter="url(#blur)"/>
+<!-- cart -->
+<g fill="none" stroke="#17241f" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" opacity=".95" filter="url(#sh)">
+ <path d="M360 118h610l-65 145H430z"/><path d="M360 118l-35-48h-65"/>
+ <circle cx="470" cy="287" r="14" fill="#17241f"/><circle cx="860" cy="287" r="14" fill="#17241f"/>
+</g>
+<!-- baguette -->
+<g transform="rotate(8 870 120)" filter="url(#sh)"><rect x="830" y="-20" width="72" height="250" rx="34" fill="#c88c43"/><path d="M842 35l46 18M840 80l47 18M840 125l46 18" stroke="#e8bd75" stroke-width="8"/></g>
+<!-- bottle -->
+<g filter="url(#sh)"><rect x="740" y="15" width="62" height="210" rx="18" fill="#17291f"/><rect x="753" y="-15" width="36" height="45" rx="7" fill="#101c16"/><rect x="748" y="112" width="46" height="60" rx="8" fill="#d3b367" opacity=".75"/></g>
+<!-- greens -->
+<g fill="#72a85b" filter="url(#sh)"><ellipse cx="610" cy="82" rx="58" ry="24" transform="rotate(-25 610 82)"/><ellipse cx="650" cy="60" rx="60" ry="24" transform="rotate(20 650 60)"/><ellipse cx="690" cy="88" rx="58" ry="22" transform="rotate(-8 690 88)"/><ellipse cx="625" cy="112" rx="55" ry="22" transform="rotate(15 625 112)"/></g>
+<!-- LUNA bag -->
+<g filter="url(#sh)"><path d="M525 100h190l22 176H505z" fill="url(#bag)"/><path d="M565 110c5-55 105-55 112 0" fill="none" stroke="#6d4b25" stroke-width="10"/>
+ <path d="M621 154a35 35 0 1 0 27 55 31 31 0 1 1-27-55z" fill="#173229"/>
+ <text x="620" y="244" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="8" fill="#173229">LUNA</text>
+</g>
+<!-- checklist -->
+<g transform="rotate(5 780 175)" filter="url(#sh)"><rect x="700" y="92" width="215" height="180" rx="10" fill="#f0e2c3"/><path d="M725 128h22v22h-22zM725 172h22v22h-22zM725 216h22v22h-22z" fill="none" stroke="#28352e" stroke-width="4"/><path d="M728 138l7 7 14-19M728 182l7 7 14-19M728 226l7 7 14-19" fill="none" stroke="#28352e" stroke-width="4"/><path d="M765 140h115M765 184h100M765 228h110" stroke="#6e6759" stroke-width="5" stroke-linecap="round"/></g>
+<!-- produce -->
+<circle cx="980" cy="230" r="38" fill="#bd4334" filter="url(#sh)"/><path d="M978 190l-15-24 22 13 17-17-4 29" fill="#4d7b3f"/>
+<ellipse cx="1045" cy="220" rx="35" ry="50" fill="#d9b344" transform="rotate(22 1045 220)" filter="url(#sh)"/>
+<rect width="1200" height="320" fill="url(#bg)" opacity=".08"/>
+</svg>
