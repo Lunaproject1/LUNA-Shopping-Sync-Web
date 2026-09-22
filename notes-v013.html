@@ -1,4 +1,4 @@
-<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111827"><link rel="manifest" href="./notes-v01.webmanifest"><link rel="icon" href="./notes-icon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="./notes-icon.svg?v=4"><title>LUNA Notes v0.1.3a</title><script src="https://accounts.google.com/gsi/client" async defer></script>
+<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111827"><link rel="manifest" href="./notes-v01.webmanifest"><link rel="icon" href="./notes-icon.svg?v=4" type="image/svg+xml"><link rel="apple-touch-icon" href="./notes-icon.svg?v=4"><title>LUNA Notes v0.1.3b</title><script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f5f6f8;color:#18202a}header{background:#111827;color:#fff;padding:17px 16px;position:sticky;top:0;z-index:5}.top,main{max-width:850px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center}.brand{font-size:20px;font-weight:800}.small{font-size:12px;color:#667085}.top .small{color:#cbd5e1}.card,.toolbar,.view,.edit{background:#fff;border:1px solid #e1e5ea;border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px #00000008}main{padding:14px}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:120px}button,input,textarea{font:inherit;border:1px solid #d0d5dd;border-radius:10px;padding:10px;background:#fff}button{font-weight:650;cursor:pointer}.primary{background:#111827;color:#fff;border-color:#111827}.danger{color:#b42318}.hidden{display:none!important}input.title{width:100%;font-size:20px;font-weight:750;border:0;padding:5px 0;outline:none}textarea{width:100%;min-height:230px;border:0;padding:10px 0;resize:vertical;outline:none;line-height:1.5}.card h3,.view h2{margin:0 0 8px}.body{white-space:pre-wrap;line-height:1.5}.meta{font-size:11px;color:#98a2b3;margin-top:10px}.fold{border-top:1px solid #eaecf0;margin-top:14px;padding-top:10px}.foldBtn{border:0;padding:4px 0;background:none;width:100%;text-align:left}.check{display:flex;gap:8px;align-items:center;padding:7px 0}.check input{flex:0}.history{margin-top:7px}.event{border-left:2px solid #d0d5dd;padding:4px 0 4px 10px;margin:8px 0;font-size:13px}.empty{text-align:center;color:#667085;padding:35px}.footer{text-align:center;color:#98a2b3;font-size:11px;padding:18px}.brandWrap{display:flex;align-items:center;gap:10px}.brandOfficial{width:52px;height:52px;flex:0 0 52px;overflow:hidden}.brandOfficial img{display:block;width:100%;height:100%;object-fit:cover;border-radius:13px}
 body{background:linear-gradient(180deg,#eef2f7 0,#f7f8fa 260px);min-height:100vh}
 header{background:linear-gradient(135deg,#0b1220,#172033 62%,#26334d);padding:20px 16px 24px;box-shadow:0 8px 24px #10182822}
@@ -13,21 +13,21 @@ header{padding:11px 14px 14px}
 .top .small{font-size:10px}
 .toolbar{margin-top:-6px}
 button,input,textarea{font-size:13px}
-.toolbar .row button{min-height:0!important;height:36px!important;padding:7px 10px!important;font-size:12px!important;line-height:1!important;border-radius:10px!important}
-#list .card h3{font-size:14px;font-weight:750}
-#list .card .body{font-size:13px;line-height:1.45}
+.toolbar .row button{min-height:0!important;height:32px!important;padding:5px 9px!important;font-size:11px!important;line-height:1!important;border-radius:10px!important}
+#list .card h3{font-size:13px;font-weight:750}
+#list .card .body{font-size:12px;line-height:1.45}
 #list .card .meta{font-size:10px}
-.view h2{font-size:17px}
-.view .body{font-size:13px;line-height:1.45}
+.view h2{font-size:16px}
+.view .body{font-size:12px;line-height:1.45}
 .footer{font-size:10px}
 </style></head><body>
-<header><div class="top"><div class="brandWrap"><div class="brandOfficial"><img src="./notes-icon.svg?v=4" alt="LUNA Notes"></div><div><div class="brand">LUNA Notes</div><div class="small">v0.1.3a</div></div></div><div id="net" class="small">● Local</div></div></header><main>
+<header><div class="top"><div class="brandWrap"><div class="brandOfficial"><img src="./notes-icon.svg?v=4" alt="LUNA Notes"></div><div><div class="brand">LUNA Notes</div><div class="small">v0.1.3b</div></div></div><div id="net" class="small">● Local</div></div></header><main>
 <div class="toolbar"><div class="row"><button id="new" class="primary">＋ Nova nota</button><button id="googleSync" type="button" onclick="googleSyncAction()"><span id="googleDot" class="googleDot"></span><span id="googleSyncLabel">Ligar Google</span></button></div><div id="status" class="small" style="margin-top:8px">Dados guardados localmente.</div></div>
 <div id="edit" class="edit hidden"><input id="title" class="title" placeholder="Título"><textarea id="content" placeholder="Escreve a tua nota…"></textarea><div class="row"><button id="save" class="primary">Guardar</button><button id="cancel">Cancelar</button></div></div>
 <div id="view" class="view hidden"><h2 id="vtitle"></h2><div id="vbody" class="body"></div><div id="vmeta" class="meta"></div><div class="row" style="margin-top:14px"><button id="editBtn" class="primary">Editar</button><button id="close">Fechar</button><button id="del" class="danger">Eliminar</button></div>
 <div class="fold"><button id="checkFold" class="foldBtn">▸ Checklist</button><div id="checkArea" class="hidden"><div id="checks"></div><div class="row"><input id="newCheck" placeholder="Adicionar item"><button id="addCheck">Adicionar</button></div></div></div>
 <div class="fold"><button id="histFold" class="foldBtn">▸ Histórico <span id="histCount"></span></button><div id="history" class="history hidden"></div></div></div>
-<div id="list"></div><div id="empty" class="empty">Ainda não existem notas.</div><div class="footer">LUNA Notes v0.1.3a · Projeto Luna · © @TugaPT</div></main>
+<div id="list"></div><div id="empty" class="empty">Ainda não existem notas.</div><div class="footer">LUNA Notes v0.1.3b · Projeto Luna · © @TugaPT</div></main>
 <script>
 const CLIENT_ID='447933051526-jdcl86ljqb6ehsiupr3aomjhia0fbqr2.apps.googleusercontent.com',SID='1XqsIs_fp_nAOHNP7H5FVWO6usFInSCFXnCDSt6ov9eA',K='luna.notes.v01',KC='luna.notes.checks.v01',KH='luna.notes.history.v01';
 let notes=L(K),checks=L(KC),events=L(KH),current=null,editing=null,token=null,tc=null,syncing=false;const $=x=>document.getElementById(x),now=()=>new Date().toISOString(),uid=()=>crypto.randomUUID?crypto.randomUUID():'id-'+Date.now()+'-'+Math.random().toString(16).slice(2);
