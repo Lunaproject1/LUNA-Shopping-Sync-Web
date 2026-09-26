@@ -112,9 +112,9 @@ main{padding-top:10px}.hero{margin-top:0}.syncRow,.summaryBox,.card{background:l
 .syncBtn,input,select,button{background:#101d22;color:#eef2ef;border-color:#35505a}.syncBtn.primarySync,.primary,.areaChip.active{background:linear-gradient(135deg,#176f36,#2ba34e);color:#fff;border-color:#2ba34e}.syncStatus,.summaryLabel,.small,.meta,.autoHint{color:#9aaba6}.summaryBox:first-child{border-left:4px solid #45b95f}.summaryBox:last-child{border-left:4px solid #d4af55}.summaryNum{color:#fff}.addTitle,.listHead h2{color:#eef2ef}.autoHint strong{color:#d4af55}.areaChip,.chip,.toolBtn{background:#101d22;color:#d8e2df;border-color:#294047}.chip.active{background:#d4af55;color:#111;border-color:#d4af55}.sectionTitle{background:#0d1a1f;border-color:#294047;color:#eef2ef}.item{border-color:#233940}.item:active{background:#17282e}.name{color:#f4f7f5}.check{border-color:#668078}.footer{color:#738783}.editCard{background:#101d22;border-color:#35505a;color:#eef2ef}
 @media(max-width:600px){.lunaHeader:before{right:-20px;width:125px;height:125px}.lunaHeader:after{right:13%;width:48px;height:48px;font-size:29px}}
 
-/* Shopping v0.7.5s — unified Google + readable filter rail */
+/* Shopping v0.7.6 — purchase planning + hardened sync status */
 .googleUnified{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:210px}
-.googleDot{width:9px;height:9px;border-radius:50%;background:#e5484d;box-shadow:0 0 0 3px #e5484d22;flex:0 0 9px}.googleDot.on{background:#32c766;box-shadow:0 0 0 3px #32c76622}
+.googleDot{width:9px;height:9px;border-radius:50%;background:#e5484d;box-shadow:0 0 0 3px #e5484d22;flex:0 0 9px}.googleDot.on{background:#32c766;box-shadow:0 0 0 3px #32c76622}.googleDot.pending{background:#f79009;box-shadow:0 0 0 3px #f7900922}.googleDot.syncing{background:#2e90fa;box-shadow:0 0 0 3px #2e90fa22}.googleDot.error{background:#f04438;box-shadow:0 0 0 3px #f0443822}.syncState{display:inline-flex;align-items:center;gap:6px;font-weight:700}.syncStateDot{width:8px;height:8px;border-radius:50%;background:#98a2b3;display:inline-block}.syncState.pending .syncStateDot{background:#f79009}.syncState.syncing .syncStateDot{background:#2e90fa}.syncState.synced .syncStateDot{background:#12b76a}.syncState.error .syncStateDot{background:#f04438}
 .areaControls{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;overflow:visible!important;padding:3px 0 8px}
 .areaChip{display:flex;align-items:center;justify-content:center;gap:5px;white-space:normal!important;min-height:42px;padding:7px 8px!important;text-align:center;line-height:1.1}
 .controls{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;overflow:visible!important}.chip{white-space:normal!important}
@@ -176,12 +176,12 @@ body[data-theme="outdoor"] header.lunaHeader:before{background:linear-gradient(9
 </head>
 <body data-theme="light">
 <div class="lunaTopBar"><div class="lunaMark"><span class="lunaMoon">◒</span><span>L U N A</span></div><div class="lunaStatus"><span id="topClock"></span><span>|</span><span id="net">● Local</span><span class="sun">☀</span><span class="dots">⋮</span></div></div>
-<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon"><img src="./shopping-icon-v5.svg?v=1" alt="LUNA Shopping"></div><div><h1>LUNA Shopping</h1><div class="shopHello">Olá, Tuga</div><div class="subtitle">v0.7.5s</div></div></div><div class="heroRight"><div class="themeSwitch" aria-label="Modo visual"><button type="button" data-theme-btn="light">☀ Light</button><button type="button" data-theme-btn="dark">☾ Dark</button><button type="button" data-theme-btn="outdoor">☀ Outdoor</button></div></div></div></header>
+<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon"><img src="./shopping-icon-v5.svg?v=1" alt="LUNA Shopping"></div><div><h1>LUNA Shopping</h1><div class="shopHello">Olá, Tuga</div><div class="subtitle">v0.7.6</div></div></div><div class="heroRight"><div class="themeSwitch" aria-label="Modo visual"><button type="button" data-theme-btn="light">☀ Light</button><button type="button" data-theme-btn="dark">☾ Dark</button><button type="button" data-theme-btn="outdoor">☀ Outdoor</button></div></div></div></header>
 <main>
 <section class="hero">
  <div class="syncRow">
    <button class="syncBtn googleUnified" id="googleConnect"><span class="googleDot" id="googleDot"></span><span id="googleLabel">Google não ligado</span></button>
-   <span class="syncStatus" id="syncStatus">Local pronto · Google não ligado</span>
+   <span class="syncStatus syncState" id="syncState"><span class="syncStateDot"></span><span id="syncStatus">Local pronto · Google não ligado</span></span>
  </div>
  <div class="summary">
   <div class="summaryBox"><div class="summaryNum" id="pendingBig">0</div><div class="summaryLabel">Por comprar</div></div>
@@ -209,6 +209,10 @@ body[data-theme="outdoor"] header.lunaHeader:before{background:linear-gradient(9
    <option>Normal</option><option>Alta</option><option>Baixa</option>
   </select>
  </div>
+ <div class="secondRow" style="margin-top:9px">
+  <select id="plan" aria-label="Quando comprar"><option value="Agora">Agora</option><option value="Quando puder">Quando puder</option></select>
+  <div class="small" style="align-self:center">“Quando puder” fica guardado fora da lista principal.</div>
+ </div>
 </section>
 
 <div class="listHead"><h2>A tua lista</h2><span class="small" id="totalLabel">0 itens</span></div>
@@ -225,6 +229,7 @@ body[data-theme="outdoor"] header.lunaHeader:before{background:linear-gradient(9
  <button class="chip active" data-filter="all">Tudo</button>
  <button class="chip" data-filter="pending">Por comprar</button>
  <button class="chip" data-filter="done">Comprados</button>
+ <button class="chip" id="plannedFilter" data-filter="planned">🕓 Quando puder</button>
 </div>
 
 <div id="list"></div>
@@ -260,10 +265,12 @@ body[data-theme="outdoor"] header.lunaHeader:before{background:linear-gradient(9
    <select id="editPriority"><option>Normal</option><option>Alta</option><option>Baixa</option></select>
    <select id="editState"><option value="pending">Por comprar</option><option value="completed">Comprado</option></select>
   </div>
+  <div class="editLabel">Quando comprar</div>
+  <div class="editGrid2"><select id="editPlan"><option value="Agora">Agora</option><option value="Quando puder">Quando puder</option></select></div>
   <div class="editActions"><button class="editCancel" id="editCancel">Cancelar</button><button class="primary" id="editSave">Guardar alterações</button></div>
  </div>
 </div>
-<div class="footer">LUNA Shopping v0.7.5s · Projeto Luna · © @TugaPT</div>
+<div class="footer">LUNA Shopping v0.7.6 · Projeto Luna · © @TugaPT</div>
 </main>
 
 <script>
@@ -275,7 +282,7 @@ const KEY='luna.shopping.v01', HIST='luna.shopping.history.v01', PURCHASE_HIST='
 const CLIENT_ID='447933051526-jdcl86ljqb6ehsiupr3aomjhia0fbqr2.apps.googleusercontent.com';
 const SPREADSHEET_ID='1XqsIs_fp_nAOHNP7H5FVWO6usFInSCFXnCDSt6ov9eA';
 const SHEET='Sheet1';
-const SHEET_RANGE='Sheet1!A:J';
+const SHEET_RANGE='Sheet1!A:K';
 const HISTORY_SHEET='Shopping_History';
 const HISTORY_RANGE='Shopping_History!A:P';
 let items=[], currentFilter='all', currentArea='Dia a dia', accessToken=null, tokenClient=null, syncing=false, editingId=null;
@@ -317,7 +324,7 @@ function normalize(s){return String(s||'').toLocaleLowerCase('pt-PT').normalize(
 function now(){return new Date().toISOString()}
 function normalizeLocalItem(x){
  return {id:String(x.id||makeId()),name:String(x.name||''),qty:String(x.qty||''),category:x.category||'Outros',
-  area:(x.area&&areaInfo[x.area])?x.area:detectArea(x.name,x.category),priority:(x.priority&&priorityInfo[x.priority])?x.priority:'Normal',
+  area:(x.area&&areaInfo[x.area])?x.area:detectArea(x.name,x.category),priority:(x.priority&&priorityInfo[x.priority])?x.priority:'Normal',plan:x.plan==='Quando puder'?'Quando puder':'Agora',
   done:!!x.done,createdAt:x.createdAt||x.updatedAt||now(),updatedAt:x.updatedAt||x.createdAt||now(),deleted:!!x.deleted,
   dirty:x.dirty===true};
 }
@@ -332,11 +339,11 @@ items=load(KEY,[]).map(normalizeLocalItem);
 function save(){localStorage.setItem(KEY,JSON.stringify(items));render()}
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function makeId(){return crypto.randomUUID?crypto.randomUUID():'item-'+Date.now()+'-'+Math.random().toString(16).slice(2)}
-function addItem(name,qty='',category,area,priority='Normal'){
+function addItem(name,qty='',category,area,priority='Normal',plan='Agora'){
  name=String(name||'').trim();if(!name)return;
  const detected=detectCategory(name), finalCat=category||detected, finalArea=area||detectArea(name,finalCat);
  if(category&&category!==detected){const learned=load(LEARN,{});learned[normalize(name)]=category;localStorage.setItem(LEARN,JSON.stringify(learned))}
- const t=now();items.push({id:makeId(),name,qty:String(qty||'').trim(),category:finalCat,area:finalArea,priority:priority||'Normal',done:false,createdAt:t,updatedAt:t,deleted:false,dirty:true,deleted:false});save();autoSync()
+ const t=now();items.push({id:makeId(),name,qty:String(qty||'').trim(),category:finalCat,area:finalArea,priority:priority||'Normal',plan:plan==='Quando puder'?'Quando puder':'Agora',done:false,createdAt:t,updatedAt:t,deleted:false,dirty:true,deleted:false});save();autoSync()
 }
 function getHistory(){return load(PURCHASE_HIST,[])}
 function saveHistory(h){localStorage.setItem(PURCHASE_HIST,JSON.stringify(h));renderHistory()}
@@ -362,14 +369,14 @@ function updateItem(id){
  let x=items.find(i=>i.id===id);if(!x||x.deleted)return;
  editingId=id;
  $('editName').value=x.name||'';$('editQty').value=x.qty||'';$('editCat').value=x.category||'Outros';
- $('editArea').value=x.area||detectArea(x.name,x.category);$('editPriority').value=x.priority||'Normal';$('editState').value=x.done?'completed':'pending';
+ $('editArea').value=x.area||detectArea(x.name,x.category);$('editPriority').value=x.priority||'Normal';$('editState').value=x.done?'completed':'pending';$('editPlan').value=x.plan==='Quando puder'?'Quando puder':'Agora';
  $('editOverlay').classList.add('open');$('editOverlay').setAttribute('aria-hidden','false');setTimeout(()=>$('editName').focus(),0);
 }
 function closeEditor(){$('editOverlay').classList.remove('open');$('editOverlay').setAttribute('aria-hidden','true');editingId=null}
 function saveEditor(){
  let x=items.find(i=>i.id===editingId);if(!x||x.deleted)return closeEditor();
  const n=$('editName').value.trim();if(!n){alert('O produto precisa de um nome.');return}
- const wasDone=x.done;x.name=n;x.qty=$('editQty').value.trim();x.category=$('editCat').value;x.area=$('editArea').value;x.priority=$('editPriority').value;
+ const wasDone=x.done;x.name=n;x.qty=$('editQty').value.trim();x.category=$('editCat').value;x.area=$('editArea').value;x.priority=$('editPriority').value;x.plan=$('editPlan').value==='Quando puder'?'Quando puder':'Agora';
  const learned=load(LEARN,{});learned[normalize(x.name)]=x.category;localStorage.setItem(LEARN,JSON.stringify(learned));
  x.done=$('editState').value==='completed';x.updatedAt=now();x.dirty=true;if(x.done&&!wasDone)recordPurchase(x);if(!x.done&&wasDone)removePurchaseForItem(x.id);closeEditor();save();autoSync();
 }
@@ -396,8 +403,9 @@ function updateHint(){
 function render(){
  const visible=items.filter(i=>!i.deleted);
  const areaVisible=visible.filter(i=>currentArea==='all'||i.area===currentArea);
- const shown=areaVisible.filter(i=>currentFilter==='all'||(currentFilter==='pending'&&!i.done)||(currentFilter==='done'&&i.done));
- const pending=visible.filter(i=>!i.done).length,done=visible.filter(i=>i.done).length;
+ const shown=areaVisible.filter(i=>currentFilter==='planned'?(!i.done&&i.plan==='Quando puder'):(i.plan!=='Quando puder'&&(currentFilter==='all'||(currentFilter==='pending'&&!i.done)||(currentFilter==='done'&&i.done))));
+ const pending=visible.filter(i=>!i.done&&i.plan!=='Quando puder').length,done=visible.filter(i=>i.done&&i.plan!=='Quando puder').length,planned=visible.filter(i=>!i.done&&i.plan==='Quando puder').length;
+ const pf=$('plannedFilter');if(pf)pf.textContent='🕓 Quando puder ('+planned+')';
  $('pendingBig').textContent=pending;$('doneBig').textContent=done;$('totalLabel').textContent=`${visible.length} ${visible.length===1?'item':'itens'}`;
  const root=$('list');root.innerHTML='';
  if(!shown.length){root.innerHTML='<div class="card empty"><div class="emptyIcon">🛒</div><strong>A lista está limpa</strong><span>Adiciona o primeiro produto acima.</span></div>';return}
@@ -408,7 +416,7 @@ function render(){
   let sec=document.createElement('section');sec.className='card section';sec.innerHTML=`<div class="sectionTitle"><span class="sectionIcon">${info[0]}</span><span>${esc(c)}</span><span class="sectionCount">${rows.length}</span></div>`;
   for(const i of rows){
    let d=document.createElement('div');d.className='item'+(i.done?' done':'');
-   d.innerHTML=`<input class="check" type="checkbox" ${i.done?'checked':''} aria-label="Marcar comprado"><div><div class="name">${esc(i.name)}</div><div class="meta">${i.qty?'Quantidade: '+esc(i.qty)+' · ':''}${priorityInfo[i.priority]||'🟡'} ${esc(i.priority||'Normal')}${currentArea==='all'?' · '+esc(i.area||'Dia a dia'):''}</div></div><div class="actions"><button class="iconBtn" title="Editar">✎</button><button class="iconBtn" title="Remover">×</button></div>`;
+   d.innerHTML=`<input class="check" type="checkbox" ${i.done?'checked':''} aria-label="Marcar comprado"><div><div class="name">${esc(i.name)}</div><div class="meta">${i.qty?'Quantidade: '+esc(i.qty)+' · ':''}${priorityInfo[i.priority]||'🟡'} ${esc(i.priority||'Normal')}${i.plan==='Quando puder'?' · 🕓 Quando puder':''}${currentArea==='all'?' · '+esc(i.area||'Dia a dia'):''}</div></div><div class="actions"><button class="iconBtn" title="Editar">✎</button><button class="iconBtn" title="Remover">×</button></div>`;
    d.querySelector('.check').onchange=e=>completeItem(i.id,e.target.checked);const bs=d.querySelectorAll('button');bs[0].onclick=()=>updateItem(i.id);bs[1].onclick=()=>removeItem(i.id);sec.appendChild(d)
   }root.appendChild(sec)
  }
@@ -433,15 +441,16 @@ function renderHistory(){
  }
 }
 function setSyncStatus(msg){$('syncStatus').textContent=msg}
+function setSyncState(state,text){const e=$('syncState'),d=$('googleDot');if(e)e.className='syncStatus syncState '+state;if(text)$('syncStatus').textContent=text;if(d){d.classList.remove('pending','syncing','error');if(state==='pending')d.classList.add('pending');else if(state==='syncing')d.classList.add('syncing');else if(state==='error')d.classList.add('error')}}
 function net(){
  const online=navigator.onLine;$('net').textContent=online?'● Online · local':'● Offline · local';
- if(!online)setSyncStatus('Offline · alterações guardadas localmente')
+ if(!online)setSyncState('pending','Offline · alterações guardadas localmente')
 }
 function initGoogle(){
  if(!window.google?.accounts?.oauth2)return false;
  tokenClient=google.accounts.oauth2.initTokenClient({
   client_id:CLIENT_ID,scope:'https://www.googleapis.com/auth/spreadsheets',
-  callback:r=>{if(r.error){setSyncStatus('Google: autorização falhou');updateGoogleButton();return}accessToken=r.access_token;updateGoogleButton();setSyncStatus('Google ligado · a sincronizar…');syncNow()}
+  callback:r=>{if(r.error){setSyncState('error','Google: autorização falhou');updateGoogleButton();return}accessToken=r.access_token;updateGoogleButton();setSyncState('syncing','Google ligado · a sincronizar…');syncNow()}
  });return true
 }
 function connectGoogle(){
@@ -453,19 +462,19 @@ function connectGoogle(){
 }
 function updateGoogleButton(){const dot=$('googleDot'),label=$('googleLabel');if(!dot||!label)return;const on=!!accessToken;dot.classList.toggle('on',on);label.textContent=on?'Sincronizar':'Ligar ao Google'}
 async function api(url,options={}){
- const r=await fetch(url,{...options,headers:{Authorization:`Bearer ${accessToken}`,...(options.headers||{})}});
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);let r;try{r=await fetch(url,{...options,signal:controller.signal,headers:{Authorization:`Bearer ${accessToken}`,...(options.headers||{})}})}catch(e){if(e.name==='AbortError')throw new Error('TIMEOUT');throw e}finally{clearTimeout(timer)};
  if(r.status===401){accessToken=null;throw new Error('AUTH_EXPIRED')}
  if(!r.ok){let t=await r.text();throw new Error(t||('HTTP '+r.status))}
  if(r.status===204)return null;return r.json()
 }
 function remoteToItem(row){
- const [id,name,qty,category,state,updatedBy,updatedAt,deleted,area,priority]=row;
+ const [id,name,qty,category,state,updatedBy,updatedAt,deleted,area,priority,plan]=row;
  const t=updatedAt||'1970-01-01T00:00:00.000Z';
  return {id:String(id||makeId()),name:String(name||''),qty:String(qty||''),category:category||detectCategory(name),
-  area:(area&&areaInfo[area])?area:detectArea(name,category),priority:(priority&&priorityInfo[priority])?priority:'Normal',
+  area:(area&&areaInfo[area])?area:detectArea(name,category),priority:(priority&&priorityInfo[priority])?priority:'Normal',plan:plan==='Quando puder'?'Quando puder':'Agora',
   done:String(state||'pending').toLowerCase()==='completed',createdAt:t,updatedAt:t,deleted:String(deleted||'').toLowerCase()==='true',dirty:false};
 }
-function itemToRow(i){return [i.id,i.name,i.qty||'',i.category||'Outros',i.done?'completed':'pending','LUNA Shopping App',i.updatedAt||now(),i.deleted?'true':'false',i.area||'Dia a dia',i.priority||'Normal']}
+function itemToRow(i){return [i.id,i.name,i.qty||'',i.category||'Outros',i.done?'completed':'pending','LUNA Shopping App',i.updatedAt||now(),i.deleted?'true':'false',i.area||'Dia a dia',i.priority||'Normal',i.plan==='Quando puder'?'Quando puder':'Agora']}
 
 function remoteToHistory(row){
  const [historyId0,itemId,transactionId,name,qty,category,area,priority,purchasedAt,price,currency,store,origin,updatedAt,eurPrice,fxRate]=row;
@@ -527,37 +536,38 @@ function mergeLocalRemote(remote){
 async function syncNow(){
  if(syncing)return;if(!navigator.onLine){setSyncStatus('Offline · alterações guardadas localmente');return}
  if(!accessToken){setSyncStatus('Google não ligado · carrega em “Ligar Google”');return}
- syncing=true;$('syncNow').disabled=true;setSyncStatus('A sincronizar…');
+ syncing=true;$('syncNow').disabled=true;setSyncState('syncing','A sincronizar · lista…');
  try{
   const readUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET_RANGE)}`;
   const data=await api(readUrl);
   const rows=(data.values||[]).slice(1).filter(r=>r[0]).map(remoteToItem);
   mergeLocalRemote(rows);
-  const clearUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:J1000')}:clear`;
+  const clearUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:K1000')}:clear`;
   await api(clearUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
   const values=items.map(itemToRow);
   if(values.length){
-   const writeUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:J'+(values.length+1))}?valueInputOption=RAW`;
+   const writeUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:K'+(values.length+1))}?valueInputOption=RAW`;
    await api(writeUrl,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values})})
   }
   items.forEach(i=>i.dirty=false);
   save();
-  await syncHistory();
-  const hc=getHistory().length; setSyncStatus('Sincronizado · histórico local: '+hc+' · '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}))
+  setSyncState('syncing','A sincronizar · histórico…');await syncHistory();
+  const hc=getHistory().length; setSyncState('synced','Sincronizado · histórico local: '+hc+' · '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}))
  }catch(e){
-  if(e.message==='AUTH_EXPIRED')setSyncStatus('Sessão Google expirou · liga novamente');
-  else setSyncStatus('Falha de sincronização · dados locais preservados')
+  console.error('LUNA Shopping sync failed',e);if(e.message==='AUTH_EXPIRED')setSyncState('error','Sessão Google expirou · liga novamente');
+  else if(e.message==='TIMEOUT')setSyncState('error','Sincronização demorou demasiado · dados locais preservados');
+  else setSyncState('error','Falha de sincronização · '+(e.message||'erro desconhecido')+' · dados locais preservados')
  }finally{syncing=false;$('syncNow').disabled=false}
 }
 function autoSync(){if(navigator.onLine&&accessToken)setTimeout(syncNow,150)}
 
 $('name').addEventListener('input',updateHint);
-$('add').onclick=()=>{const name=$('name').value,auto=detectCategory(name);addItem(name,$('qty').value,$('cat').value||auto,$('area').value,$('priority').value);$('name').value='';$('qty').value='';$('cat').value='Outros';$('area').value='Dia a dia';$('priority').value='Normal';updateHint();$('name').focus()};
+$('add').onclick=()=>{const name=$('name').value,auto=detectCategory(name);addItem(name,$('qty').value,$('cat').value||auto,$('area').value,$('priority').value,$('plan').value);$('name').value='';$('qty').value='';$('cat').value='Outros';$('area').value='Dia a dia';$('priority').value='Normal';$('plan').value='Agora';updateHint();$('name').focus()};
 $('name').onkeydown=e=>{if(e.key==='Enter')$('add').click()};
 document.querySelectorAll('.areaChip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.areaChip').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentArea=b.dataset.area;render()});
 document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFilter=b.dataset.filter;render()});
 $('clearDone').onclick=clearCompleted;$('closeTrip').onclick=closeShoppingTrip;
-$('exportBtn').onclick=()=>{let data={version:'0.7.5c',exportedAt:now(),items,history:getHistory(),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v075i.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
+$('exportBtn').onclick=()=>{let data={version:'0.7.6',exportedAt:now(),items,history:getHistory(),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v075i.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
 $('importBtn').onclick=()=>$('importFile').click();
 $('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.items))throw 0;if(!confirm('Substituir a lista atual pelo backup?'))return;const t=now();items=d.items.map(normalizeLocalItem).map(i=>({...i,updatedAt:t,dirty:true}));localStorage.setItem(PURCHASE_HIST,JSON.stringify(Array.isArray(d.history)?d.history.map(normalizeHistoryEntry):[]));if(d.learnedCategories&&typeof d.learnedCategories==='object')localStorage.setItem(LEARN,JSON.stringify(d.learnedCategories));save();autoSync()}catch{alert('Backup inválido.')}e.target.value=''};
 $('editClose').onclick=closeEditor;$('editCancel').onclick=closeEditor;$('editSave').onclick=saveEditor;$('editOverlay').onclick=e=>{if(e.target===$('editOverlay'))closeEditor()};addEventListener('keydown',e=>{if(e.key==='Escape'&&$('editOverlay').classList.contains('open'))closeEditor()});
@@ -567,6 +577,6 @@ migratePurchaseHistory();net();render();renderHistory();updateHint();updateGoogl
 let tries=0;const gisWait=setInterval(()=>{if(initGoogle()||++tries>20)clearInterval(gisWait)},250);
 
 
-window.LunaShopping={version:'0.7.5c',getList,getPendingItems,getItemsByCategory,getItemsByArea,detectCategory,detectArea,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
+window.LunaShopping={version:'0.7.6',getList,getPendingItems,getItemsByCategory,getItemsByArea,detectCategory,detectArea,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
 </script>
 <script src="./luna-core.js"></script></body></html>
