@@ -112,7 +112,7 @@ main{padding-top:10px}.hero{margin-top:0}.syncRow,.summaryBox,.card{background:l
 .syncBtn,input,select,button{background:#101d22;color:#eef2ef;border-color:#35505a}.syncBtn.primarySync,.primary,.areaChip.active{background:linear-gradient(135deg,#176f36,#2ba34e);color:#fff;border-color:#2ba34e}.syncStatus,.summaryLabel,.small,.meta,.autoHint{color:#9aaba6}.summaryBox:first-child{border-left:4px solid #45b95f}.summaryBox:last-child{border-left:4px solid #d4af55}.summaryNum{color:#fff}.addTitle,.listHead h2{color:#eef2ef}.autoHint strong{color:#d4af55}.areaChip,.chip,.toolBtn{background:#101d22;color:#d8e2df;border-color:#294047}.chip.active{background:#d4af55;color:#111;border-color:#d4af55}.sectionTitle{background:#0d1a1f;border-color:#294047;color:#eef2ef}.item{border-color:#233940}.item:active{background:#17282e}.name{color:#f4f7f5}.check{border-color:#668078}.footer{color:#738783}.editCard{background:#101d22;border-color:#35505a;color:#eef2ef}
 @media(max-width:600px){.lunaHeader:before{right:-20px;width:125px;height:125px}.lunaHeader:after{right:13%;width:48px;height:48px;font-size:29px}}
 
-/* Shopping v0.7.6 — purchase planning + hardened sync status */
+/* Shopping v0.7.6a — purchase planning + hardened sync status */
 .googleUnified{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:210px}
 .googleDot{width:9px;height:9px;border-radius:50%;background:#e5484d;box-shadow:0 0 0 3px #e5484d22;flex:0 0 9px}.googleDot.on{background:#32c766;box-shadow:0 0 0 3px #32c76622}.googleDot.pending{background:#f79009;box-shadow:0 0 0 3px #f7900922}.googleDot.syncing{background:#2e90fa;box-shadow:0 0 0 3px #2e90fa22}.googleDot.error{background:#f04438;box-shadow:0 0 0 3px #f0443822}.syncState{display:inline-flex;align-items:center;gap:6px;font-weight:700}.syncStateDot{width:8px;height:8px;border-radius:50%;background:#98a2b3;display:inline-block}.syncState.pending .syncStateDot{background:#f79009}.syncState.syncing .syncStateDot{background:#2e90fa}.syncState.synced .syncStateDot{background:#12b76a}.syncState.error .syncStateDot{background:#f04438}
 .areaControls{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;overflow:visible!important;padding:3px 0 8px}
@@ -176,7 +176,7 @@ body[data-theme="outdoor"] header.lunaHeader:before{background:linear-gradient(9
 </head>
 <body data-theme="light">
 <div class="lunaTopBar"><div class="lunaMark"><span class="lunaMoon">◒</span><span>L U N A</span></div><div class="lunaStatus"><span id="topClock"></span><span>|</span><span id="net">● Local</span><span class="sun">☀</span><span class="dots">⋮</span></div></div>
-<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon"><img src="./shopping-icon-v5.svg?v=1" alt="LUNA Shopping"></div><div><h1>LUNA Shopping</h1><div class="shopHello">Olá, Tuga</div><div class="subtitle">v0.7.6</div></div></div><div class="heroRight"><div class="themeSwitch" aria-label="Modo visual"><button type="button" data-theme-btn="light">☀ Light</button><button type="button" data-theme-btn="dark">☾ Dark</button><button type="button" data-theme-btn="outdoor">☀ Outdoor</button></div></div></div></header>
+<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon"><img src="./shopping-icon-v5.svg?v=1" alt="LUNA Shopping"></div><div><h1>LUNA Shopping</h1><div class="shopHello">Olá, Tuga</div><div class="subtitle">v0.7.6a</div></div></div><div class="heroRight"><div class="themeSwitch" aria-label="Modo visual"><button type="button" data-theme-btn="light">☀ Light</button><button type="button" data-theme-btn="dark">☾ Dark</button><button type="button" data-theme-btn="outdoor">☀ Outdoor</button></div></div></div></header>
 <main>
 <section class="hero">
  <div class="syncRow">
@@ -270,7 +270,7 @@ body[data-theme="outdoor"] header.lunaHeader:before{background:linear-gradient(9
   <div class="editActions"><button class="editCancel" id="editCancel">Cancelar</button><button class="primary" id="editSave">Guardar alterações</button></div>
  </div>
 </div>
-<div class="footer">LUNA Shopping v0.7.6 · Projeto Luna · © @TugaPT</div>
+<div class="footer">LUNA Shopping v0.7.6a · Projeto Luna · © @TugaPT</div>
 </main>
 
 <script>
@@ -536,7 +536,7 @@ function mergeLocalRemote(remote){
 async function syncNow(){
  if(syncing)return;if(!navigator.onLine){setSyncStatus('Offline · alterações guardadas localmente');return}
  if(!accessToken){setSyncStatus('Google não ligado · carrega em “Ligar Google”');return}
- syncing=true;$('syncNow').disabled=true;setSyncState('syncing','A sincronizar · lista…');
+ syncing=true;setSyncState('syncing','A sincronizar · lista…');
  try{
   const readUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET_RANGE)}`;
   const data=await api(readUrl);
@@ -557,7 +557,7 @@ async function syncNow(){
   console.error('LUNA Shopping sync failed',e);if(e.message==='AUTH_EXPIRED')setSyncState('error','Sessão Google expirou · liga novamente');
   else if(e.message==='TIMEOUT')setSyncState('error','Sincronização demorou demasiado · dados locais preservados');
   else setSyncState('error','Falha de sincronização · '+(e.message||'erro desconhecido')+' · dados locais preservados')
- }finally{syncing=false;$('syncNow').disabled=false}
+ }finally{syncing=false}
 }
 function autoSync(){if(navigator.onLine&&accessToken)setTimeout(syncNow,150)}
 
