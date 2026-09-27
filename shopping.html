@@ -8,7 +8,7 @@
 <link rel="icon" href="./shopping-icon-v5.svg?v=1" type="image/svg+xml">
 <link rel="shortcut icon" href="./shopping-icon-v5.svg?v=1" type="image/svg+xml">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<title>LUNA Shopping v0.7.5s</title>
+<title>LUNA Shopping v0.8.0 Pilot 1</title>
 <style>
 :root{
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -500,7 +500,8 @@ function connectGoogle(){
 function updateGoogleButton(){const dot=$('googleDot'),label=$('googleLabel');if(!dot||!label)return;const on=!!accessToken;dot.classList.toggle('on',on);label.textContent=on?'Sincronizar':'Ligar ao Google'}
 async function api(url,options={}){
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);let r;try{r=await fetch(url,{...options,signal:controller.signal,headers:{Authorization:`Bearer ${accessToken}`,...(options.headers||{})}})}catch(e){if(e.name==='AbortError')throw new Error('TIMEOUT');throw e}finally{clearTimeout(timer)};
- if(r.status===401){accessToken=null;throw new Error('AUTH_EXPIRED')}
+ if(r.status===401){accessToken=null;updateGoogleButton();throw new Error('AUTH_EXPIRED')}
+ if(r.status===403){let t=await r.text();throw new Error('PERMISSION_REQUIRED:'+t)}
  if(!r.ok){let t=await r.text();throw new Error(t||('HTTP '+r.status))}
  if(r.status===204)return null;return r.json()
 }
@@ -528,30 +529,27 @@ function mergeHistoryRemote(remote){
  }
  const merged=[...map.values()].map(normalizeHistoryEntry);localStorage.setItem(PURCHASE_HIST,JSON.stringify(merged));return merged;
 }
+async function upsertRowsById(sheet,range,endCol,localRows,idOf,rowOf){
+ const base='https://sheets.googleapis.com/v4/spreadsheets/'+SPREADSHEET_ID+'/values/';
+ const data=await api(base+encodeURIComponent(range)),rows=(data.values||[]).slice(1),remote=new Map();
+ rows.forEach((r,i)=>{if(r[0])remote.set(String(r[0]),{row:i+2,raw:r})});
+ for(const obj of localRows.filter(x=>x.dirty)){
+  const id=String(idOf(obj)||'');if(!id)continue;const hit=remote.get(id),values=[rowOf(obj)];
+  if(hit){const rg=sheet+'!A'+hit.row+':'+endCol+hit.row;await api(base+encodeURIComponent(rg)+'?valueInputOption=RAW',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({range:rg,majorDimension:'ROWS',values})})}
+  else{await api(base+encodeURIComponent(sheet+'!A:'+endCol)+':append?valueInputOption=RAW&insertDataOption=INSERT_ROWS',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({majorDimension:'ROWS',values})})}
+ }
+}
 async function syncHistory(){
- const readUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(HISTORY_RANGE)}`;
- const data=await api(readUrl);
- const remote=(data.values||[]).slice(1).filter(r=>r[0]).map(remoteToHistory);
  const local=getHistory().map(normalizeHistoryEntry);
- const remoteById=new Map(remote.map(e=>[e.historyId,e]));
- const localById=new Map(local.map(e=>[e.historyId,e]));
- // Only explicit local dirty entries may change cloud history.
- for(const l of local){
-  if(!l.dirty)continue;
-  if(l.deleted){remoteById.delete(l.historyId);continue}
-  remoteById.set(l.historyId,l)
- }
- const merged=[...remoteById.values()].filter(e=>!e.deleted).map(normalizeHistoryEntry);
- // Cloud rewrite is based on cloud snapshot + explicit local mutations, never on local absence.
- const clearUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(HISTORY_SHEET+'!A2:P1000')}:clear`;
- await api(clearUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
- const values=merged.map(historyToRow);
- if(values.length){
-  const writeUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(HISTORY_SHEET+'!A2:P'+(values.length+1))}?valueInputOption=RAW`;
-  await api(writeUrl,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values})});
- }
- // Keep cloud truth locally, plus unsynced tombstones are no longer needed after successful write.
- const clean=merged.map(e=>({...e,dirty:false,deleted:false}));
+ await upsertRowsById(HISTORY_SHEET,HISTORY_RANGE,'P',local,e=>e.historyId,historyToRow);
+ const readUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(HISTORY_RANGE)}`;
+ const verify=await api(readUrl);
+ const remote=(verify.values||[]).slice(1).filter(r=>r[0]).map(remoteToHistory);
+ const localById=new Map(local.map(e=>[e.historyId,e])),fresh=[];
+ for(const r of remote){const l=localById.get(r.historyId),lt=Date.parse(l?.updatedAt||0)||0,rt=Date.parse(r.updatedAt||0)||0;fresh.push(l?.dirty&&lt>rt?l:r)}
+ for(const l of local){if(l.dirty&&!remote.some(r=>r.historyId===l.historyId))fresh.push(l)}
+ const verifiedIds=new Set(remote.map(e=>e.historyId));
+ const clean=fresh.filter(e=>!e.deleted).map(e=>({...e,dirty:verifiedIds.has(e.historyId)?false:e.dirty}));
  localStorage.setItem(PURCHASE_HIST,JSON.stringify(clean));renderHistory();
 }
 
@@ -571,29 +569,28 @@ function mergeLocalRemote(remote){
  items=[...map.values()].map(normalizeLocalItem);localStorage.setItem(KEY,JSON.stringify(items))
 }
 async function syncNow(){
- if(syncing)return;if(!navigator.onLine){setSyncStatus('Offline · alterações guardadas localmente');return}
- if(!accessToken){setSyncStatus('Google não ligado · carrega em “Ligar Google”');return}
+ if(syncing)return;if(!navigator.onLine){setSyncState('pending','Offline · alterações guardadas localmente');return}
+ if(!accessToken){setSyncState('pending','Google não ligado · alterações guardadas localmente');return}
  syncing=true;setSyncState('syncing','A sincronizar · lista…');
  try{
   const readUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET_RANGE)}`;
-  const data=await api(readUrl);
-  const rows=(data.values||[]).slice(1).filter(r=>r[0]).map(remoteToItem);
-  mergeLocalRemote(rows);render();
-  const clearUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:K1000')}:clear`;
-  await api(clearUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
-  const values=items.map(itemToRow);
-  if(values.length){
-   const writeUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:K'+(values.length+1))}?valueInputOption=RAW`;
-   await api(writeUrl,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values})})
-  }
-  items.forEach(i=>i.dirty=false);
-  save();
+  const data=await api(readUrl),remote=(data.values||[]).slice(1).filter(r=>r[0]).map(remoteToItem);
+  mergeLocalRemote(remote);render();
+  await upsertRowsById(SHEET,SHEET_RANGE,'K',items,i=>i.id,itemToRow);
+  const verify=await api(readUrl),fresh=(verify.values||[]).slice(1).filter(r=>r[0]).map(remoteToItem),verified=new Map(fresh.map(x=>[x.id,x]));
+  const localBefore=items.slice(),merged=[];
+  for(const r of fresh){const l=localBefore.find(x=>x.id===r.id),lt=Date.parse(l?.updatedAt||0)||0,rt=Date.parse(r.updatedAt||0)||0;merged.push(l?.dirty&&lt>rt?l:r)}
+  for(const l of localBefore){if(l.dirty&&!verified.has(l.id))merged.push(l)}
+  items=merged.map(i=>({...normalizeLocalItem(i),dirty:verified.has(i.id)?false:i.dirty}));
+  localStorage.setItem(KEY,JSON.stringify(items));render();
   setSyncState('syncing','A sincronizar · histórico…');await syncHistory();
-  const hc=getHistory().length; setSyncState('synced','Sincronizado · histórico local: '+hc+' · '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}))
+  const hc=getHistory().length;setSyncState('synced','Sincronizado e verificado · histórico local: '+hc+' · '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}))
  }catch(e){
-  console.error('LUNA Shopping sync failed',e);if(e.message==='AUTH_EXPIRED')setSyncState('error','Sessão Google expirou · liga novamente');
-  else if(e.message==='TIMEOUT')setSyncState('error','Sincronização demorou demasiado · dados locais preservados');
-  else setSyncState('error','Falha de sincronização · '+(e.message||'erro desconhecido')+' · dados locais preservados')
+  console.error('LUNA Shopping pilot sync failed',e);
+  if(e.message==='AUTH_EXPIRED')setSyncState('error','Sessão Google expirou · alterações locais preservadas · liga novamente');
+  else if(String(e.message).startsWith('PERMISSION_REQUIRED:'))setSyncState('error','Permissão Luna Data necessária · alterações locais preservadas');
+  else if(e.message==='TIMEOUT')setSyncState('error','Timeout · alterações locais preservadas');
+  else setSyncState('error','Falha de sincronização · alterações locais preservadas')
  }finally{syncing=false}
 }
 function autoSync(){if(navigator.onLine&&accessToken)setTimeout(syncNow,150)}
@@ -618,6 +615,6 @@ migratePurchaseHistory();net();render();renderHistory();updateHint();updateCateg
 let tries=0;const gisWait=setInterval(()=>{if(initGoogle()||++tries>20)clearInterval(gisWait)},250);
 
 
-window.LunaShopping={version:'0.7.6',getList,getPendingItems,getItemsByCategory,getItemsByArea,detectCategory,detectArea,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
+window.LunaShopping={version:'0.8.0-pilot.1',getList,getPendingItems,getItemsByCategory,getItemsByArea,detectCategory,detectArea,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
 </script>
 <script src="./luna-core.js"></script></body></html>
