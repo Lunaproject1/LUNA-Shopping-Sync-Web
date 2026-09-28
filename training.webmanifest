@@ -1,0 +1,16 @@
+{
+  "name": "LUNA Training",
+  "short_name": "Training",
+  "description": "Training & performance log do Projeto LUNA",
+  "id": "./training.html",
+  "start_url": "./training.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#07111d",
+  "theme_color": "#111827",
+  "lang": "pt-PT",
+  "icons": [
+    {"src":"./training-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
