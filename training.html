@@ -128,6 +128,13 @@ body[data-theme="dark"] #syncText{color:#9eb5c6}
   .lunaTopBar,header,main{max-width:none;width:calc(100% - 32px)}
   main{padding-left:0;padding-right:0}
 }
+
+/* v0.2.2b — stable viewport scale across all pages */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.page,.page.active{width:100%;max-width:100%}
+@media (min-width:700px){
+  input,select,textarea{font-size:16px}
+}
 </style>
 </head>
 <body data-theme="light">
@@ -216,7 +223,7 @@ function setCheckedValues(id,values){document.querySelectorAll('#'+id+' input').
 function selectedSkills(){return checkedValues('eSkills')}
 function selectedMetrics(){return checkedValues('eMetrics')}
 function resetExerciseForm(){['eEditId','eName','eDistance','eMags','eRounds','eRoundsPerMag','eSets','eTimeMin','eTimeSec','eDesc'].forEach(id=>$(id).value='');setCheckedValues('eSkills',[]);setCheckedValues('eMetrics',[]);$('eTarget').value='';$('eStartPosition').value='';$('eDistanceUnit').value='m';$('exerciseFormTitle').textContent='Novo exercício';$('saveExercise').textContent='Guardar exercício';$('exerciseFormCard').hidden=true}
-function showNewExercise(){resetExerciseForm();$('exerciseFormCard').hidden=false;$('eName').focus()}
+function showNewExercise(){resetExerciseForm();$('exerciseFormCard').hidden=false}
 function editExercise(id){let e=db.exercises.find(x=>x.id===id);if(!e)return;$('eEditId').value=e.id;$('eName').value=e.name;setCheckedValues('eSkills',e.skills||[e.skill]);setCheckedValues('eMetrics',e.metrics||[]);$('eTarget').value=e.target||'';$('eStartPosition').value=e.startPosition||'';$('eDistance').value=e.distance??'';$('eDistanceUnit').value=e.distanceUnit||'m';$('eMags').value=e.mags??'';$('eRounds').value=e.rounds??'';$('eRoundsPerMag').value=e.roundsPerMag??'';$('eSets').value=e.sets??'';$('eTimeMin').value=e.timeMin??'';$('eTimeSec').value=e.timeSec??'';$('eDesc').value=e.desc||'';$('exerciseFormTitle').textContent='Editar exercício';$('saveExercise').textContent='Guardar alterações';$('exerciseFormCard').hidden=false;document.querySelector('[data-page="exercises"]').click();$('exerciseFormCard').scrollIntoView({behavior:'smooth',block:'start'})}
 function duplicateExercise(id){let e=db.exercises.find(x=>x.id===id);if(!e)return;db.exercises.push({...e,id:uid(),name:e.name+' — cópia',createdAt:now(),updatedAt:now()});save()}
 function timeText(e){let m=Number(e.timeMin||0),s=Number(e.timeSec||0);return (m||s)?(m?m+' min ':'')+(s?String(s).padStart(2,'0')+' s':m?'00 s':''):''}
