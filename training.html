@@ -122,6 +122,12 @@ body[data-theme="dark"] #syncText{color:#9eb5c6}
 .skillPicker{display:flex;flex-wrap:wrap;gap:7px;margin:7px 0 13px}.skillPicker label{cursor:pointer}.skillPicker input{position:absolute;opacity:0;pointer-events:none}.skillPicker span{display:block;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card2);font-size:12px;font-weight:700}.skillPicker input:checked+span{background:var(--accent);border-color:var(--accent2);color:#fff;box-shadow:0 0 10px rgba(0,168,255,.2)}.timePair{display:grid;grid-template-columns:1fr 1fr;gap:7px}.skillTags{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}.skillTag{font-size:10px;padding:3px 7px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--muted)}
 
 .exerciseDetails{margin-top:8px}.exerciseDetails summary{cursor:pointer;font-size:11px;font-weight:800;color:var(--accent2);margin-bottom:6px}
+
+/* v0.2.2a — tablet/desktop responsive width hotfix */
+@media (min-width:900px){
+  .lunaTopBar,header,main{max-width:none;width:calc(100% - 32px)}
+  main{padding-left:0;padding-right:0}
+}
 </style>
 </head>
 <body data-theme="light">
