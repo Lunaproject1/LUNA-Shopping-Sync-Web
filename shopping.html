@@ -322,7 +322,7 @@ const SHEET='Sheet1';
 const SHEET_RANGE='Sheet1!A:L';
 const HISTORY_SHEET='Shopping_History';
 const HISTORY_RANGE='Shopping_History!A:P';
-let items=[], shoppingLists=load(LISTS_KEY,[{id:'normal',name:'Normal',icon:'🛒',color:'#6d5dfc',system:true}]), currentList='normal', currentFilter='pending', currentArea='all', accessToken=null, tokenClient=null, syncing=false, editingId=null, shoppingMode=false, shoppingModePrev={filter:'pending',area:'Dia a dia'};
+let items=[], shoppingLists=load(LISTS_KEY,[{id:'normal',name:'Normal',icon:'🛒',color:'#6d5dfc',system:true}]), currentList='normal', currentFilter='pending', currentArea='all', accessToken=null, tokenClient=null, syncing=false, editingId=null, shoppingMode=false, batchMode=false, batchSelected=new Set(), shoppingModePrev={filter:'pending',area:'Dia a dia'};
 const FX_KEY='luna.shopping.fx.uaheur.v01';
 const $=id=>document.getElementById(id);
 const areaInfo={
