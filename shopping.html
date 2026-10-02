@@ -674,7 +674,7 @@ function setShoppingMode(on){shoppingMode=!!on;document.body.classList.toggle('s
 $('confirmClose').onclick=$('confirmCancel').onclick=()=>closeLunaConfirm(true);$('confirmOverlay').onclick=e=>{if(e.target===$('confirmOverlay'))closeLunaConfirm(true)};$('confirmOk').onclick=()=>{const fn=confirmAction;closeLunaConfirm();if(fn)fn()};
 $('shoppingModeBtn').onclick=()=>setShoppingMode(!shoppingMode);$('selectItems').onclick=()=>setBatchMode(!batchMode);$('batchCancel').onclick=()=>setBatchMode(false);$('batchMove').onclick=moveBatch;
 function bindCollapse(toggleId,bodyId){const t=$(toggleId),b=$(bodyId);if(!t||!b)return;t.onclick=()=>{const open=t.getAttribute('aria-expanded')==='true';t.setAttribute('aria-expanded',open?'false':'true');b.hidden=open}}
-$('listClose').onclick=closeListModal;$('listCancel').onclick=closeListModal;$('listSave').onclick=createShoppingList;$('listOverlay').onclick=e=>{if(e.target===$('listOverlay'))closeListModal()};
+$('listClose').onclick=closeListModal;$('listCancel').onclick=closeListModal;$('listSave').onclick=createShoppingList;$('listDelete').onclick=deleteEditingSeparator;$('listOverlay').onclick=e=>{if(e.target===$('listOverlay'))closeListModal()};
 bindCollapse('historyToggle','historyBody');bindCollapse('managementToggle','managementBody');
 $('clearDone').onclick=clearCompleted;$('closeTrip').onclick=closeShoppingTrip;
 $('exportBtn').onclick=()=>{let data={version:'0.7.6',exportedAt:now(),items,history:getHistory(),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v075i.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
