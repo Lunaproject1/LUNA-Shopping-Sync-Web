@@ -208,7 +208,7 @@ body[data-theme="outdoor"] header.lunaHeader:before{background:linear-gradient(9
 </head>
 <body data-theme="light">
 <div class="lunaTopBar"><div class="lunaMark"><span class="lunaMoon">◒</span><span>L U N A</span></div><div class="lunaStatus"><span id="topClock"></span><span>|</span><span id="net">● Local</span><span class="sun">☀</span><span class="dots">⋮</span></div></div>
-<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon"><img src="./shopping-icon-v5.svg?v=1" alt="LUNA Shopping"></div><div><h1>LUNA Shopping</h1><div class="shopHello">Olá, Tuga</div><div class="subtitle">v0.7.24</div></div></div><div class="heroRight"><div class="themeSwitch" aria-label="Modo visual"><button type="button" data-theme-btn="light">☀ Light</button><button type="button" data-theme-btn="dark">☾ Dark</button><button type="button" data-theme-btn="outdoor">☀ Outdoor</button></div></div></div></header>
+<header class="lunaHeader"><div class="lunaTop"><div class="brand"><div class="moon"><img src="./shopping-icon-v5.svg?v=1" alt="LUNA Shopping"></div><div><h1>LUNA Shopping</h1><div class="shopHello">Olá, Tuga</div><div class="subtitle">v0.7.25 TEST</div></div></div><div class="heroRight"><div class="themeSwitch" aria-label="Modo visual"><button type="button" data-theme-btn="light">☀ Light</button><button type="button" data-theme-btn="dark">☾ Dark</button><button type="button" data-theme-btn="outdoor">☀ Outdoor</button></div></div></div></header>
 <main>
 <section class="hero">
  <div class="syncRow">
@@ -692,6 +692,6 @@ migratePurchaseHistory();const recoveredCloseItems=recoverAccidentalClose();net(
 let tries=0;const gisWait=setInterval(()=>{if(initGoogle()||++tries>20)clearInterval(gisWait)},250);
 
 
-window.LunaShopping={version:'0.7.24-test',getList,getPendingItems,getItemsByCategory,getItemsByArea,detectCategory,detectArea,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
+window.LunaShopping={version:'0.7.25-test',getList,getPendingItems,getItemsByCategory,getItemsByArea,detectCategory,detectArea,addItem,completeItem,removeItem,clearCompleted,closeShoppingTrip,syncNow};
 </script>
 <script src="./luna-core.js"></script></body></html>
