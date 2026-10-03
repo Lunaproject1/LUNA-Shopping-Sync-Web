@@ -194,6 +194,20 @@ body[data-theme="dark"] .homeSection.homeEvents{background:#1b2630}
 .timeField{display:flex;align-items:center;gap:7px;margin-top:5px}.timeField select{font:inherit;border:1px solid var(--n-line,#d0d5dd);border-radius:10px;padding:10px;background:var(--n-card,#fff);color:inherit;min-width:72px}.timeField b{font-size:18px}.timeField button{padding:9px 10px;min-width:auto}.timeValue{font-size:11px;color:var(--n-muted,#667085);margin-top:4px}
 .clockTrigger{display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:5px}.clockTrigger strong{font-size:18px}.clockOverlay{position:fixed;inset:0;background:#0008;z-index:50;display:flex;align-items:center;justify-content:center;padding:18px}.clockModal{width:min(360px,100%);max-height:calc(100vh - 36px);overflow:auto;background:var(--n-card,#fff);color:inherit;border-radius:22px;padding:18px;box-shadow:0 18px 60px #0006}.clockDisplay{text-align:center;font-size:46px;font-weight:800;letter-spacing:2px;margin:2px 0 14px}.clockHint{text-align:center;font-size:11px;color:var(--n-muted,#667085);margin-bottom:10px}.clockFace{position:relative;width:min(280px,76vw);aspect-ratio:1;margin:auto;border-radius:50%;background:var(--n-soft,#f1f3f5);border:1px solid var(--n-line,#d0d5dd)}.clockNum{position:absolute;width:42px;height:42px;border:0;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;transform:translate(-50%,-50%);background:transparent}.clockNum.active{background:#111827;color:#fff}.clockActions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}.clockActions button{flex:0 0 auto}.clockClear{margin-right:auto}
 body[data-theme="dark"] .clockNum.active{background:#f2f4f7;color:#111827}
+
+/* v0.1.14 — universal completed-state visual language */
+.noteCard.resolved:before,.noteCard.resolved.pinned:before{background:#98a2b3}
+.noteCard.resolved .noteCardType,.noteCard.resolved .noteCardTag{background:#dde2e7;color:#59636e}
+.noteCard.resolved .noteCardFoot{border-color:#cfd5db;color:#69737d}
+.timelineItem.resolved{background:#eef1f4;color:#59636e;box-shadow:inset 3px 0 0 #98a2b3;opacity:.82}
+.timelineItem.resolved .timelineDot,.timelineItem.resolved.daily .timelineDot,.timelineItem.resolved.typeChecklist .timelineDot,.timelineItem.resolved.typeMeeting .timelineDot{background:#98a2b3}
+.timelineItem.resolved .timelineText small,.timelineItem.resolved .timelineTime{color:#69737d}
+body[data-theme="dark"] .noteCard.resolved .noteCardType,body[data-theme="dark"] .noteCard.resolved .noteCardTag{background:#38414a;color:#d8dde2}
+body[data-theme="dark"] .timelineItem.resolved{background:#252b31;color:#d8dde2;box-shadow:inset 3px 0 0 #59636e}
+body[data-theme="dark"] .timelineItem.resolved .timelineDot{background:#87919b}
+body[data-theme="outdoor"] .noteCard.resolved .noteCardType,body[data-theme="outdoor"] .noteCard.resolved .noteCardTag{background:#e5e5e5;color:#000;border:1px solid #000}
+body[data-theme="outdoor"] .timelineItem.resolved{background:#e5e5e5;color:#000;border:2px dashed #000;box-shadow:none;opacity:1}
+
 </style></head><body>
 <div class="lunaTop"><div class="lunaMark"><span class="moon">◒</span><span>L U N A</span></div><div class="lunaStatus"><span id="topClock"></span><span>|</span><span id="net" class="small">● Local</span><span class="sun">☀</span><span class="dots">⋮</span></div></div>
 <header class="notesHero"><div class="top"><div class="brandWrap"><div class="brandOfficial"><img src="./notes-icon-approved.webp?v=2" alt="LUNA Notes"></div><div class="brandText"><div class="brand">LUNA Notes</div><div class="small notesHello">Olá, Tuga</div><div class="small notesVersion">v0.1.14 TEST</div></div></div><div class="heroRight"><div class="themeSwitch" aria-label="Modo visual"><button type="button" data-theme-btn="light">☀ Light</button><button type="button" data-theme-btn="dark">☾ Dark</button><button type="button" data-theme-btn="outdoor">☀ Outdoor</button></div></div></div></header><main>
