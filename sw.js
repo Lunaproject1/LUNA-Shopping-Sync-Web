@@ -1,5 +1,5 @@
-const CACHE='luna-suite-v12';
-const APPS=['./shopping.html','./notes-v013.html','./finance-v0298.html'];
+const CACHE='luna-suite-v13';
+const APPS=['./shopping.html','./notes-v013.html','./finance.html','./finance-v0298.html'];
 const CORE=['./index.html','./luna-core.js','./manifest.webmanifest','./notes-v01.webmanifest','./finance-v01.webmanifest','./icon.svg','./notes-icon.svg','./shopping-icon.svg?v=3'];
 
 self.addEventListener('install',event=>{
