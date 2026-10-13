@@ -19,13 +19,12 @@ self.addEventListener('fetch',event=>{
  const url=new URL(event.request.url);
  if(url.origin!==location.origin)return;
  const app=APPS.find(path=>url.pathname.endsWith('/'+path.slice(2)));
- if(app){
-  event.respondWith(fetch(new Request(event.request,{cache:'no-store'})).then(response=>{
-   const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(app,copy));return response;
-  }).catch(()=>caches.match(app)));
-  return;
- }
- event.respondWith(fetch(event.request).then(response=>{
-  const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(event.request,copy));return response;
- }).catch(()=>caches.match(event.request)));
+ const cacheKey=app||event.request;
+ let cacheWrite=Promise.resolve();
+ const responsePromise=fetch(app?new Request(event.request,{cache:'no-store'}):event.request).then(response=>{
+  if(response.ok){const copy=response.clone();cacheWrite=caches.open(CACHE).then(cache=>cache.put(cacheKey,copy))}
+  return response;
+ }).catch(async()=>{let cached=await caches.match(cacheKey);return cached&&cached.ok?cached:Response.error()});
+ event.respondWith(responsePromise);
+ event.waitUntil(responsePromise.then(()=>cacheWrite).catch(()=>{}));
 });
