@@ -1,0 +1,121 @@
+[
+  {
+    "id": "HTTP_404:notes-v013.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "HTTP_500:notes-v013.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "HTTP_502:notes-v013.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "HTTP_404:shopping.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "HTTP_500:shopping.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "HTTP_502:shopping.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "HTTP_404:finance-v0298.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "HTTP_500:finance-v0298.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "HTTP_502:finance-v0298.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "HTTP_404:index.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "HTTP_500:index.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "HTTP_502:index.html",
+    "result": "PASS",
+    "details": {
+      "errorNotCached": true
+    }
+  },
+  {
+    "id": "CACHE_WRITE_ATTACHED_TO_LIFETIME",
+    "result": "PASS",
+    "details": {
+      "waitUntilUsedSynchronously": true
+    }
+  },
+  {
+    "id": "OFFLINE_COLD_DEFINED_ERROR",
+    "result": "PASS",
+    "details": {
+      "definedNetworkError": true
+    }
+  },
+  {
+    "id": "UPDATE_PRESERVES_PREVIOUS_APP_CACHE",
+    "result": "PASS",
+    "details": {
+      "previousAppsAvailableOffline": true
+    }
+  },
+  {
+    "id": "OLD_POISONED_CACHE_NOT_RETURNED",
+    "result": "PASS",
+    "details": {
+      "invalidOldResponseRejected": true
+    }
+  },
+  {
+    "id": "CACHE_QUOTA_PRESERVES_NETWORK_RESPONSE",
+    "result": "PASS",
+    "details": {
+      "networkSuccessAndPreviousCachePreserved": true
+    }
+  }
+]

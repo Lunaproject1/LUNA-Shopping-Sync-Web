@@ -1,0 +1,199 @@
+[
+  {
+    "id": "SYNTAX_BOOT:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "syntacticAndDOMStartup": true
+    }
+  },
+  {
+    "id": "SYNTAX_BOOT:notes-v016-test.html",
+    "result": "PASS",
+    "detail": {
+      "syntacticAndDOMStartup": true
+    }
+  },
+  {
+    "id": "SYNTAX_BOOT:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "syntacticAndDOMStartup": true
+    }
+  },
+  {
+    "id": "SYNTAX_BOOT:finance.html",
+    "result": "PASS",
+    "detail": {
+      "syntacticAndDOMStartup": true
+    }
+  },
+  {
+    "id": "SYNTAX_BOOT:shopping.html",
+    "result": "PASS",
+    "detail": {
+      "syntacticAndDOMStartup": true
+    }
+  },
+  {
+    "id": "SYNTAX_BOOT:training.html",
+    "result": "PASS",
+    "detail": {
+      "syntacticAndDOMStartup": true
+    }
+  },
+  {
+    "id": "ACK_exact:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "pendingPreserved": false,
+      "exactEchoAcknowledged": true
+    }
+  },
+  {
+    "id": "ACK_divergent:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "pendingPreserved": true,
+      "exactEchoAcknowledged": false
+    }
+  },
+  {
+    "id": "ACK_missing:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "pendingPreserved": true,
+      "exactEchoAcknowledged": false
+    }
+  },
+  {
+    "id": "ACK_edit-during-write:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "pendingPreserved": true,
+      "exactEchoAcknowledged": false
+    }
+  },
+  {
+    "id": "ACK_exact:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "pendingPreserved": false,
+      "exactEchoAcknowledged": true
+    }
+  },
+  {
+    "id": "ACK_divergent:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "pendingPreserved": true,
+      "exactEchoAcknowledged": false
+    }
+  },
+  {
+    "id": "ACK_missing:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "pendingPreserved": true,
+      "exactEchoAcknowledged": false
+    }
+  },
+  {
+    "id": "ACK_edit-during-write:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "pendingPreserved": true,
+      "exactEchoAcknowledged": false
+    }
+  },
+  {
+    "id": "NOTES_FULL_SYNC_MISMATCH_NO_SUCCESS",
+    "result": "PASS",
+    "detail": {
+      "localEditRetained": true,
+      "noFalseSuccess": true
+    }
+  },
+  {
+    "id": "NOTES_SOURCE_URLS",
+    "result": "PASS",
+    "detail": {
+      "unsafeRejected": 3,
+      "validAccepted": 2
+    }
+  },
+  {
+    "id": "NOTES_INLINE_RESOLUTION_REQUIRES_CONFIRMATION",
+    "result": "PASS",
+    "detail": {
+      "cancelPreservesPending": true
+    }
+  },
+  {
+    "id": "FINANCE_INVALID_RAW_AMOUNT_REJECTED",
+    "result": "PASS",
+    "detail": {
+      "invalidRejected": 4,
+      "validAccepted": 4
+    }
+  },
+  {
+    "id": "FINANCE_TAG_DECODER_CONTAINED",
+    "result": "PASS",
+    "detail": {
+      "malformedRetained": true,
+      "validUtf8Preserved": true
+    }
+  },
+  {
+    "id": "FINANCE_TRANSFER_AND_BREAKDOWN_REGRESSION",
+    "result": "PASS",
+    "detail": {
+      "netTransferZero": true,
+      "exactUnderOverSplit": true
+    }
+  },
+  {
+    "id": "SYNC_ROWS_NORMALIZES_SHEET_SCALARS",
+    "result": "PASS",
+    "detail": {
+      "scalarAndTrailingEmptyCompatibility": true
+    }
+  },
+  {
+    "id": "TRAINING_RENDER_IDS_ESCAPED",
+    "result": "PASS",
+    "detail": {
+      "noInjectedElement": true
+    }
+  },
+  {
+    "id": "TRAINING_EXERCISE_IDS_ESCAPED",
+    "result": "PASS",
+    "detail": {
+      "exerciseRenderedWithoutInjection": true
+    }
+  },
+  {
+    "id": "TRAINING_IMPORT_SCHEMA_REJECTS_BEFORE_REPLACE",
+    "result": "PASS",
+    "detail": {
+      "invalidBackupsRejected": 3,
+      "originalUnchanged": true
+    }
+  },
+  {
+    "id": "TRAINING_VALID_BACKUP_ROUNDTRIP",
+    "result": "PASS",
+    "detail": {
+      "validDataPreserved": true,
+      "legacyFavoriteNamesAccepted": true
+    }
+  },
+  {
+    "id": "PERMANENT_NOTES_EQUALS_VERSIONED",
+    "result": "PASS",
+    "detail": {
+      "sameBytes": true
+    }
+  }
+]
