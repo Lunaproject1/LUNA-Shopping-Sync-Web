@@ -1,0 +1,20 @@
+{
+  "name": "LUNA | TUGI — Canine Life & Training",
+  "short_name": "TUGI",
+  "description": "Treinos, comandos, saúde e história do Tugi",
+  "id": "./tugi.html",
+  "start_url": "./tugi.html",
+  "scope": "./",
+  "display": "standalone",
+  "lang": "pt-PT",
+  "theme_color": "#111827",
+  "background_color": "#f5f6f8",
+  "icons": [
+    {
+      "src": "./tugi-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
