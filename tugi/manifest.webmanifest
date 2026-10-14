@@ -1,0 +1,19 @@
+{
+  "id": "/LUNA-Shopping-Sync-Web/tugi/",
+  "name": "LUNA | TUGI",
+  "short_name": "LUNA TUGI",
+  "description": "Canine Life & Training",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071d34",
+  "theme_color": "#071d34",
+  "icons": [
+    {
+      "src": "./tugi-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
