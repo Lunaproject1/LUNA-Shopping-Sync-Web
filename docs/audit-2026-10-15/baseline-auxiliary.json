@@ -1,0 +1,212 @@
+[
+  {
+    "id": "Accounts_exact:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Accounts_divergent:finance.html",
+    "result": "FAIL",
+    "error": "Missing expected rejection."
+  },
+  {
+    "id": "Accounts_write-fails:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Accounts_inflight:finance.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'LOCAL'\n- 'INFLIGHT'\n"
+  },
+  {
+    "id": "Accounts_newer-remote:finance.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n'REMOTE' !== 'LOCAL'\n"
+  },
+  {
+    "id": "Cards_exact:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Cards_divergent:finance.html",
+    "result": "FAIL",
+    "error": "Missing expected rejection."
+  },
+  {
+    "id": "Cards_write-fails:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Cards_inflight:finance.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'LOCAL'\n- 'INFLIGHT'\n"
+  },
+  {
+    "id": "Cards_newer-remote:finance.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n'REMOTE' !== 'LOCAL'\n"
+  },
+  {
+    "id": "Breakdown_exact:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Breakdown_divergent:finance.html",
+    "result": "FAIL",
+    "error": "Missing expected rejection."
+  },
+  {
+    "id": "Breakdown_write-fails:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Breakdown_inflight:finance.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'LOCAL'\n- 'INFLIGHT'\n"
+  },
+  {
+    "id": "Breakdown_newer-remote:finance.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n'REMOTE' !== 'LOCAL'\n"
+  },
+  {
+    "id": "Accounts_exact:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Accounts_divergent:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Missing expected rejection."
+  },
+  {
+    "id": "Accounts_write-fails:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Accounts_inflight:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Accounts_newer-remote:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n'REMOTE' !== 'LOCAL'\n"
+  },
+  {
+    "id": "Cards_exact:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Cards_divergent:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Missing expected rejection."
+  },
+  {
+    "id": "Cards_write-fails:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Cards_inflight:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Cards_newer-remote:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n'REMOTE' !== 'LOCAL'\n"
+  },
+  {
+    "id": "Breakdown_exact:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Breakdown_divergent:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Missing expected rejection."
+  },
+  {
+    "id": "Breakdown_write-fails:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Breakdown_inflight:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Breakdown_newer-remote:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n'REMOTE' !== 'LOCAL'\n"
+  },
+  {
+    "id": "TRAINING_LEGACY_BACKUP_WITHOUT_ATTEMPTS",
+    "result": "FAIL",
+    "error": "Cannot read properties of null (reading 'sessions')"
+  },
+  {
+    "id": "SHOPPING_COMPLETION_QUOTA_JOURNAL_COVERS_ITEM_AND_HISTORY",
+    "result": "FAIL",
+    "error": "Missing expected exception."
+  },
+  {
+    "id": "FINANCE_RECURRING_QUOTA_JOURNAL_COVERS_HISTORY_AND_RULE",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'recovery')"
+  }
+]

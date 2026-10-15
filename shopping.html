@@ -7,6 +7,110 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./shopping-icon-v5.svg?v=1" type="image/svg+xml">
 <link rel="shortcut icon" href="./shopping-icon-v5.svg?v=1" type="image/svg+xml">
+<script data-luna-storage-guard>
+/* Embedded in each candidate HTML: no new offline dependency. */
+(function installStorageGuard(config) {
+  'use strict';
+  const state = { blocked: false, reason: '', pending: null };
+  let storage;
+  const observed = new Map();
+  const journalKey = 'luna.integrity.' + config.app + '.pending.v1';
+  const proto = window.Storage.prototype;
+  const rawSet = proto.setItem, rawRemove = proto.removeItem, rawClear = proto.clear;
+  function show() {
+    if (!document.body || document.getElementById('lunaStorageRecovery')) return;
+    const panel = document.createElement('section');
+    panel.id = 'lunaStorageRecovery';
+    panel.setAttribute('role', 'alertdialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:#111827;color:white;padding:32px;overflow:auto;font:17px/1.5 system-ui';
+    const title = document.createElement('h1'); title.textContent = 'Dados locais protegidos';
+    const text = document.createElement('p');
+    text.textContent = 'A aplicação foi pausada porque os dados locais não puderam ser lidos ou guardados com segurança. Não limpes o armazenamento nem reinstales. Exporta a cópia de recuperação antes de continuar.';
+    const button = document.createElement('button'); button.textContent = 'Exportar cópia de recuperação';
+    button.onclick = () => {
+      const url = URL.createObjectURL(new Blob([JSON.stringify(recovery(), null, 2)], {type: 'application/json'}));
+      const link = document.createElement('a'); link.href = url; link.download = 'LUNA-' + config.app + '-recuperacao.json'; link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 30000);
+    };
+    for (const child of document.body.children) child.inert = true;
+    panel.append(title, text, button); document.body.appendChild(panel); button.focus();
+  }
+  function block(reason, pending) {
+    state.blocked = true; state.reason = reason;
+    if (pending) state.pending = pending;
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', show, {once: true}); else show();
+  }
+  function assertReady() { if (state.blocked) throw Error('LOCAL_DATA_PROTECTED'); }
+  function validate(key, raw) {
+    if (raw === null) return;
+    const kind = config.keys[key], value = JSON.parse(raw);
+    if (kind === 'array' && (!Array.isArray(value) || value.some(x => !x || typeof x !== 'object' || Array.isArray(x)))) throw Error('LOCAL_SCHEMA');
+    if ((kind === 'object' || kind === 'training') && (!value || typeof value !== 'object' || Array.isArray(value))) throw Error('LOCAL_SCHEMA');
+    if (kind === 'training') for (const k of ['exercises', 'sessions', 'weaponLog', 'favoriteWeapons']) {
+      if (value[k] !== undefined && !Array.isArray(value[k])) throw Error('LOCAL_SCHEMA');
+    }
+  }
+  function recovery() {
+    const raw = {};
+    if (storage) for (const key of [...Object.keys(config.keys), journalKey]) {
+      try { raw[key] = storage.getItem(key); } catch { raw[key] = null; }
+    }
+    return {app: config.app, reason: state.reason, raw, pending: state.pending};
+  }
+  function unchanged(key) {
+    if (observed.has(key) && storage.getItem(key) !== observed.get(key)) {
+      block('LOCAL_CONCURRENT_CHANGE'); throw Error('LOCAL_CONCURRENT_CHANGE');
+    }
+  }
+  function commit(entries) {
+    assertReady();
+    const before = {}, after = {};
+    try {
+      for (const [key, value] of Object.entries(entries)) {
+        if (!Object.hasOwn(config.keys, key)) throw Error('LOCAL_UNKNOWN_KEY');
+        unchanged(key); before[key] = storage.getItem(key);
+        after[key] = JSON.stringify(value); validate(key, after[key]);
+      }
+      const pending = {version: 1, before, after};
+      state.pending = pending;
+      // No application key changes before the complete recovery record exists.
+      rawSet.call(storage, journalKey, JSON.stringify(pending));
+      for (const [key, value] of Object.entries(after)) rawSet.call(storage, key, value);
+      for (const [key, value] of Object.entries(after)) if (storage.getItem(key) !== value) throw Error('LOCAL_WRITE_NOT_VERIFIED');
+      rawRemove.call(storage, journalKey);
+      for (const [key, value] of Object.entries(after)) observed.set(key, value);
+      state.pending = null;
+    } catch (error) {
+      // Keep before/after and any durable journal. Never guess which version wins.
+      block('LOCAL_SAVE_INCOMPLETE', state.pending || {before, after});
+      throw error;
+    }
+  }
+  window.LunaStorage = {state, journalKey, assertReady, commit, recovery};
+  try {
+    storage = window.localStorage;
+    for (const key of Object.keys(config.keys)) { const raw = storage.getItem(key); observed.set(key, raw); validate(key, raw); }
+    if (storage.getItem(journalKey) !== null) block('LOCAL_PENDING_RECOVERY');
+  } catch { block('LOCAL_DATA_UNREADABLE'); }
+  proto.setItem = function(key, value) {
+    key = String(key); value = String(value);
+    if (this === storage && (Object.hasOwn(config.keys, key) || key === journalKey)) {
+      assertReady(); unchanged(key);
+      try { if (key !== journalKey) validate(key, value); rawSet.call(this, key, value); observed.set(key, value); }
+      catch (error) { block('LOCAL_SAVE_FAILED', {after: {[key]: value}}); throw error; }
+      return;
+    }
+    return rawSet.call(this, key, value);
+  };
+  proto.removeItem = function(key) { if (this === storage && (Object.hasOwn(config.keys, String(key)) || key === journalKey)) { assertReady(); unchanged(String(key)); observed.set(String(key), null); } return rawRemove.call(this, key); };
+  proto.clear = function() { if (this === storage) { assertReady(); block('LOCAL_CLEAR_BLOCKED'); throw Error('LOCAL_CLEAR_BLOCKED'); } return rawClear.call(this); };
+  window.addEventListener('storage', event => {
+    if (event.storageArea === storage && (event.key === null || event.key === journalKey || Object.hasOwn(config.keys, event.key))) block('LOCAL_CONCURRENT_CHANGE');
+  });
+})({"app":"shopping","keys":{"luna.shopping.v01":"array","luna.shopping.lists.v01":"array","luna.shopping.history.v01":"array","luna.shopping.purchasehistory.v02":"array","luna.shopping.learned.v01":"object"}});
+
+</script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <title>LUNA Shopping v0.7.34 TEST</title>
 <style>
@@ -243,7 +347,7 @@ body[data-theme="outdoor"] header.lunaHeader:before{background:linear-gradient(9
   <div class="secondRow" style="margin-top:9px">
    <select id="itemList" aria-label="Separador"></select>
    <select id="priority" aria-label="Prioridade"><option>Normal</option><option>Alta</option><option>Baixa</option></select>
-   
+
   </div>
  </div>
 </section>
@@ -316,6 +420,8 @@ body[data-theme="outdoor"] header.lunaHeader:before{background:linear-gradient(9
 </main>
 
 <script>
+if(window.LunaStorage)window.LunaStorage.assertReady();
+
 const THEME_KEY='luna.visual.theme.v01';
 function setLunaTheme(mode){const allowed=['light','dark','outdoor'];if(!allowed.includes(mode))mode='light';document.body.dataset.theme=mode;localStorage.setItem(THEME_KEY,mode);document.querySelectorAll('[data-theme-btn]').forEach(b=>b.classList.toggle('active',b.dataset.themeBtn===mode));}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-theme-btn]');if(b)setLunaTheme(b.dataset.themeBtn)});setLunaTheme(localStorage.getItem(THEME_KEY)||'light');
@@ -383,9 +489,9 @@ function detectCategory(name){
 shoppingLists=Array.isArray(shoppingLists)&&shoppingLists.length?shoppingLists:[{id:'normal',name:'Normal',icon:'🛒',color:'#6d5dfc',system:true}];if(!shoppingLists.some(x=>x.id==='normal'))shoppingLists.unshift({id:'normal',name:'Normal',icon:'🛒',color:'#6d5dfc',system:true});shoppingLists=shoppingLists.map(x=>({...x,icon:x.icon||(x.id==='normal'?'🛒':'📋'),color:x.color||'#6d5dfc'}));localStorage.setItem(LISTS_KEY,JSON.stringify(shoppingLists));
 items=load(KEY,[]).map(normalizeLocalItem);
 let editingShoppingList=null;const LIST_ICONS=['📋','🏠','👕','🐾','🛠️','🚗','🎁','💊','🏋️','🛒'],LIST_COLORS=['#6d5dfc','#16a34a','#2563eb','#d97706','#dc2626','#db2777','#0891b2','#7c3aed'];let draftListIcon='📋',draftListColor='#6d5dfc';
-function separatorOptions(){return shoppingLists.map(l=>`<option value="${esc(l.id)}">${esc(l.icon||'📋')} ${esc(l.name)}</option>`).join('')}function populateItemListSelector(){for(const id of ['itemList','editList','batchTarget']){const s=$(id);if(!s)continue;const previous=s.value||currentList;s.innerHTML=separatorOptions();s.value=shoppingLists.some(l=>l.id===previous)?previous:currentList}}
-function renderShoppingLists(){const root=$('shoppingListTabs');if(!root)return;root.innerHTML=`<button class="listChip listAll${currentList==='all'?' active':''}" data-list="all"><span>🌐</span><span class="listName">Todas</span></button>`+shoppingLists.map(l=>`<button class="listChip${l.id===currentList?' active':''}" data-list="${esc(l.id)}" style="border-color:${l.color};box-shadow:${l.id===currentList?'inset 0 -3px 0 '+l.color:'none'}"><span>${esc(l.icon||'📋')}</span><span class="listName">${esc(l.name)}</span></button>`).join('')+'<button class="listChip listCreate" id="newShoppingList">＋</button>';populateItemListSelector();root.querySelectorAll('[data-list]').forEach(b=>{b.onclick=()=>{currentList=b.dataset.list;localStorage.setItem(LAST_LIST_KEY,currentList);currentArea='all';$('compactArea').value='all';renderShoppingLists();if(currentList!=='all')$('itemList').value=currentList;render()};let timer=null,moved=false;b.onpointerdown=()=>{if(b.dataset.list==='all')return;moved=false;timer=setTimeout(()=>{timer=null;openListModal(b.dataset.list)},650)};b.onpointermove=()=>{moved=true;if(timer){clearTimeout(timer);timer=null}};b.onpointerup=b.onpointercancel=()=>{if(timer){clearTimeout(timer);timer=null}};b.oncontextmenu=e=>{e.preventDefault();if(b.dataset.list!=='all')openListModal(b.dataset.list)}});$('newShoppingList').onclick=openListModal}
-function openListModal(id=null){editingShoppingList=id?shoppingLists.find(x=>x.id===id):null;draftListIcon=editingShoppingList?.icon||'📋';draftListColor=editingShoppingList?.color||'#6d5dfc';$('listName').value=editingShoppingList?.name||'';$('listModalTitle').textContent=editingShoppingList?'Editar Separador':'Novo Separador';$('listSave').textContent=editingShoppingList?'Guardar alterações':'Criar Separador';$('listName').disabled=!!editingShoppingList?.system;renderListChoices();renderSeparatorDeleteZone();$('listOverlay').classList.add('open');$('listOverlay').setAttribute('aria-hidden','false');setTimeout(()=>$('listName').focus(),0)}
+function separatorOptions(){return shoppingLists.filter(l=>!l.deleted).map(l=>`<option value="${esc(l.id)}">${esc(l.icon||'📋')} ${esc(l.name)}</option>`).join('')}function populateItemListSelector(){for(const id of ['itemList','editList','batchTarget']){const s=$(id);if(!s)continue;const previous=s.value||currentList;s.innerHTML=separatorOptions();s.value=shoppingLists.filter(l=>!l.deleted).some(l=>l.id===previous)?previous:currentList}}
+function renderShoppingLists(){const root=$('shoppingListTabs');if(!root)return;root.innerHTML=`<button class="listChip listAll${currentList==='all'?' active':''}" data-list="all"><span>🌐</span><span class="listName">Todas</span></button>`+shoppingLists.filter(l=>!l.deleted).map(l=>`<button class="listChip${l.id===currentList?' active':''}" data-list="${esc(l.id)}" style="border-color:${l.color};box-shadow:${l.id===currentList?'inset 0 -3px 0 '+l.color:'none'}"><span>${esc(l.icon||'📋')}</span><span class="listName">${esc(l.name)}</span></button>`).join('')+'<button class="listChip listCreate" id="newShoppingList">＋</button>';populateItemListSelector();root.querySelectorAll('[data-list]').forEach(b=>{b.onclick=()=>{currentList=b.dataset.list;localStorage.setItem(LAST_LIST_KEY,currentList);currentArea='all';$('compactArea').value='all';renderShoppingLists();if(currentList!=='all')$('itemList').value=currentList;render()};let timer=null,moved=false;b.onpointerdown=()=>{if(b.dataset.list==='all')return;moved=false;timer=setTimeout(()=>{timer=null;openListModal(b.dataset.list)},650)};b.onpointermove=()=>{moved=true;if(timer){clearTimeout(timer);timer=null}};b.onpointerup=b.onpointercancel=()=>{if(timer){clearTimeout(timer);timer=null}};b.oncontextmenu=e=>{e.preventDefault();if(b.dataset.list!=='all')openListModal(b.dataset.list)}});$('newShoppingList').onclick=openListModal}
+function openListModal(id=null){editingShoppingList=id?shoppingLists.filter(l=>!l.deleted).find(x=>x.id===id):null;draftListIcon=editingShoppingList?.icon||'📋';draftListColor=editingShoppingList?.color||'#6d5dfc';$('listName').value=editingShoppingList?.name||'';$('listModalTitle').textContent=editingShoppingList?'Editar Separador':'Novo Separador';$('listSave').textContent=editingShoppingList?'Guardar alterações':'Criar Separador';$('listName').disabled=!!editingShoppingList?.system;renderListChoices();renderSeparatorDeleteZone();$('listOverlay').classList.add('open');$('listOverlay').setAttribute('aria-hidden','false');setTimeout(()=>$('listName').focus(),0)}
 function closeListModal(){editingShoppingList=null;$('listName').disabled=false;$('listOverlay').classList.remove('open');$('listOverlay').setAttribute('aria-hidden','true')}
 function renderListChoices(){$('listIcons').innerHTML=LIST_ICONS.map(x=>`<button type="button" class="pickBtn${x===draftListIcon?' selected':''}" data-icon="${x}">${x}</button>`).join('');$('listColors').innerHTML=LIST_COLORS.map(x=>`<button type="button" class="colorPick${x===draftListColor?' selected':''}" data-color="${x}" style="background:${x}" aria-label="Cor"></button>`).join('');$('listIcons').querySelectorAll('[data-icon]').forEach(b=>b.onclick=()=>{draftListIcon=b.dataset.icon;renderListChoices()});$('listColors').querySelectorAll('[data-color]').forEach(b=>b.onclick=()=>{draftListColor=b.dataset.color;renderListChoices()})}
 function renderSeparatorDeleteZone(){
@@ -393,25 +499,25 @@ function renderSeparatorDeleteZone(){
  const canDelete=!!editingShoppingList&&!editingShoppingList.system;zone.hidden=!canDelete;if(!canDelete)return;
  const activeCount=items.filter(i=>!i.deleted&&i.listId===editingShoppingList.id).length;
  $('listDeleteInfo').textContent=activeCount?activeCount+' item(ns) serão movidos antes de eliminar.':'Este Separador não tem itens ativos.';
- const targets=shoppingLists.filter(l=>l.id!==editingShoppingList.id);
+ const targets=shoppingLists.filter(l=>!l.deleted).filter(l=>l.id!==editingShoppingList.id);
  $('listDeleteTarget').innerHTML=targets.map(l=>`<option value="${esc(l.id)}">${esc(l.icon||'📋')} ${esc(l.name)}</option>`).join('');
  $('listDeleteTarget').value=targets.some(l=>l.id==='normal')?'normal':(targets[0]?.id||'');
 }
 function deleteEditingSeparator(){
  if(!editingShoppingList||editingShoppingList.system)return;
  const doomed={...editingShoppingList},targetId=$('listDeleteTarget').value;
- const target=shoppingLists.find(l=>l.id===targetId);if(!target)return;
+ const target=shoppingLists.filter(l=>!l.deleted).find(l=>l.id===targetId);if(!target)return;
  const affected=items.filter(i=>!i.deleted&&i.listId===doomed.id);
  const msg=affected.length?`Eliminar “${doomed.name}” e mover ${affected.length} item(ns) para “${target.name}”?`:`Eliminar o Separador “${doomed.name}”?`;
  closeListModal();
  openLunaConfirm(msg,()=>{
   const t=now();affected.forEach(i=>{i.listId=target.id;i.updatedAt=t;i.dirty=true});
-  shoppingLists=shoppingLists.filter(l=>l.id!==doomed.id);localStorage.setItem(LISTS_KEY,JSON.stringify(shoppingLists));
+  shoppingLists=shoppingLists.map(l=>l.id===doomed.id?{...l,deleted:true,dirty:true,updatedAt:t}:l);LunaStorage.commit({[LISTS_KEY]:shoppingLists,[KEY]:items});
   if(currentList===doomed.id)currentList=target.id;localStorage.setItem(LAST_LIST_KEY,currentList);
   populateItemListSelector();save();renderShoppingLists();render();autoSync()
  },'Eliminar Separador')
 }
-function createShoppingList(){let name=$('listName').value.trim();if(!name)return openLunaConfirm('Indica o nome da lista.',()=>{},'Aviso');if(shoppingLists.some(x=>x.id!==editingShoppingList?.id&&normalize(x.name)===normalize(name)))return openLunaConfirm('Já existe uma lista com esse nome.',()=>{},'Aviso');if(editingShoppingList){editingShoppingList.name=editingShoppingList.system?editingShoppingList.name:name;editingShoppingList.icon=draftListIcon;editingShoppingList.color=draftListColor}else{let id='list-'+Date.now()+'-'+Math.random().toString(16).slice(2);shoppingLists.push({id,name,icon:draftListIcon,color:draftListColor,system:false});currentList=id}localStorage.setItem(LISTS_KEY,JSON.stringify(shoppingLists));populateItemListSelector();currentArea='all';$('compactArea').value='all';closeListModal();renderShoppingLists();render()}
+function createShoppingList(){let name=$('listName').value.trim();if(!name)return openLunaConfirm('Indica o nome da lista.',()=>{},'Aviso');if(shoppingLists.filter(l=>!l.deleted).some(x=>x.id!==editingShoppingList?.id&&normalize(x.name)===normalize(name)))return openLunaConfirm('Já existe uma lista com esse nome.',()=>{},'Aviso');if(editingShoppingList){editingShoppingList.name=editingShoppingList.system?editingShoppingList.name:name;editingShoppingList.icon=draftListIcon;editingShoppingList.color=draftListColor;editingShoppingList.updatedAt=now();editingShoppingList.dirty=true}else{let id='list-'+Date.now()+'-'+Math.random().toString(16).slice(2);shoppingLists.push({id,name,icon:draftListIcon,color:draftListColor,system:false,updatedAt:now(),dirty:true,deleted:false});currentList=id}localStorage.setItem(LISTS_KEY,JSON.stringify(shoppingLists));populateItemListSelector();currentArea='all';$('compactArea').value='all';closeListModal();renderShoppingLists();render()}
 
 function save(){localStorage.setItem(KEY,JSON.stringify(items));render()}
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -423,7 +529,7 @@ function addItem(name,qty='',category,area,priority='Normal',plan='Agora',listId
  const t=now();items.push({id:makeId(),name,qty:String(qty||'').trim(),category:finalCat,area:finalArea,listId:listId||'normal',priority:priority||'Normal',plan:plan==='Quando puder'?'Quando puder':'Agora',done:false,createdAt:t,updatedAt:t,deleted:false,dirty:true,deleted:false});save();autoSync()
 }
 function getHistory(){return load(PURCHASE_HIST,[])}
-function saveHistory(h){localStorage.setItem(PURCHASE_HIST,JSON.stringify(h));renderHistory()}
+function saveHistory(h){LunaStorage.commit({[KEY]:items,[PURCHASE_HIST]:h});renderHistory()}
 function migratePurchaseHistory(){
  const current=load(PURCHASE_HIST,[]);if(current.length)return;
  const legacy=load(HIST,[]).filter(e=>e&&e.historyId);
@@ -469,10 +575,10 @@ function clearCompleted(){
 function closeShoppingTrip(){
  const scoped=items.filter(i=>!i.deleted&&(currentList==='all'||i.listId===currentList)&&(currentArea==='all'||i.area===currentArea));
  if(!scoped.length)return openLunaConfirm('Não existem itens para fechar nesta vista.',()=>{},'Fechar compra');
- const sep=currentList==='all'?'Todos os separadores':(shoppingLists.find(l=>l.id===currentList)?.name||'Normal');
+ const sep=currentList==='all'?'Todos os separadores':(shoppingLists.filter(l=>!l.deleted).find(l=>l.id===currentList)?.name||'Normal');
  openLunaConfirm(`Fechar a compra de ${sep}? Os ${scoped.length} itens desta vista serão arquivados.`,()=>{
-  let h=load(HIST,[]);const closedAt=now();h.push({closedAt,separatorId:currentList,area:currentArea,items:JSON.parse(JSON.stringify(scoped))});localStorage.setItem(HIST,JSON.stringify(h));
-  const t=now();scoped.forEach(i=>{i.deleted=true;i.updatedAt=t;i.dirty=true});save();autoSync()
+  let h=load(HIST,[]);const closedAt=now();h.push({closedAt,separatorId:currentList,area:currentArea,items:JSON.parse(JSON.stringify(scoped))});
+  const t=now();scoped.forEach(i=>{i.deleted=true;i.updatedAt=t;i.dirty=true});LunaStorage.commit({[HIST]:h,[KEY]:items});render();autoSync()
  },'Fechar compra')
 }
 function recoverAccidentalClose(){
@@ -487,7 +593,7 @@ function updateCategoryVisibility(){const area=$('area').value,cat=$('cat');if(c
 $('area').addEventListener('change',updateCategoryVisibility);
 function setMoreOptions(open){const b=$('moreOptionsBtn'),body=$('moreOptionsBody');if(!b||!body)return;b.setAttribute('aria-expanded',open?'true':'false');body.hidden=!open}
 $('moreOptionsBtn').onclick=()=>setMoreOptions($('moreOptionsBtn').getAttribute('aria-expanded')!=='true');
-function usualSeparatorFor(name){const n=normalize(name);if(!n)return null;const score={};const valid=id=>shoppingLists.some(l=>l.id===id);const add=(id,w=1)=>{id=id||'normal';if(valid(id))score[id]=(score[id]||0)+w};const matchingItems=items.filter(i=>normalize(i.name)===n);matchingItems.forEach(i=>add(i.listId||'normal',2));getHistory().filter(h=>!h.deleted&&normalize(h.name)===n).forEach(h=>{let original=items.find(i=>i.id===h.itemId);if(original)add(original.listId||'normal',1)});load(HIST,[]).forEach(snap=>{if(!Array.isArray(snap.items))return;snap.items.filter(i=>normalize(i.name)===n).forEach(i=>add(i.listId||snap.separatorId||'normal',1))});let ranked=Object.entries(score).sort((a,b)=>b[1]-a[1]);if(!ranked.length)return null;if(ranked.length>1&&ranked[0][1]===ranked[1][1])return null;return shoppingLists.find(l=>l.id===ranked[0][0])||null}
+function usualSeparatorFor(name){const n=normalize(name);if(!n)return null;const score={};const valid=id=>shoppingLists.filter(l=>!l.deleted).some(l=>l.id===id);const add=(id,w=1)=>{id=id||'normal';if(valid(id))score[id]=(score[id]||0)+w};const matchingItems=items.filter(i=>normalize(i.name)===n);matchingItems.forEach(i=>add(i.listId||'normal',2));getHistory().filter(h=>!h.deleted&&normalize(h.name)===n).forEach(h=>{let original=items.find(i=>i.id===h.itemId);if(original)add(original.listId||'normal',1)});load(HIST,[]).forEach(snap=>{if(!Array.isArray(snap.items))return;snap.items.filter(i=>normalize(i.name)===n).forEach(i=>add(i.listId||snap.separatorId||'normal',1))});let ranked=Object.entries(score).sort((a,b)=>b[1]-a[1]);if(!ranked.length)return null;if(ranked.length>1&&ranked[0][1]===ranked[1][1])return null;return shoppingLists.filter(l=>!l.deleted).find(l=>l.id===ranked[0][0])||null}
 let suggestedSeparatorId='';
 function updateSeparatorSuggestion(name){let box=$('separatorSuggestion'),txt=$('separatorSuggestionText');if(!box)return;let l=usualSeparatorFor(name),fallback=currentList==='all'?'normal':currentList;suggestedSeparatorId=l&&l.id!==fallback?l.id:'';box.hidden=!suggestedSeparatorId;if(suggestedSeparatorId)txt.innerHTML='Costumas colocar este produto em <strong>'+esc(l.icon||'📋')+' '+esc(l.name)+'</strong>.'}
 function updateHint(){
@@ -520,7 +626,7 @@ function render(){
    if(c){const ci=categoryInfo[c]||categoryInfo.Outros;const sub=document.createElement('div');sub.className='categorySubhead';sub.innerHTML=`<span>${ci[0]}</span><span>${esc(c)}</span>`;sec.appendChild(sub)}
    for(const i of rows){
     let d=document.createElement('div');d.className='item'+(i.done?' done':'');
-    const sep=shoppingLists.find(l=>l.id===(i.listId||'normal'));
+    const sep=shoppingLists.filter(l=>!l.deleted).find(l=>l.id===(i.listId||'normal'));
     const sepBadge=allSeparators&&sep?`<span class="itemSeparator" style="border-color:${sep.color}">${esc(sep.icon||'📋')} ${esc(sep.name)}</span>`:'';
     if(batchMode){
      d.innerHTML=`<input class="batchCheck" type="checkbox" ${batchSelected.has(i.id)?'checked':''} aria-label="Selecionar item"><div><div class="name">${esc(i.name)}</div><div class="meta">${i.qty?'Quantidade: '+esc(i.qty)+' · ':''}${priorityInfo[i.priority]||'🟡'} ${esc(i.priority||'Normal')}${sepBadge}</div></div>`;
@@ -544,8 +650,8 @@ let confirmAction=null;let confirmCancelAction=null;function closeLunaConfirm(ru
  let x=items.find(i=>i.id===e.itemId);
  if(!x&&e.name)x=items.find(i=>normalize(i.name)===normalize(e.name));
  const existing=x;
- const targetList=(existing&&shoppingLists.some(l=>l.id===(existing.listId||'normal')))?(existing.listId||'normal'):'normal';
- const sep=shoppingLists.find(l=>l.id===targetList),name=sep?sep.name:'Normal';
+ const targetList=(existing&&shoppingLists.filter(l=>!l.deleted).some(l=>l.id===(existing.listId||'normal')))?(existing.listId||'normal'):'normal';
+ const sep=shoppingLists.filter(l=>!l.deleted).find(l=>l.id===targetList),name=sep?sep.name:'Normal';
  openLunaConfirm(`Queres que “${e.name}” volte para o separador ${name}?`,()=>{
   const t=now();
   if(!x){
@@ -605,15 +711,16 @@ function updateGoogleButton(){const dot=$('googleDot'),label=$('googleLabel');if
 const API_RETRYABLE=new Set([429,500,502,503,504]),API_MAX_ATTEMPTS=4;
 function apiDelay(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
 function apiRetryDelay(response,attempt){const retryAfter=response?.headers?.get('Retry-After'),seconds=retryAfter&&Number(retryAfter);if(Number.isFinite(seconds)&&seconds>=0)return Math.min(15000,seconds*1000);const base=Math.min(8000,500*(2**attempt));return Math.round(base*(0.75+Math.random()*0.5))}
-async function api(url,options={}){
- for(let attempt=0;attempt<API_MAX_ATTEMPTS;attempt++){
+async function api(url,options={}){LunaStorage.assertReady();
+ const maxAttempts=url.endsWith(':batchUpdate')?1:API_MAX_ATTEMPTS;
+ for(let attempt=0;attempt<maxAttempts;attempt++){LunaStorage.assertReady();
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);let r;
   try{r=await fetch(url,{...options,signal:controller.signal,headers:{Authorization:`Bearer ${accessToken}`,...(options.headers||{})}})}
-  catch(e){if(e.name==='AbortError'){if(attempt<API_MAX_ATTEMPTS-1){await apiDelay(apiRetryDelay(null,attempt));continue}throw new Error('TIMEOUT')}throw e}
+  catch(e){if(e.name==='AbortError'){if(attempt<maxAttempts-1){await apiDelay(apiRetryDelay(null,attempt));continue}throw new Error('TIMEOUT')}throw e}
   finally{clearTimeout(timer)}
   if(r.status===401){accessToken=null;updateGoogleButton();throw new Error('AUTH_EXPIRED')}
   if(r.status===403){let t=await r.text();throw new Error(t||'HTTP 403 · acesso Google recusado')}
-  if(API_RETRYABLE.has(r.status)&&attempt<API_MAX_ATTEMPTS-1){await apiDelay(apiRetryDelay(r,attempt));continue}
+  if(API_RETRYABLE.has(r.status)&&attempt<maxAttempts-1){await apiDelay(apiRetryDelay(r,attempt));continue}
   if(!r.ok){let t=await r.text();throw new Error(t||('HTTP '+r.status))}
   if(r.status===204)return null;return r.json()
  }
@@ -643,31 +750,47 @@ function mergeHistoryRemote(remote){
  }
  const merged=[...map.values()].map(normalizeHistoryEntry);localStorage.setItem(PURCHASE_HIST,JSON.stringify(merged));return merged;
 }
+async function appendRowsAtSheetEnd(sheetName,values){
+ const root='https://sheets.googleapis.com/v4/spreadsheets/'+SPREADSHEET_ID;
+ const meta=await api(root+'?fields=sheets(properties(sheetId,title))');
+ const matches=(meta.sheets||[]).filter(s=>s.properties?.title===sheetName);
+ if(matches.length!==1||!Number.isInteger(matches[0].properties.sheetId))throw Error('SYNC_SHEET_NOT_FOUND');
+ const rows=values.map(row=>({values:row.map(value=>({userEnteredValue:typeof value==='number'?(Number.isFinite(value)?{numberValue:value}:(()=>{throw Error('SYNC_INVALID_CELL')})()):typeof value==='boolean'?{boolValue:value}:{stringValue:String(value??'')}}))}));
+ // appendCells starts at column A after the last row containing data. No logical-table detection.
+ // This request must not be retried automatically: an ambiguous response is reconciled by ID on the next sync.
+ await api(root+':batchUpdate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({requests:[{appendCells:{sheetId:matches[0].properties.sheetId,rows,fields:'userEnteredValue'}}]})});
+}
+function shoppingRowsMatch(a,b){if(!a||!b)return false;for(let i=0;i<Math.max(a.length,b.length);i++)if(String(a[i]??'')!==String(b[i]??''))return false;return true}
+async function syncShoppingTable(c){
+ const base='https://sheets.googleapis.com/v4/spreadsheets/'+SPREADSHEET_ID+'/values/';
+ const read=()=>api(base+encodeURIComponent(c.range)+'?valueRenderOption=UNFORMATTED_VALUE');
+ const data=await read(),all=data.values||[],remote=new Map();
+ for(let i=1;i<all.length;i++){const row=all[i];if(!row[0])continue;if(remote.has(String(row[0])))throw Error('SYNC_DUPLICATE_ID_'+c.name);remote.set(String(row[0]),{row:i+1,obj:c.from(row),raw:row})}
+ const snapshot=JSON.parse(JSON.stringify(c.get())),written=new Map();
+ for(const local of snapshot){
+  const id=c.id(local),entry=remote.get(id);
+  if(c.lists&&!local.updatedAt){if(entry)continue;local.updatedAt=now();local.dirty=true;const live=c.get().find(x=>c.id(x)===id);if(live&&!live.updatedAt){live.updatedAt=local.updatedAt;live.dirty=true}}
+  if(!local.dirty||entry?.obj.deleted)continue;
+  if(c.history&&local.deleted)throw Error('SYNC_HISTORY_DELETE_REQUIRES_REVIEW');
+  if(entry&&(Date.parse(local.updatedAt)||0)<=(Date.parse(entry.obj.updatedAt)||0)&&!shoppingRowsMatch(c.row(local),entry.raw))throw Error('SYNC_CONFLICT_'+c.name);
+  const row=c.row(local);
+  if(entry){const range=c.name+'!A'+entry.row+':'+c.end+entry.row;await api(base+encodeURIComponent(range)+'?valueInputOption=RAW',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values:[row]})})}
+  else{if(!all.length)throw Error('SYNC_HEADER_MISSING');await appendRowsAtSheetEnd(c.name,[row])}
+  written.set(id,row);
+ }
+ const verified=await read(),fresh=new Map();
+ for(const row of (verified.values||[]).slice(1)){if(!row[0])continue;const id=String(row[0]);if(fresh.has(id))throw Error('SYNC_DUPLICATE_ID_'+c.name);fresh.set(id,{obj:c.from(row),raw:row})}
+ for(const [id,row]of written)if(!shoppingRowsMatch(row,fresh.get(id)?.raw))throw Error('SYNC_WRITE_NOT_VERIFIED_'+c.name);
+ const merged=new Map([...fresh].map(([id,x])=>[id,{...x.obj,dirty:false}]));
+ for(const local of c.get()){
+  const id=c.id(local),entry=fresh.get(id);if(entry?.obj.deleted)continue;
+  const acknowledged=written.has(id)&&shoppingRowsMatch(written.get(id),c.row(local));
+  if(local.dirty&&!acknowledged)merged.set(id,{...local,dirty:true});
+ }
+ c.set([...merged.values()]);
+}
 async function syncHistory(){
- const readUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(HISTORY_RANGE)}`;
- const data=await api(readUrl);
- const remote=(data.values||[]).slice(1).filter(r=>r[0]).map(remoteToHistory);
- const local=getHistory().map(normalizeHistoryEntry);
- const remoteById=new Map(remote.map(e=>[e.historyId,e]));
- const localById=new Map(local.map(e=>[e.historyId,e]));
- // Only explicit local dirty entries may change cloud history.
- for(const l of local){
-  if(!l.dirty)continue;
-  if(l.deleted){remoteById.delete(l.historyId);continue}
-  remoteById.set(l.historyId,l)
- }
- const merged=[...remoteById.values()].filter(e=>!e.deleted).map(normalizeHistoryEntry);
- // Cloud rewrite is based on cloud snapshot + explicit local mutations, never on local absence.
- const clearUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(HISTORY_SHEET+'!A2:P1000')}:clear`;
- await api(clearUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
- const values=merged.map(historyToRow);
- if(values.length){
-  const writeUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(HISTORY_SHEET+'!A2:P'+(values.length+1))}?valueInputOption=RAW`;
-  await api(writeUrl,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values})});
- }
- // Keep cloud truth locally, plus unsynced tombstones are no longer needed after successful write.
- const clean=merged.map(e=>({...e,dirty:false,deleted:false}));
- localStorage.setItem(PURCHASE_HIST,JSON.stringify(clean));renderHistory();
+ await syncShoppingTable({name:HISTORY_SHEET,range:HISTORY_RANGE,end:'P',history:true,id:x=>x.historyId,get:()=>getHistory().map(normalizeHistoryEntry),set:x=>localStorage.setItem(PURCHASE_HIST,JSON.stringify(x)),from:remoteToHistory,row:historyToRow});renderHistory();
 }
 
 function mergeLocalRemote(remote){
@@ -685,15 +808,14 @@ function mergeLocalRemote(remote){
  }
  items=[...map.values()].map(normalizeLocalItem);localStorage.setItem(KEY,JSON.stringify(items))
 }
-function normalizeShoppingList(l){return {id:String(l.id||''),name:String(l.name||'').trim(),icon:String(l.icon||'📋'),color:String(l.color||'#6d5dfc'),system:l.system===true,updatedAt:l.updatedAt||'',deleted:l.deleted===true}}
+function normalizeShoppingList(l){return {id:String(l.id||''),name:String(l.name||'').trim(),icon:String(l.icon||'📋'),color:String(l.color||'#6d5dfc'),system:l.system===true,updatedAt:l.updatedAt||'',deleted:l.deleted===true,dirty:l.dirty===true}}
 function listToRow(l){l=normalizeShoppingList(l);return [l.id,l.name,l.icon,l.color,l.system?'TRUE':'FALSE',l.updatedAt||now(),l.deleted?'TRUE':'FALSE','LUNA Shopping App']}
 function remoteToList(r){return normalizeShoppingList({id:r[0],name:r[1],icon:r[2],color:r[3],system:String(r[4]).toUpperCase()==='TRUE',updatedAt:r[5]||'',deleted:String(r[6]).toUpperCase()==='TRUE'})}
 async function syncShoppingLists(){
- const readUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(LISTS_RANGE)}`;
- const data=await api(readUrl);const remote=(data.values||[]).slice(1).filter(r=>r[0]).map(remoteToList).filter(l=>!l.deleted);
- const migrationStamp=now();const local=shoppingLists.map(normalizeShoppingList).filter(l=>!l.deleted).map(l=>{if(!l.updatedAt)l.updatedAt=migrationStamp;return l});const map=new Map();for(const l of remote)map.set(l.id,l);for(const l of local){const r=map.get(l.id);if(!r){map.set(l.id,l);continue}const lt=Date.parse(l.updatedAt||0)||0,rt=Date.parse(r.updatedAt||0)||0;if(lt>=rt)map.set(l.id,l)}
- if(!map.has('normal'))map.set('normal',{id:'normal',name:'Normal',icon:'🛒',color:'#6d5dfc',system:true,updatedAt:now(),deleted:false});shoppingLists=[...map.values()];localStorage.setItem(LISTS_KEY,JSON.stringify(shoppingLists));if(currentList!=='all'&&!shoppingLists.some(l=>l.id===currentList))currentList='normal';populateItemListSelector();renderShoppingLists();
- const clearUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(LISTS_SHEET+'!A2:H200')}:clear`;await api(clearUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});const values=shoppingLists.map(listToRow);if(values.length){const writeUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(LISTS_SHEET+'!A2:H'+(values.length+1))}?valueInputOption=RAW`;await api(writeUrl,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values})})}
+ // Only explicit edits receive a new timestamp. Legacy copies never acquire a newer revision merely by syncing.
+
+ await syncShoppingTable({name:LISTS_SHEET,range:LISTS_RANGE,end:'H',lists:true,id:x=>x.id,get:()=>shoppingLists,set:x=>{shoppingLists=x;localStorage.setItem(LISTS_KEY,JSON.stringify(x))},from:remoteToList,row:listToRow});
+ if(currentList!=='all'&&!shoppingLists.some(l=>!l.deleted&&l.id===currentList))currentList='normal';populateItemListSelector();renderShoppingLists();
 }
 async function syncNow(){
  if(syncing)return;if(!navigator.onLine){setSyncStatus('Offline · alterações guardadas localmente');return}
@@ -702,21 +824,9 @@ async function syncNow(){
  try{
   await syncShoppingLists();
   setSyncState('syncing','A sincronizar · lista…');
-  const readUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET_RANGE)}`;
-  const data=await api(readUrl);
-  const rows=(data.values||[]).slice(1).filter(r=>r[0]).map(remoteToItem);
-  mergeLocalRemote(rows);render();
-  const clearUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:L1000')}:clear`;
-  await api(clearUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
-  const values=items.map(itemToRow);
-  if(values.length){
-   const writeUrl=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET+'!A2:L'+(values.length+1))}?valueInputOption=RAW`;
-   await api(writeUrl,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({values})})
-  }
-  items.forEach(i=>i.dirty=false);
-  save();
+  await syncShoppingTable({name:SHEET,range:SHEET_RANGE,end:'L',id:x=>x.id,get:()=>items,set:x=>{items=x;save()},from:remoteToItem,row:itemToRow});
   setSyncState('syncing','A sincronizar · histórico…');await syncHistory();
-  const hc=getHistory().length; setSyncState('synced','Sincronizado · histórico local: '+hc+' · '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}))
+  const hc=getHistory().length;if(items.some(x=>x.dirty)||shoppingLists.some(x=>x.dirty)||getHistory().some(x=>x.dirty)){setSyncState('pending','Alterações por sincronizar');return} setSyncState('synced','Sincronizado · histórico local: '+hc+' · '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}))
  }catch(e){
   console.error('LUNA Shopping sync failed',e);if(e.message==='AUTH_EXPIRED')setSyncState('error','Sessão Google expirou · liga novamente');
   else if(e.message==='TIMEOUT')setSyncState('error','Sincronização demorou demasiado · dados locais preservados');
@@ -741,7 +851,7 @@ bindCollapse('historyToggle','historyBody');bindCollapse('managementToggle','man
 $('clearDone').onclick=clearCompleted;$('closeTrip').onclick=closeShoppingTrip;
 $('exportBtn').onclick=()=>{let data={version:'0.7.6',exportedAt:now(),items,history:getHistory(),learnedCategories:load(LEARN,{})};let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='luna_compras_backup_v075i.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
 $('importBtn').onclick=()=>$('importFile').click();
-$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.items))throw 0;let proceed=false;await new Promise(resolve=>openLunaConfirm('Substituir a lista atual pelo backup?',()=>{proceed=true;resolve()},'Importar backup',()=>resolve()));if(!proceed)return;const t=now();items=d.items.map(normalizeLocalItem).map(i=>({...i,updatedAt:t,dirty:true}));localStorage.setItem(PURCHASE_HIST,JSON.stringify(Array.isArray(d.history)?d.history.map(normalizeHistoryEntry):[]));if(d.learnedCategories&&typeof d.learnedCategories==='object')localStorage.setItem(LEARN,JSON.stringify(d.learnedCategories));save();autoSync()}catch{openLunaConfirm('Backup inválido.',()=>{},'Aviso')}e.target.value=''};
+$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.items))throw 0;let proceed=false;await new Promise(resolve=>openLunaConfirm('Substituir a lista atual pelo backup?',()=>{proceed=true;resolve()},'Importar backup',()=>resolve()));if(!proceed)return;const t=now();items=d.items.map(normalizeLocalItem).map(i=>({...i,updatedAt:t,dirty:true}));const imported={[KEY]:items,[PURCHASE_HIST]:Array.isArray(d.history)?d.history.map(normalizeHistoryEntry):[]};if(d.learnedCategories&&typeof d.learnedCategories==='object'&&!Array.isArray(d.learnedCategories))imported[LEARN]=d.learnedCategories;LunaStorage.commit(imported);render();autoSync()}catch{openLunaConfirm('Backup inválido.',()=>{},'Aviso')}e.target.value=''};
 $('priceClose').onclick=closePriceEditor;$('priceCancel').onclick=closePriceEditor;$('priceSave').onclick=savePriceEditor;$('priceUah').oninput=()=>syncPriceFields('UAH');$('priceEur').oninput=()=>syncPriceFields('EUR');$('priceOverlay').onclick=e=>{if(e.target===$('priceOverlay'))closePriceEditor()};
 $('editClose').onclick=closeEditor;$('editCancel').onclick=closeEditor;$('editSave').onclick=saveEditor;$('editOverlay').onclick=e=>{if(e.target===$('editOverlay'))closeEditor()};addEventListener('keydown',e=>{if(e.key==='Escape'&&$('editOverlay').classList.contains('open'))closeEditor()});
 $('googleConnect').onclick=()=>accessToken?syncNow():connectGoogle();

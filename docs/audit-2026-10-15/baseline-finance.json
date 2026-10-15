@@ -1,0 +1,114 @@
+[
+  {
+    "id": "UNAVAILABLE_RATE_null:finance.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'EUR','UAH')))\n"
+  },
+  {
+    "id": "UNAVAILABLE_RATE_0:finance.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'EUR','UAH')))\n"
+  },
+  {
+    "id": "UNAVAILABLE_RATE_-1:finance.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'EUR','UAH')))\n"
+  },
+  {
+    "id": "UNAVAILABLE_RATE_Infinity:finance.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'EUR','UAH')))\n"
+  },
+  {
+    "id": "UNAVAILABLE_RATE_invalid:finance.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'EUR','UAH')))\n"
+  },
+  {
+    "id": "VALID_FX_AND_INVALID_AMOUNTS:finance.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'USD','UAH')))\n"
+  },
+  {
+    "id": "BALANCE_AND_RENDER_UNAVAILABLE:finance.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.accountCurrentBalanceNative('audit')))\n"
+  },
+  {
+    "id": "HISTORICAL_BALANCE_NEVER_USES_LIVE_FX:finance.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(!Number.isFinite(w.balanceAtDateUAH(ac,'2026-10-31',0)))\n"
+  },
+  {
+    "id": "GOAL_CREATION_FAILS_BEFORE_TRANSACTION:finance.html",
+    "result": "FAIL",
+    "error": "Missing expected exception."
+  },
+  {
+    "id": "GOAL_ADD_NO_BALANCE_BYPASS:finance.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n1 !== 0\n"
+  },
+  {
+    "id": "FINANCE_LEGACY_ENTRY_ACK_MISMATCH:finance.html",
+    "result": "FAIL",
+    "error": "The input did not match the regular expression /SYNC_WRITE_NOT_VERIFIED/. Input:\n\n'Error: SYNC_WRITE_NOT_COMMITTED_Audit_audit'\n"
+  },
+  {
+    "id": "UNAVAILABLE_RATE_null:finance-v0298.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'EUR','UAH')))\n"
+  },
+  {
+    "id": "UNAVAILABLE_RATE_0:finance-v0298.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'EUR','UAH')))\n"
+  },
+  {
+    "id": "UNAVAILABLE_RATE_-1:finance-v0298.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'EUR','UAH')))\n"
+  },
+  {
+    "id": "UNAVAILABLE_RATE_Infinity:finance-v0298.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'EUR','UAH')))\n"
+  },
+  {
+    "id": "UNAVAILABLE_RATE_invalid:finance-v0298.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'EUR','UAH')))\n"
+  },
+  {
+    "id": "VALID_FX_AND_INVALID_AMOUNTS:finance-v0298.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.convertAmount(100,'USD','UAH')))\n"
+  },
+  {
+    "id": "BALANCE_AND_RENDER_UNAVAILABLE:finance-v0298.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(Number.isNaN(w.accountCurrentBalanceNative('audit')))\n"
+  },
+  {
+    "id": "HISTORICAL_BALANCE_NEVER_USES_LIVE_FX:finance-v0298.html",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(!Number.isFinite(w.balanceAtDateUAH(ac,'2026-10-31',0)))\n"
+  },
+  {
+    "id": "GOAL_CREATION_FAILS_BEFORE_TRANSACTION:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Missing expected exception."
+  },
+  {
+    "id": "GOAL_ADD_NO_BALANCE_BYPASS:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n1 !== 0\n"
+  },
+  {
+    "id": "FINANCE_LEGACY_ENTRY_ACK_MISMATCH:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "legacyAndVersionedProtected": true
+    }
+  }
+]

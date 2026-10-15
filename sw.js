@@ -1,9 +1,15 @@
 const CACHE='luna-suite-v14';
-const APPS=['./shopping.html','./notes-v013.html','./finance-v0298.html'];
-const CORE=['./index.html','./luna-core.js','./manifest.webmanifest','./notes-v01.webmanifest','./finance-v01.webmanifest','./icon.svg','./notes-icon.svg','./shopping-icon.svg?v=3'];
+const APPS=['./shopping.html','./notes-v013.html','./finance-v0298.html','./training.html'];
+const CORE=['./index.html','./luna-core.js','./manifest.webmanifest','./notes-v01.webmanifest','./finance-v01.webmanifest','./icon.svg','./notes-icon.svg','./shopping-icon.svg?v=3','./training.webmanifest'];
 
 self.addEventListener('install',event=>{
- event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting()));
+ event.waitUntil((async()=>{
+  const cache=await caches.open(CACHE);await cache.addAll(CORE);
+  const missing=[];for(const path of APPS){const cached=await cache.match(path);if(!cached||!cached.ok)missing.push(path)}
+  // Cache.addAll rejects non-2xx responses. Existing valid app pages are retained.
+  if(missing.length)await cache.addAll(missing);
+  await self.skipWaiting();
+ })());
 });
 
 self.addEventListener('activate',event=>{

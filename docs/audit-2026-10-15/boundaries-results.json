@@ -1,0 +1,30 @@
+[
+  {
+    "id": "TRAINING_REGISTERS_EXISTING_SUITE_WORKER",
+    "result": "PASS",
+    "detail": {
+      "sharedScopeAndIdentityPreserved": true
+    }
+  },
+  {
+    "id": "SHOPPING_AMBIGUOUS_APPEND_NOT_AUTOMATICALLY_RETRIED",
+    "result": "PASS",
+    "detail": {
+      "nonIdempotentWriteAttemptedOnce": true
+    }
+  },
+  {
+    "id": "PERSIST_FAILURE_PREVENTS_LATER_API_CALLS",
+    "result": "PASS",
+    "detail": {
+      "noNetworkAfterProtection": true
+    }
+  },
+  {
+    "id": "MANIFESTS_CORE_AND_SAFE_UNCHANGED",
+    "result": "PASS",
+    "detail": {
+      "manifestLinksOAuthAndDatasetIdentityUnchanged": true
+    }
+  }
+]
