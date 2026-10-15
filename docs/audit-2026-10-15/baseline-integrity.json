@@ -1,0 +1,215 @@
+[
+  {
+    "id": "CORRUPT_truncated:notes-v013.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "CORRUPT_wrong-shape:notes-v013.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "CORRUPT_truncated:notes-v016-test.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "CORRUPT_wrong-shape:notes-v016-test.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "CORRUPT_truncated:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "CORRUPT_wrong-shape:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "CORRUPT_truncated:finance.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "CORRUPT_wrong-shape:finance.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "CORRUPT_truncated:shopping.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "CORRUPT_wrong-shape:shopping.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "CORRUPT_truncated:training.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "CORRUPT_wrong-shape:training.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_1:notes-v013.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_2:notes-v013.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_3:notes-v013.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_4:notes-v013.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_SUCCESS:notes-v013.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_1:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_2:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_3:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_4:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_5:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_6:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_7:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_8:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_9:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "PERSIST_SUCCESS:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "STORAGE_CONCURRENT_CHANGE_BLOCKS_STALE_WRITE",
+    "result": "FAIL",
+    "error": "The input did not match the regular expression /LOCAL_CONCURRENT_CHANGE/. Input:\n\n\"TypeError: Cannot read properties of undefined (reading 'commit')\"\n"
+  },
+  {
+    "id": "STORAGE_JOURNAL_PENDING_BLOCKS_STARTUP",
+    "result": "FAIL",
+    "error": "Cannot read properties of undefined (reading 'state')"
+  },
+  {
+    "id": "NOTES_NEW_IDS_TWO_CLIENTS",
+    "result": "FAIL",
+    "error": "SYNC_WRITE_NOT_VERIFIED_Audit"
+  },
+  {
+    "id": "NOTES_APPEND_AFTER_ORPHAN_NON_A_ROW",
+    "result": "PASS",
+    "detail": {
+      "columnAAligned": true,
+      "orphanPreserved": true
+    }
+  },
+  {
+    "id": "NOTES_AMBIGUOUS_APPEND_REPLAY_FINDS_ID",
+    "result": "FAIL",
+    "error": "Missing expected rejection."
+  },
+  {
+    "id": "SHOPPING_ROW_SYNC_write-fails",
+    "result": "FAIL",
+    "error": "a.w.syncShoppingTable is not a function"
+  },
+  {
+    "id": "SHOPPING_ROW_SYNC_divergent-readback",
+    "result": "FAIL",
+    "error": "a.w.syncShoppingTable is not a function"
+  },
+  {
+    "id": "SHOPPING_ROW_SYNC_edit-inflight",
+    "result": "FAIL",
+    "error": "a.w.syncShoppingTable is not a function"
+  },
+  {
+    "id": "SHOPPING_ROW_SYNC_exact",
+    "result": "FAIL",
+    "error": "a.w.syncShoppingTable is not a function"
+  },
+  {
+    "id": "SHOPPING_ROW_SYNC_remote-insert",
+    "result": "FAIL",
+    "error": "a.w.syncShoppingTable is not a function"
+  },
+  {
+    "id": "SHOPPING_REMOTE_TOMBSTONE_DOMINATES_OLD_LIST",
+    "result": "FAIL",
+    "error": "UNEXPECTED_SYNTHETIC_URL"
+  },
+  {
+    "id": "SHOPPING_LEGACY_LIST_NEVER_OVERWRITES_REMOTE",
+    "result": "FAIL",
+    "error": "UNEXPECTED_SYNTHETIC_URL"
+  },
+  {
+    "id": "SHOPPING_HISTORY_DELETE_FAILS_CLOSED",
+    "result": "FAIL",
+    "error": "The input did not match the regular expression /SYNC_HISTORY_DELETE_REQUIRES_REVIEW/. Input:\n\n'Error: UNEXPECTED_SYNTHETIC_URL'\n"
+  },
+  {
+    "id": "NO_CLEAR_ROUTE_IN_SHOPPING_CANDIDATE",
+    "result": "FAIL",
+    "error": "The expression evaluated to a falsy value:\n\n  assert(!fs.readFileSync(path.join(root,'shopping.html'),'utf8').includes(':clear'))\n"
+  },
+  {
+    "id": "EMBEDDED_STORAGE_SOURCE_MATCHES",
+    "result": "FAIL",
+    "error": "ENOENT: no such file or directory, open '/tmp/luna-baseline-15oct/src/luna-storage-guard.js'"
+  }
+]

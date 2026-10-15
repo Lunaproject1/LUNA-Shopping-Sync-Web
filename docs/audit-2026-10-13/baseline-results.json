@@ -1,0 +1,154 @@
+[
+  {
+    "id": "SYNTAX_BOOT:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "syntacticAndDOMStartup": true
+    }
+  },
+  {
+    "id": "SYNTAX_BOOT:notes-v016-test.html",
+    "result": "PASS",
+    "detail": {
+      "syntacticAndDOMStartup": true
+    }
+  },
+  {
+    "id": "SYNTAX_BOOT:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Uncaught [TypeError: Cannot set properties of null (setting 'textContent')]\"\n+ ]\n- []\n"
+  },
+  {
+    "id": "SYNTAX_BOOT:finance.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Uncaught [TypeError: Cannot set properties of null (setting 'textContent')]\"\n+ ]\n- []\n"
+  },
+  {
+    "id": "SYNTAX_BOOT:shopping.html",
+    "result": "PASS",
+    "detail": {
+      "syntacticAndDOMStartup": true
+    }
+  },
+  {
+    "id": "SYNTAX_BOOT:training.html",
+    "result": "PASS",
+    "detail": {
+      "syntacticAndDOMStartup": true
+    }
+  },
+  {
+    "id": "ACK_exact:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "pendingPreserved": false,
+      "exactEchoAcknowledged": true
+    }
+  },
+  {
+    "id": "ACK_divergent:notes-v013.html",
+    "result": "FAIL",
+    "error": "Missing expected rejection."
+  },
+  {
+    "id": "ACK_missing:notes-v013.html",
+    "result": "FAIL",
+    "error": "Missing expected rejection."
+  },
+  {
+    "id": "ACK_edit-during-write:notes-v013.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'LOCAL'\n- 'INFLIGHT'\n"
+  },
+  {
+    "id": "ACK_exact:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "pendingPreserved": false,
+      "exactEchoAcknowledged": true
+    }
+  },
+  {
+    "id": "ACK_divergent:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Missing expected rejection."
+  },
+  {
+    "id": "ACK_missing:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Missing expected rejection."
+  },
+  {
+    "id": "ACK_edit-during-write:finance-v0298.html",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'LOCAL'\n- 'INFLIGHT'\n"
+  },
+  {
+    "id": "NOTES_FULL_SYNC_MISMATCH_NO_SUCCESS",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n'OTHER' !== 'LOCAL'\n"
+  },
+  {
+    "id": "NOTES_SOURCE_URLS",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ HTMLAnchorElement {}\n- null\n"
+  },
+  {
+    "id": "NOTES_INLINE_RESOLUTION_REQUIRES_CONFIRMATION",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+  },
+  {
+    "id": "FINANCE_INVALID_RAW_AMOUNT_REJECTED",
+    "result": "FAIL",
+    "error": "Missing expected exception."
+  },
+  {
+    "id": "FINANCE_TAG_DECODER_CONTAINED",
+    "result": "FAIL",
+    "error": "URI malformed"
+  },
+  {
+    "id": "FINANCE_TRANSFER_AND_BREAKDOWN_REGRESSION",
+    "result": "PASS",
+    "detail": {
+      "netTransferZero": true,
+      "exactUnderOverSplit": true
+    }
+  },
+  {
+    "id": "SYNC_ROWS_NORMALIZES_SHEET_SCALARS",
+    "result": "FAIL",
+    "error": "a.w.syncRowsMatch is not a function"
+  },
+  {
+    "id": "TRAINING_RENDER_IDS_ESCAPED",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ HTMLImageElement {}\n- null\n"
+  },
+  {
+    "id": "TRAINING_EXERCISE_IDS_ESCAPED",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ HTMLImageElement {}\n- null\n"
+  },
+  {
+    "id": "TRAINING_IMPORT_SCHEMA_REJECTS_BEFORE_REPLACE",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{\"exercises\":[],\"sessions\":[{}],\"weaponLog\":[],\"favoriteWeapons\":[]}'\n- '{\"exercises\":[],\"sessions\":[{\"id\":\"healthy\",\"name\":\"Synthetic\",\"type\":\"Gym\",\"date\":\"2026-10-13\",\"exercises\":[]}],\"weaponLog\":[],\"favoriteWeapons\":[]}'\n"
+  },
+  {
+    "id": "TRAINING_VALID_BACKUP_ROUNDTRIP",
+    "result": "PASS",
+    "detail": {
+      "validDataPreserved": true,
+      "legacyFavoriteNamesAccepted": true
+    }
+  },
+  {
+    "id": "PERMANENT_NOTES_EQUALS_VERSIONED",
+    "result": "PASS",
+    "detail": {
+      "sameBytes": true
+    }
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-15",
+  "type": "LIVE_GOOGLE_SHEETS_ISOLATED_CONTRACT",
+  "result": "PASS",
+  "fixtureContainsOnlySyntheticData": true,
+  "operationalSpreadsheetUsed": false,
+  "scope": "Payload captured from Notes appendRowsAtSheetEnd; sent through authenticated Drive/Sheets connector, not application OAuth/browser transport.",
+  "schedule": "Two append requests using the same initial sheet metadata, sequential writes, no client-selected row; simultaneous clients separately tested in JSDOM.",
+  "readback": {
+    "rows": "Audit!A3:E4",
+    "values": [
+      [
+        "synthetic-client-A",
+        "=1+1",
+        "2026-10-15T18:00:00Z",
+        12.5,
+        false
+      ],
+      [
+        "synthetic-client-B",
+        "Second independent creation",
+        "2026-10-15T18:00:00Z",
+        0,
+        true
+      ]
+    ],
+    "orphanR2Preserved": true,
+    "literalFormulaText": true,
+    "numericAndBooleanTypesPreserved": true
+  },
+  "limitations": [
+    "No real browser or Android validation",
+    "No application OAuth/end-to-end sync",
+    "No mixed legacy-client safety proof",
+    "No transactional operational snapshot/recovery"
+  ]
+}

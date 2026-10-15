@@ -1,0 +1,162 @@
+[
+  {
+    "id": "UNAVAILABLE_RATE_null:finance.html",
+    "result": "PASS",
+    "detail": {
+      "missingNeverZero": true
+    }
+  },
+  {
+    "id": "UNAVAILABLE_RATE_0:finance.html",
+    "result": "PASS",
+    "detail": {
+      "missingNeverZero": true
+    }
+  },
+  {
+    "id": "UNAVAILABLE_RATE_-1:finance.html",
+    "result": "PASS",
+    "detail": {
+      "missingNeverZero": true
+    }
+  },
+  {
+    "id": "UNAVAILABLE_RATE_Infinity:finance.html",
+    "result": "PASS",
+    "detail": {
+      "missingNeverZero": true
+    }
+  },
+  {
+    "id": "UNAVAILABLE_RATE_invalid:finance.html",
+    "result": "PASS",
+    "detail": {
+      "missingNeverZero": true
+    }
+  },
+  {
+    "id": "VALID_FX_AND_INVALID_AMOUNTS:finance.html",
+    "result": "PASS",
+    "detail": {
+      "validRoundTrip": true,
+      "legitimateZeroPreserved": true
+    }
+  },
+  {
+    "id": "BALANCE_AND_RENDER_UNAVAILABLE:finance.html",
+    "result": "PASS",
+    "detail": {
+      "incompleteBalanceNotZero": true,
+      "validRateRestoresCalculation": true
+    }
+  },
+  {
+    "id": "HISTORICAL_BALANCE_NEVER_USES_LIVE_FX:finance.html",
+    "result": "PASS",
+    "detail": {
+      "historicalRateRequired": true,
+      "noLiveSubstitution": true
+    }
+  },
+  {
+    "id": "GOAL_CREATION_FAILS_BEFORE_TRANSACTION:finance.html",
+    "result": "PASS",
+    "detail": {
+      "invalidFinancialWritePrevented": true
+    }
+  },
+  {
+    "id": "GOAL_ADD_NO_BALANCE_BYPASS:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unknownConversionCannotPassFundsCheck": true
+    }
+  },
+  {
+    "id": "FINANCE_LEGACY_ENTRY_ACK_MISMATCH:finance.html",
+    "result": "PASS",
+    "detail": {
+      "legacyAndVersionedProtected": true
+    }
+  },
+  {
+    "id": "UNAVAILABLE_RATE_null:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "missingNeverZero": true
+    }
+  },
+  {
+    "id": "UNAVAILABLE_RATE_0:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "missingNeverZero": true
+    }
+  },
+  {
+    "id": "UNAVAILABLE_RATE_-1:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "missingNeverZero": true
+    }
+  },
+  {
+    "id": "UNAVAILABLE_RATE_Infinity:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "missingNeverZero": true
+    }
+  },
+  {
+    "id": "UNAVAILABLE_RATE_invalid:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "missingNeverZero": true
+    }
+  },
+  {
+    "id": "VALID_FX_AND_INVALID_AMOUNTS:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "validRoundTrip": true,
+      "legitimateZeroPreserved": true
+    }
+  },
+  {
+    "id": "BALANCE_AND_RENDER_UNAVAILABLE:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "incompleteBalanceNotZero": true,
+      "validRateRestoresCalculation": true
+    }
+  },
+  {
+    "id": "HISTORICAL_BALANCE_NEVER_USES_LIVE_FX:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "historicalRateRequired": true,
+      "noLiveSubstitution": true
+    }
+  },
+  {
+    "id": "GOAL_CREATION_FAILS_BEFORE_TRANSACTION:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "invalidFinancialWritePrevented": true
+    }
+  },
+  {
+    "id": "GOAL_ADD_NO_BALANCE_BYPASS:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unknownConversionCannotPassFundsCheck": true
+    }
+  },
+  {
+    "id": "FINANCE_LEGACY_ENTRY_ACK_MISMATCH:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "legacyAndVersionedProtected": true
+    }
+  }
+]

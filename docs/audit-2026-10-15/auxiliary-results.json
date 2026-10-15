@@ -1,0 +1,263 @@
+[
+  {
+    "id": "Accounts_exact:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Accounts_divergent:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Accounts_write-fails:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Accounts_inflight:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Accounts_newer-remote:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Cards_exact:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Cards_divergent:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Cards_write-fails:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Cards_inflight:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Cards_newer-remote:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Breakdown_exact:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Breakdown_divergent:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Breakdown_write-fails:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Breakdown_inflight:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Breakdown_newer-remote:finance.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Accounts_exact:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Accounts_divergent:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Accounts_write-fails:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Accounts_inflight:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Accounts_newer-remote:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Cards_exact:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Cards_divergent:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Cards_write-fails:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Cards_inflight:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Cards_newer-remote:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Breakdown_exact:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": false,
+      "confirmedEcho": true
+    }
+  },
+  {
+    "id": "Breakdown_divergent:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Breakdown_write-fails:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Breakdown_inflight:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "Breakdown_newer-remote:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "unconfirmedEditPreserved": true,
+      "confirmedEcho": false
+    }
+  },
+  {
+    "id": "TRAINING_LEGACY_BACKUP_WITHOUT_ATTEMPTS",
+    "result": "PASS",
+    "detail": {
+      "missingOptionalAttemptsAccepted": true
+    }
+  },
+  {
+    "id": "SHOPPING_COMPLETION_QUOTA_JOURNAL_COVERS_ITEM_AND_HISTORY",
+    "result": "PASS",
+    "detail": {
+      "itemAndPurchaseRecoverableTogether": true
+    }
+  },
+  {
+    "id": "FINANCE_RECURRING_QUOTA_JOURNAL_COVERS_HISTORY_AND_RULE",
+    "result": "PASS",
+    "detail": {
+      "allThreeArraysRecoverable": true
+    }
+  }
+]

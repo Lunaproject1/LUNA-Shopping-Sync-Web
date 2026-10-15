@@ -1,0 +1,329 @@
+[
+  {
+    "id": "CORRUPT_truncated:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "CORRUPT_wrong-shape:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "CORRUPT_truncated:notes-v016-test.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "CORRUPT_wrong-shape:notes-v016-test.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "CORRUPT_truncated:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "CORRUPT_wrong-shape:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "CORRUPT_truncated:finance.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "CORRUPT_wrong-shape:finance.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "CORRUPT_truncated:shopping.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "CORRUPT_wrong-shape:shopping.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "CORRUPT_truncated:training.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "CORRUPT_wrong-shape:training.html",
+    "result": "PASS",
+    "detail": {
+      "rawPreserved": true,
+      "appPaused": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_1:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_2:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_3:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_4:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_SUCCESS:notes-v013.html",
+    "result": "PASS",
+    "detail": {
+      "completeCommit": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_1:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_2:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_3:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_4:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_5:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_6:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_7:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_8:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_QUOTA_STEP_9:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "beforeAfterRetained": true,
+      "restartNeverOverwrites": true
+    }
+  },
+  {
+    "id": "PERSIST_SUCCESS:finance-v0298.html",
+    "result": "PASS",
+    "detail": {
+      "completeCommit": true
+    }
+  },
+  {
+    "id": "STORAGE_CONCURRENT_CHANGE_BLOCKS_STALE_WRITE",
+    "result": "PASS",
+    "detail": {
+      "otherTabRetained": true
+    }
+  },
+  {
+    "id": "STORAGE_JOURNAL_PENDING_BLOCKS_STARTUP",
+    "result": "PASS",
+    "detail": {
+      "noAutomaticRecovery": true
+    }
+  },
+  {
+    "id": "NOTES_NEW_IDS_TWO_CLIENTS",
+    "result": "PASS",
+    "detail": {
+      "concurrentCreatesRetained": 2
+    }
+  },
+  {
+    "id": "NOTES_APPEND_AFTER_ORPHAN_NON_A_ROW",
+    "result": "PASS",
+    "detail": {
+      "columnAAligned": true,
+      "orphanPreserved": true
+    }
+  },
+  {
+    "id": "NOTES_AMBIGUOUS_APPEND_REPLAY_FINDS_ID",
+    "result": "PASS",
+    "detail": {
+      "retryDoesNotAppendDuplicate": true
+    }
+  },
+  {
+    "id": "SHOPPING_ROW_SYNC_write-fails",
+    "result": "PASS",
+    "detail": {
+      "unrelatedRowPreserved": true,
+      "noClear": true
+    }
+  },
+  {
+    "id": "SHOPPING_ROW_SYNC_divergent-readback",
+    "result": "PASS",
+    "detail": {
+      "unrelatedRowPreserved": true,
+      "noClear": true
+    }
+  },
+  {
+    "id": "SHOPPING_ROW_SYNC_edit-inflight",
+    "result": "PASS",
+    "detail": {
+      "unrelatedRowPreserved": true,
+      "noClear": true
+    }
+  },
+  {
+    "id": "SHOPPING_ROW_SYNC_exact",
+    "result": "PASS",
+    "detail": {
+      "unrelatedRowPreserved": true,
+      "noClear": true
+    }
+  },
+  {
+    "id": "SHOPPING_ROW_SYNC_remote-insert",
+    "result": "PASS",
+    "detail": {
+      "unrelatedRowPreserved": true,
+      "noClear": true
+    }
+  },
+  {
+    "id": "SHOPPING_REMOTE_TOMBSTONE_DOMINATES_OLD_LIST",
+    "result": "PASS",
+    "detail": {
+      "tombstoneRetained": true,
+      "hiddenFromNavigation": true
+    }
+  },
+  {
+    "id": "SHOPPING_LEGACY_LIST_NEVER_OVERWRITES_REMOTE",
+    "result": "PASS",
+    "detail": {
+      "noSyntheticNewRevision": true
+    }
+  },
+  {
+    "id": "SHOPPING_HISTORY_DELETE_FAILS_CLOSED",
+    "result": "PASS",
+    "detail": {
+      "schemaNotExtended": true,
+      "reviewRequired": true
+    }
+  },
+  {
+    "id": "NO_CLEAR_ROUTE_IN_SHOPPING_CANDIDATE",
+    "result": "PASS",
+    "detail": {
+      "destructiveRewriteRemoved": true
+    }
+  },
+  {
+    "id": "EMBEDDED_STORAGE_SOURCE_MATCHES",
+    "result": "PASS",
+    "detail": {
+      "sixCopiesMatch": true
+    }
+  }
+]
