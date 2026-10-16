@@ -4,11 +4,11 @@ Functional candidate, not accepted/SAFE. Publication/OAuth/Android status must b
 
 ## Executed
 
-Node v24.19.0; jsdom 30.1.3; fake-indexeddb 6.2.5. Production JavaScript syntax checked. Full suite: **29 PASS / 0 FAIL**. Test dependencies are development-only; the deployed runtime uses no npm dependencies.
+Node v24.19.0; jsdom 30.1.3; fake-indexeddb 6.2.5. Production JavaScript syntax checked. Full suite: **32 PASS / 0 FAIL**. Test dependencies are development-only; the deployed runtime uses no npm dependencies.
 
-19 core cases: truthful bootstrap; IndexedDB transaction/reopen/concurrent tabs; quota/corruption preservation; invalid dates/metrics/IDs/relationships; dog isolation/shared events; trash/history/Tugi protection; checksummed backup with attachments; malicious MIME/oversize; cloud chunks/checksum/duplicate collisions; read-back/idempotence; false ACK; interruption after server commit; concurrent clients/conflict resolution; edits during upload; 2 MiB attachment atomic batches/partial detection; appendCells/literal formulas; both legacy formats; prototype-pollution keys/immutable dog association; Unicode-safe chunk boundaries.
+20 core cases: truthful bootstrap; IndexedDB transaction/reopen/concurrent tabs; quota/corruption preservation; invalid dates/metrics/IDs/relationships; dog isolation/shared events; trash/history/Tugi protection; checksummed backup with attachments; malicious MIME/oversize; cloud chunks/checksum/duplicate collisions; read-back/idempotence; false ACK; interruption after server commit; concurrent clients/conflict resolution; edits during upload; 2 MiB attachment atomic batches/partial detection; appendCells/literal formulas; both legacy formats; prototype-pollution keys/immutable dog association; Unicode-safe chunk boundaries; repeated legacy import identity.
 
-6 DOM cases: all modules/approved icons; Ares/Jessa optional profiles; session/ABC/health/walk/calendar CRUD and re-opening; command measurements/custom/search; invalid form preservation/inert XSS; manifest identity/scope/assets/PNG dimensions. These are jsdom behavior tests, not a rendered browser.
+8 DOM cases: all modules/approved icons; Ares/Jessa optional profiles; session/ABC/health/walk/calendar CRUD and re-opening; command measurements/custom/search; invalid form preservation/inert XSS; manifest identity/scope/assets/PNG dimensions; custom command editing/archival and measured accessible trend charts. These are jsdom behavior tests, not a rendered browser.
 
 4 worker VM cases: shell/offline assets; no interception of other apps/Google/auth/query requests; own-cache cleanup/HTTP-error protection; no forced skipWaiting. Simulated worker/cache behavior is not installability proof.
 

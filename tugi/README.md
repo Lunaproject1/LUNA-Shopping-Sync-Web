@@ -28,6 +28,6 @@ Worker de âmbito próprio com whitelist estática; não interceta Google/API/au
 
 ## Testes
 
-Nesta pasta: `npm ci --ignore-scripts` e `npm test` (Node >=22). 29 testes: 19 core/IndexedDB/sync, 6 jsdom/UI, 4 worker/VM. Dependências apenas de desenvolvimento; runtime sem npm. Evidências e limitações em [TEST_RESULTS.md](TEST_RESULTS.md).
+Nesta pasta: `npm ci --ignore-scripts` e `npm test` (Node >=22). 32 testes: 20 core/IndexedDB/sync, 8 jsdom/UI, 4 worker/VM. Dependências apenas de desenvolvimento; runtime sem npm. Evidências e limitações em [TEST_RESULTS.md](TEST_RESULTS.md).
 
 Teste real Google Sheets em fixture isolada passou pelo conector autenticado, não pelo OAuth da aplicação. Node/DOM/VM não substituem browser/Android. Controlador de browser de preview indisponível neste ambiente. Sem notificações garantidas em segundo plano ou calendário externo. Sem aprovação SAFE.
