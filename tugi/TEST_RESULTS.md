@@ -1,3 +1,33 @@
+# TUGI 0.1.13 TEST — atualização 5, TUG-60, 23 October 2026
+
+Continues e6be6b02ccf624fa8e93bb25acd11e799705539f and TUG-59 without duplicating its changes. No main/SAFE merge or operational data write. The final publication is tracked in Linear TUG-60 and the Site source provenance; this committed report does not assert a deployment before it occurs.
+
+## Automated checks
+
+Node >=22, `npm ci --ignore-scripts`, `npm test`: **69 PASS / 0 FAIL** (20 core, 10 analytics, 6 design/charts, 24 UI/jsdom, 4 service-worker VM, 4 updater DOM, 1 release invariants). Syntax and whitespace checks pass. Runtime dependencies remain zero.
+
+New coverage: weighted 6/10 = 60% rather than mean of percentages; missing measurements remain null; civil 7/30/90-day inclusive boundaries, leap/year/DST boundaries; Monday weeks and calendar months with zero bins; prior equal period/zero denominator; future/conflicted sessions excluded and disclosed; exact normalized command association; shared sessions counted once per dog; filters and switching Tugi/Ares; read-only reports with identical operations before/after; long history disclosure; prototype pollution; accessible SVG/select/table and inert labels; proportional date axes; exact fractional duration labels; shared theme key/fallback/quota and persistence; every module under all three themes; token contrast >=4.5 for normal text, >=3 for chart/control boundaries; 44px controls and reduced motion.
+
+The retained sync/IDB suite includes transaction/reopen, quota/corruption protection, two clients, idempotence, concurrent conflict preservation, native fetch receiver, synthetic OAuth/Sheets HTTP, 403/network/drop-write handling and confirmation only after exact read-back. This release did not contact real Google or write LUNA Data. Existing sync.js is byte-for-byte 5561d0b; core differs only in VERSION; IndexedDB name/schema/version, manifest and Android icons are unchanged. Worker caches the three added local scripts and only its own shell; updater requires explicit same-origin exact-revision activation.
+
+## Rendered Chrome preview — real browser, synthetic isolated records
+
+Executed through the managed preview, in 320, 360 and 768px containers (available content widths 305/345/753px with native scrollbar). No horizontal overflow in inspected 320/768 home views. Inspected Outdoor black/white contrast at 320 and tablet; dark at 360; selected theme survives reload. Native controls selected 7 days/Senta/day and displayed exactly 2 sessions, 12 min, 6/10 = 60%. Switching from Tugi (6 fixture sessions) to Ares (2) updates the dashboard; re-opening the iframe without reseeding retains Ares and its records in real IndexedDB. No application-origin JavaScript errors were observed in captured logs; extension metadata errors belong to the browser integration.
+
+Preview uses HTTP and therefore needs a UUID fallback in QA-only files, never shipped. Its database contains exclusively synthetic records. HTTP preview is not secure-context PWA installability, service-worker offline control, backup WebCrypto, Google OAuth, installed Android or real-device reconnection evidence. Automated equivalents above are not device acceptance.
+
+## Android acceptance still required for this release
+
+Save any open form. In the existing Brave installation open the same origin `/update/?r=tug60-r5`, explicitly update, reopen the same icon and confirm **0.1.13 TEST / atualização 5**. Do not reinstall, clear storage or change origin. Check retained real Tugi/Ares records/photos, all themes/Outdoor sunlight, small screen keyboard and charts/exact values, per-dog filters, active dog/theme after close/reopen, create/edit offline and reconnect, actual Google sync/pending/read-back and another device where appropriate. The user's previously confirmed 0.1.12 Android/Google result is baseline evidence, not acceptance of 0.1.13. No new SAFE promotion is implied; no formally executed TUGI SAFE promotion was found in the consulted branch/Linear evidence.
+
+## During-development failures
+
+Additional tests exposed unsafe prototype-key context accumulation, conflict inclusion and a visual line axis spacing points equally despite unequal dates; these were corrected and regression-tested. Some intermediate fixture/selector expectations were corrected to the actual model and localized output. Final 69-test suite has no unresolved failure. No failed or unexecuted real-device result is represented as a pass.
+
+---
+
+## Previous checkpoint evidence (preserved)
+
 # TUGI 0.1.12 TEST — atualização 4, TUG-59, 23 October 2026
 
 Implementation continues e5a78d9 (8816fed/f2f9784/7b48a476/e5a78d9). The TUG-57 5561d0b fetch fix remains byte-for-byte identical. Publication and Android acceptance must be read from the latest Linear checkpoint; this report does not assert device acceptance.

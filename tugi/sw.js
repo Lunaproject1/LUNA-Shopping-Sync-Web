@@ -1,7 +1,7 @@
 'use strict';
-const VERSION='0.1.12-tug59-r4',PREFIX='luna-tugi-shell-',CACHE=PREFIX+VERSION;
+const VERSION='0.1.13-tug60-r5',PREFIX='luna-tugi-shell-',CACHE=PREFIX+VERSION;
 const ROOT=new URL('./',self.registration.scope);
-const FILES=['./','./index.html','./approved.css','./app.css','./core.js','./sync.js','./app.js','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./approved-photo-1.jpg','./approved-photo-2.jpg'];
+const FILES=['./','./index.html','./approved.css','./app.css','./core.js','./theme.js','./analytics.js','./charts.js','./sync.js','./app.js','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./approved-photo-1.jpg','./approved-photo-2.jpg'];
 const ALLOWED=new Set(FILES.map(path=>new URL(path,ROOT).href));
 self.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);await cache.addAll(FILES.map(path=>new Request(new URL(path,ROOT),{cache:'reload'})));})()));
 // Existing windows retain their worker until closed: never force an update over an active editor.

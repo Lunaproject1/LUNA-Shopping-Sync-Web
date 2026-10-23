@@ -1,0 +1,6 @@
+(function(root){'use strict';
+const KEY='luna.visual.theme.v01',allowed=['light','dark','outdoor'];
+function read(){try{const value=localStorage.getItem(KEY);return allowed.includes(value)?value:'light';}catch{return'light';}}
+function apply(value,persist=false){const mode=allowed.includes(value)?value:'light';document.documentElement.dataset.theme=mode;if(document.body)document.body.dataset.theme=mode;document.querySelectorAll('[data-theme-btn]').forEach(b=>{const active=b.dataset.themeBtn===mode;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=mode==='dark'?'#101820':mode==='outdoor'?'#ffffff':'#f5f6f8';if(persist)try{localStorage.setItem(KEY,mode);}catch{const notice=document.getElementById('notice');if(notice){notice.textContent='Tema aplicado. Não foi possível guardar a preferência neste navegador.';notice.classList.add('error');}}return mode;}
+apply(read());document.addEventListener('DOMContentLoaded',()=>apply(read()));document.addEventListener('click',e=>{const button=e.target.closest('[data-theme-btn]');if(button)apply(button.dataset.themeBtn,true);});root.TugiTheme={KEY,read,apply};
+})(globalThis);
