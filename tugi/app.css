@@ -9,3 +9,16 @@ html[data-theme="outdoor"] .panel,html[data-theme="outdoor"] .metric,html[data-t
 @media(max-width:359px){.header{padding:14px 14px 10px;gap:8px}.brand b{font-size:15px}.brand small{font-size:10px}.content{padding:0 14px}.hero{margin:0 14px 16px;padding:17px;grid-template-columns:1fr 86px}.hero-photo{width:86px;height:112px;border-radius:18px}.hero h1{font-size:28px}.theme-switch{margin-left:14px;max-width:calc(100% - 28px)}.dogbar{padding-left:14px;padding-right:14px}.dogbar label{display:none}.grid2{grid-template-columns:1fr}.stats-filters .grid2{grid-template-columns:1fr}.panel{padding:15px}.metric{padding:10px}.metric strong{font-size:23px}.tag{font-size:10px}.quick{grid-template-columns:1.2fr 1fr 1fr}.tile{font-size:11px}.session-head{flex-direction:column;gap:3px}}
 @media(prefers-reduced-motion:no-preference){button{transition:background-color .15s,border-color .15s,transform .1s}.panel{animation:arrive .16s ease-out}@keyframes arrive{from{opacity:.7;transform:translateY(3px)}to{opacity:1;transform:none}}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Learning-state badges: readable across Light, Dark and Outdoor themes. */
+.command-state{display:inline-flex;align-items:center;border:1px solid transparent;font-weight:750;letter-spacing:.01em}
+.command-state[data-state="Planeado"]{background:#e8e9f2;color:#343b65;border-color:#aab0cf}
+.command-state[data-state="Por aprender"]{background:#fff0d6;color:#794300;border-color:#e9b65d}
+.command-state[data-state="Em aprendizagem"]{background:#dceefe;color:#154b80;border-color:#86b9e9}
+.command-state[data-state="Aprendido"]{background:#dff5e8;color:#145d37;border-color:#8bcda6}
+.command-state[data-state="Consolidado"]{background:#d8f4e7;color:#075339;border-color:#67c4a0}
+[data-theme="dark"] .command-state[data-state="Planeado"]{background:#323950;color:#e5e7ff;border-color:#8b92b7}
+[data-theme="dark"] .command-state[data-state="Por aprender"]{background:#563e22;color:#ffdc99;border-color:#a47d42}
+[data-theme="dark"] .command-state[data-state="Em aprendizagem"]{background:#203e60;color:#c4e4ff;border-color:#6b9dca}
+[data-theme="dark"] .command-state[data-state="Aprendido"],[data-theme="dark"] .command-state[data-state="Consolidado"]{background:#1e4a38;color:#c6f7db;border-color:#65aa86}
+[data-theme="outdoor"] .command-state{border-width:2px;font-weight:850}
