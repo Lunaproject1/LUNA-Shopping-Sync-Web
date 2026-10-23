@@ -1,3 +1,29 @@
+# TUGI 0.1.12 TEST — atualização 4, TUG-59, 23 October 2026
+
+Implementation continues e5a78d9 (8816fed/f2f9784/7b48a476/e5a78d9). The TUG-57 5561d0b fetch fix remains byte-for-byte identical. Publication and Android acceptance must be read from the latest Linear checkpoint; this report does not assert device acceptance.
+
+## Current technical checks
+
+`npm ci --ignore-scripts`, `npm test` (Node >=22). **49 PASS / 0 FAIL**, 20 core, 20 UI/jsdom, 4 service-worker VM, 4 controlled updater DOM, 1 release invariants. Production JS syntax and `git diff --check` pass. Runtime has no npm dependency.
+
+New coverage: avatar picker lists all real profiles and independent recent photos; Escape/outside dismissal; each data module is isolated by selected dog; selection survives IndexedDB close/reopen; exact four-entry navigation and retained modules; quick form saves only visible required inputs with no invented success measurements; repeat uses new IDs, resets outcomes and explicitly selects participants; double submission does not duplicate; command groups/quick state preserve context reliability; contextual forms retain nonempty values; two IndexedDB clients atomically reject duplicate dog names; deleted-dog fallback; actual upload/invalid signature/reselect photo; dirty/stale form cannot write into a different dog.
+
+The OAuth UI and actual SheetsTransport/SyncEngine are exercised against an isolated synthetic HTTP implementation: native Window receiver guard, schema checks, appendCells, exact read-back, two clients and two dogs/photos; repeated requests are idempotent. HTTP 403, network failure and server dropping writes keep the local queue and never claim cloud confirmation. Offline reopen, CRUD and checksummed backup survive; reconnect acknowledges only read-back data. **No real Google service was contacted or operational LUNA Data written for these tests.** These checks do not prove live OAuth or Android cloud sync.
+
+Frozen SHA-256 checks retain sync.js, manifest and Android PNGs from update 3. Core implementation differs only in VERSION; DB name `luna-tugi-v2`, schema 2 and IDB version 1 remain. Updater keeps same origin, explicit activation, no unregister/new registration/storage clearing. Worker VM verifies cache whitelist/offline shell, error responses and preservation of other apps' caches. Source tree contains only tugi/ changes.
+
+## Required Android acceptance (not executed in this environment)
+
+Update existing installation in its original Brave via /update/?r=tug59-r4; verify 0.1.12 TEST / update 4 and retained old records. Exercise tap targets/layout, avatar switching/photos and reopened active dog. Create/edit offline, reconnect and use actual Google consent/account, verify pending queue/read-back, second device/concurrent edits and backup restore with synthetic/private data. No reinstall/data clearing/main/SAFE. Remote browser test in preceding TUG-57 work timed out; there is no rendered-browser PASS in this report.
+
+## Test changes and failures during development
+
+First candidate: 34/36; two old layout expectations (six quick tiles/five nav slots and removed health tile) failed and were updated to the approved TUG-59 arrangement without removing coverage. Expanded suite: 41/43; corrected test selectors (hidden home metric vs stats metric, picker already open) after inspection. All final tests pass; no unresolved technical failure is hidden. No Android/OAuth result inferred from this.
+
+---
+
+## Historical baseline evidence (preserved)
+
 # TUGI 0.1.11 TEST — evidence, 16 October 2026
 
 Functional candidate, not accepted/SAFE. Publication/OAuth/Android status must be read from the latest Linear checkpoint.

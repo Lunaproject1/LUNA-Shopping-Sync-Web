@@ -1,6 +1,6 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.TugiCore=api;})(globalThis,()=>{
 'use strict';
-const VERSION='0.1.11 TEST',SCHEMA=2,DB_NAME='luna-tugi-v2';
+const VERSION='0.1.12 TEST',SCHEMA=2,DB_NAME='luna-tugi-v2';
 const SECTIONS=['Identificação','Cuidados','Passeios','Comportamento','Saúde','Treinos','Calendário','Estatísticas'];
 const KINDS=['dog','progress','session','observation','health','event','attachment','plan','walk'];
 const STATES=['Por aprender','Em aprendizagem','Aprendido','Consolidado'];

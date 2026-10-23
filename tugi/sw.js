@@ -1,5 +1,5 @@
 'use strict';
-const VERSION='0.1.11-5561d0b-r3',PREFIX='luna-tugi-shell-',CACHE=PREFIX+VERSION;
+const VERSION='0.1.12-tug59-r4',PREFIX='luna-tugi-shell-',CACHE=PREFIX+VERSION;
 const ROOT=new URL('./',self.registration.scope);
 const FILES=['./','./index.html','./approved.css','./app.css','./core.js','./sync.js','./app.js','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./approved-photo-1.jpg','./approved-photo-2.jpg'];
 const ALLOWED=new Set(FILES.map(path=>new URL(path,ROOT).href));
