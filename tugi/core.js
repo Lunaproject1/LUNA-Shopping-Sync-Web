@@ -3,7 +3,7 @@
 const VERSION='0.1.13 TEST',SCHEMA=2,DB_NAME='luna-tugi-v2';
 const SECTIONS=['Identificação','Cuidados','Passeios','Comportamento','Saúde','Treinos','Calendário','Estatísticas'];
 const KINDS=['dog','progress','session','observation','health','event','attachment','plan','walk'];
-const STATES=['Por aprender','Em aprendizagem','Aprendido','Consolidado'];
+const STATES=['Planeado','Por aprender','Em aprendizagem','Aprendido','Consolidado'];
 const CONTEXTS=['Casa','Rua','Outros cães'];
 const HISTORICAL=['Senta','Deita','Fica','Aqui','Stop','Sobe','Desce','Salta','Rasteja','Pede','Depressa','Devagar','Junto','Ao lado','Atenção','Pata','Outra pata','Beijo','Dança','Up','Busca','Traz','Meio','Esquerda','Direita','Dá 5','Mais 5','Roda','TAP'];
 const SUGGESTED=[['Vai para a cama','Fácil'],['Solta','Fácil'],['Queixo','Fácil'],['Procura petisco','Fácil'],['Toca sino','Fácil'],['Deixa','Médio'],['Contorna','Médio'],['Recuar','Médio'],['Espera na porta','Médio'],['Vai ao lugar à distância','Médio'],['Busca objeto pelo nome','Médio'],['Volta de emergência','Médio'],['Arrumar brinquedos','Avançado'],['Discriminar objetos','Avançado'],['Sequência de três comandos','Avançado'],['Procurar pessoa conhecida em local seguro','Avançado'],['Depositar objeto em alvo','Avançado']];
